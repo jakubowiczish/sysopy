@@ -9,14 +9,12 @@ int ARRAY_SIZE;
 struct Searcher *searcher;
 char **result_blocks;
 
-void initialize_searching_array(__uint32_t size_of_array) {
-    searcher = calloc(size_of_array, sizeof(struct Searcher));
-    ARRAY_SIZE = size_of_array;
-}
-
 void initialize_result_array(__uint32_t size_of_array) {
+    searcher = calloc(size_of_array, sizeof(struct Searcher));
     result_blocks = calloc(size_of_array, sizeof(char *));
     ARRAY_SIZE = size_of_array;
+
+    printf("Array of size: %d has just been allocated\n", size_of_array);
 }
 
 void delete_block_at_index(int block_index) {
