@@ -23,7 +23,11 @@ int main(int argc, char **argv) {
         }
 
         if (strcmp(argv[i], "remove_block") == 0) {
-
+            if (check_if_argument_is_number(argv[i + 1])) {
+                char *end = NULL;
+                int block_index = (int) strtol(argv[i + 1], &end, 10);
+                delete_block_at_index(block_index);
+            }
         }
     }
 

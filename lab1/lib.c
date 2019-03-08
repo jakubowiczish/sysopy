@@ -14,11 +14,13 @@ void initialize_result_array(__uint32_t size_of_array) {
     result_blocks = calloc(size_of_array, sizeof(char *));
     ARRAY_SIZE = size_of_array;
 
-    printf("Array of size: %d has just been allocated\n", size_of_array);
+    printf("Allocated array of size: %d \n", size_of_array);
 }
 
 void delete_block_at_index(int block_index) {
     free(result_blocks[block_index]);
+
+    printf("Deleted block at index: %d \n", block_index);
 }
 
 int search_directory(char *dir, char *file, char *name_file_temp) {
