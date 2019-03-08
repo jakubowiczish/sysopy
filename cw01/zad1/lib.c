@@ -4,7 +4,15 @@
 #include <fcntl.h>
 #include "lib.h"
 
+const int SIZE_OF_BUFFER = 512;
+
 int ARRAY_SIZE;
+
+struct Searcher {
+    char *dir;
+    char *file;
+    char *name_file_temp;
+};
 
 struct Searcher *searcher;
 char **result_blocks;

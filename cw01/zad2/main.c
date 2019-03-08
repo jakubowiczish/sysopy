@@ -2,7 +2,8 @@
 #include <memory.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include "lib.c"
+#include <stdlib.h>
+#include "lib.h"
 
 bool check_if_argument_is_number(char *arg);
 
