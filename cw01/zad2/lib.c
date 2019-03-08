@@ -51,7 +51,7 @@ int search_directory(char *dir, char *file, char *name_file_temp) {
     read(fd, result_block, (size_t) file_size);
     close(fd);
 
-    int block_index = -890;
+    int block_index = -1;
 
     for(int i = 0; i < ARRAY_SIZE; ++i) {
         if (result_blocks[i] == NULL) {

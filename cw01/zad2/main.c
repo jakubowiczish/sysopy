@@ -8,7 +8,6 @@
 bool check_if_argument_is_number(char *arg);
 
 int main(int argc, char **argv) {
-//    printf("%d", search_directory("/home/jakub/Downloads", "płotnikowski.jpg", "tmp.txt"));
 
     for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "create_table") == 0) {
