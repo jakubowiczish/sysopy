@@ -10,6 +10,10 @@ shared:
 	$(CC) -c -fPIC lib.c
 	$(CC) -o lib.so -fPIC -shared lib.o
 
+run_static:
+	make static
+	$(CC) -o test.out main.c lib.o
+
 clean:
 	rm -f *.o
 	rm -f *.a
