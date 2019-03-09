@@ -18,7 +18,7 @@ struct Searcher {
 struct Searcher *searcher;
 char **result_blocks;
 
-void initialize_result_array(__uint32_t size_of_array) {
+void create_table(__uint32_t size_of_array) {
     searcher = calloc(size_of_array, sizeof(struct Searcher));
     result_blocks = calloc(size_of_array, sizeof(char *));
     ARRAY_SIZE = size_of_array;
@@ -26,7 +26,7 @@ void initialize_result_array(__uint32_t size_of_array) {
     printf("Allocated array of size: %d \n", size_of_array);
 }
 
-void delete_block_at_index(int block_index) {
+void remove_block(int block_index) {
     free(result_blocks[block_index]);
 
     printf("Deleted block at index: %d \n", block_index);

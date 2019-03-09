@@ -7,6 +7,7 @@
 #include <sys/times.h>
 #include <unistd.h>
 #include "lib.h"
+#include "lib_dynamic.c"
 
 void start_timer();
 
@@ -22,6 +23,9 @@ struct tms end_cpu;
 
 int main(int argc, char **argv) {
 
+    void *handle;
+    init_dynamic(handle);
+
     for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "create_table") == 0) {
             if (check_if_argument_is_number(argv[i + 1])) {
@@ -29,7 +33,7 @@ int main(int argc, char **argv) {
                 long size = strtol(argv[i + 1], &end, 10);
 
                 start_timer();
-                create_table((__uint32_t) size);
+                create_table_dynamic((__uint32_t) size);
                 stop_timer("Time of creating the array: ");
 
             }
@@ -37,7 +41,7 @@ int main(int argc, char **argv) {
 
         if (strcmp(argv[i], "search_directory") == 0) {
             start_timer();
-            search_directory(argv[i + 1], argv[i + 2], argv[i + 3]);
+            search_directory_dynamic(argv[i + 1], argv[i + 2], argv[i + 3]);
             stop_timer("Time of searching the directory: ");
         }
 
@@ -46,12 +50,13 @@ int main(int argc, char **argv) {
                 char *end = NULL;
                 int block_index = (int) strtol(argv[i + 1], &end, 10);
                 start_timer();
-                remove_block(block_index);
+                remove_block_dynamic(block_index);
                 stop_timer("Time of removing the block: ");
             }
         }
     }
 
+    dlclose_dynamic(handle);
     return 0;
 }
 
