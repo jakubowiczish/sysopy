@@ -19,3 +19,4 @@ clean:
 	rm -f *.a
 	rm -f *.gch
 	rm -f *.so
+	rm -f *.txt
