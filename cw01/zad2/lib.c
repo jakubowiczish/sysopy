@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <memory.h>
 #include "lib.h"
 
 const int SIZE_OF_BUFFER = 512;
@@ -44,6 +45,8 @@ int search_directory(char *dir, char *file, char *name_file_temp) {
     } else {
         system(buffer);
     }
+
+    printf("Searching the directory: %s, for: %s, results are stored in: %s file\n", dir, file, name_file_temp);
 
     int fd = open(searcher->name_file_temp, O_RDONLY);
     long file_size = get_file_size(fd);

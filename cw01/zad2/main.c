@@ -30,21 +30,24 @@ int main(int argc, char **argv) {
 
                 start_timer();
                 initialize_result_array((__uint32_t) size);
-                stop_timer("creating table\n");
+                stop_timer("Time of creating the array: ");
+
             }
         }
 
         if (strcmp(argv[i], "search_directory") == 0) {
             start_timer();
             search_directory(argv[i + 1], argv[i + 2], argv[i + 3]);
-            stop_timer("search\n");
+            stop_timer("Time of searching the directory: ");
         }
 
         if (strcmp(argv[i], "remove_block") == 0) {
             if (check_if_argument_is_number(argv[i + 1])) {
                 char *end = NULL;
                 int block_index = (int) strtol(argv[i + 1], &end, 10);
+                start_timer();
                 delete_block_at_index(block_index);
+                stop_timer("Time of removing the block: ");
             }
         }
     }
