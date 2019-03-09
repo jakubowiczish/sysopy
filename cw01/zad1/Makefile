@@ -1,14 +1,18 @@
 CC = gcc -Wall -std=c11 -ggdb
+LIB_O = lib.o
+LIB__STATIC = lib.a
+LIB_DYNAMIC = lib.so
 
-all:
+create:
+	$(CC) -c -fPIC -o $(LIB_O) lib.c
 
 static: lib.c
-	$(CC) -c lib.c
-	ar rcs lib.a lib.o
+	make create
+	ar rcs $(LIB_STATIC) $(LIB_O)
 
 shared:
-	$(CC) -c -fPIC lib.c
-	$(CC) -o lib.so -fPIC -shared lib.o
+	make create
+	$(CC) -o $(LIB_DYNAMIC) -fPIC -shared $(LIB_O)
 
 clean:
 	rm -f *.o
