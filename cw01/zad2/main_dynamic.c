@@ -6,8 +6,7 @@
 #include <time.h>
 #include <sys/times.h>
 #include <unistd.h>
-#include "lib.h"
-#include "lib_dynamic.c"
+#include <dlfcn.h>
 
 void start_timer();
 
@@ -23,17 +22,40 @@ struct tms end_cpu;
 
 int main(int argc, char **argv) {
 
-    void *handle;
-    init_dynamic(handle);
+    void *handle = dlopen("out_dynamic", RTLD_LAZY);
+
+    if (handle == NULL) {
+        printf("The dynamic library could not be read!\n");
+        return -1;
+    }
+
+    void (*_create_table)(__uint32_t size_of_array);
+    _create_table = dlsym(handle, "create_table");
+
+    if (dlerror() != NULL) {
+        printf("Something went wrong with reading create_table method\n");
+        return -1;
+    }
+
+    void (*_remove_block)(int);
+    _remove_block = dlsym(handle, "remove_block");
+
+    if (dlerror() != NULL) {
+        printf("Something went wrong with reading remove_block method\n");
+        return -1;
+    }
+
+    int (*_search_directory)(char *, char *, char *);
+    _search_directory = dlsym(handle, "search_directory");
 
     for (int i = 1; i < argc; ++i) {
-        if (strcmp(argv[i], "create_table") == 0) {
+        if (strcmp(argv[i], "_create_table") == 0) {
             if (check_if_argument_is_number(argv[i + 1])) {
                 char *end = NULL;
                 long size = strtol(argv[i + 1], &end, 10);
 
                 start_timer();
-                create_table_dynamic((__uint32_t) size);
+                (*_create_table)((__uint32_t) size);
                 stop_timer("Time of creating the array: ");
 
             }
@@ -41,7 +63,7 @@ int main(int argc, char **argv) {
 
         if (strcmp(argv[i], "search_directory") == 0) {
             start_timer();
-            search_directory_dynamic(argv[i + 1], argv[i + 2], argv[i + 3]);
+            _search_directory(argv[i + 1], argv[i + 2], argv[i + 3]);
             stop_timer("Time of searching the directory: ");
         }
 
@@ -50,13 +72,14 @@ int main(int argc, char **argv) {
                 char *end = NULL;
                 int block_index = (int) strtol(argv[i + 1], &end, 10);
                 start_timer();
-                remove_block_dynamic(block_index);
+                _remove_block(block_index);
                 stop_timer("Time of removing the block: ");
             }
         }
     }
 
-    dlclose_dynamic(handle);
+    dlclose(handle);
+
     return 0;
 }
 
@@ -77,7 +100,7 @@ void start_timer() {
 
 void stop_timer(char *logger_message) {
     end_time = times(&end_cpu);
-    int64_t clk_tck = sysconf(_SC_CLK_TCK);
+    unsigned int clk_tck = (unsigned int) sysconf(_SC_CLK_TCK);
 
     char *statement = calloc(strlen("Real time: 000.0000, User time: 000.0000, System time: 000.0000\n") + 1,
                              sizeof(char *));
