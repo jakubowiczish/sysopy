@@ -33,7 +33,8 @@ run_shared:
 
 
 run_dynamic:
-	$(CC) -o out_dynamic main_dynamic.c -ldl
+	$(CC) -o out_dynamic main.c -ldl -D DYNAMIC
+	make tests_dynamic
 
 tests_static:
 	./out_static create_table 10 search_directory /usr lib tmp_1.txt remove_block 0

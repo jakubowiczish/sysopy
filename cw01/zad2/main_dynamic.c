@@ -7,6 +7,7 @@
 #include <sys/times.h>
 #include <unistd.h>
 #include <dlfcn.h>
+#include "lib.h"
 
 void start_timer();
 

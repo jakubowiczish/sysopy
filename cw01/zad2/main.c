@@ -6,7 +6,12 @@
 #include <time.h>
 #include <sys/times.h>
 #include <unistd.h>
+
+#ifdef DYNAMIC
+#include "lib_dynamic.h"
+#else
 #include "lib.h"
+#endif
 
 void start_timer();
 
@@ -22,6 +27,9 @@ struct tms end_cpu;
 
 int main(int argc, char **argv) {
 
+#ifdef DYNAMIC
+    init_dynamic_handler();
+#endif
     for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "create_table") == 0) {
             if (check_if_argument_is_number(argv[i + 1])) {
@@ -51,8 +59,9 @@ int main(int argc, char **argv) {
             }
         }
     }
-
-//    PIOTR SZCZYGIEŁ TO KOZAK
+#ifdef DYNAMIC
+    free_handler_memory();
+#endif
 
     return 0;
 }
