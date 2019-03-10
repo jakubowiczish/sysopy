@@ -13,17 +13,13 @@ OUT_STATIC = out_static
 OUT_SHARED = out_shared
 OUT_DYNAMIC = out_dynamic
 
-
 static: lib.c
 	$(CC) -c $(LIB_C)
 	ar rcs $(LIB_A) $(LIB_O)
 
-shared:
-	$(CC) -c -fPIC -o $(LIB_O) $(LIB_C)
-	$(CC) -o $(LIB_SO) -fPIC -shared $(LIB_O)
-#	$(CC) -shared –W1,-soname,lib.so -o lib.so.1.0.1 $(LIB_O) -lc
-#	ln -s lib.so.1.0.1 lib.so.1
-#	ln -s lib.so.1 lib.so
+shared: lib.c
+	$(CC) -c -fPIC $(LIB_C)
+	gcc -shared -fPIC lib.c -o libfind.so
 
 run_static:
 	make static
@@ -32,13 +28,8 @@ run_static:
 
 run_shared:
 	make shared
-#	sudo cp lib.so.1.0.1 /usr/lib
-#	sudo rm -f /usr/lib/lib.so.1
-#	sudo rm -f /usr/lib/lib.so
-#	sudo ln -s /usr/lib.so.1.0.1 /url/lib.so.1
-#	sudo ln -s /usr/lib.so.1 /url/lib.so
-#	sudo ldconfig
-	$(CC) main.c $(LIB_NAME) -L ./ -o $(OUT_SHARED)
+	gcc -Wall -std=c99 -g main.c -L./ -lfind -o out_shared
+#	$(CC) main.c -l cw01zad2 -L ./ -o $(OUT_SHARED)
 	make tests_shared
 
 tests_static:
@@ -51,11 +42,11 @@ tests_static:
 
 tests_shared:
 	# short
-	./out_shared create_table 10 search_directory /usr lib tmp_1.txt remove_block 0
+	LD_LIBRARY_PATH=./ ./out_shared create_table 10 search_directory /usr lib tmp_1.txt remove_block 0
 	# medium
-	./out_shared create_table 100 search_directory /usr/lib xorg tmp_2.txt remove_block 0
+	LD_LIBRARY_PATH=./ ./out_shared create_table 100 search_directory /usr/lib xorg tmp_2.txt remove_block 0
 	# long
-	./out_shared create_table 10000 search_directory /usr systemd-bootx64.efi tmp_3.txt remove_block 0
+	LD_LIBRARY_PATH=./ ./out_shared create_table 10000 search_directory /usr systemd-bootx64.efi tmp_3.txt remove_block 0
 
 clean:
 	rm -f *.o
@@ -63,3 +54,11 @@ clean:
 	rm -f *.gch
 	rm -f *.so
 	rm -f *.txt
+	rm -f *.so.*
+
+	#	sudo cp libcw01zad2.so.1.0.1 /usr/lib
+    #	sudo rm -f /usr/lib/libcw01zad2.so.1
+    #	sudo rm -f /usr/lib/libcw01zad2.so
+    #	sudo ln -s /usr/libcw01zad2.so.1.0.1 /url/lib.so.1
+    #	sudo ln -s /usr/lib.so.1 /url/lib.so
+    #	sudo ldconfig
