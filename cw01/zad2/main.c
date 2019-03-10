@@ -52,6 +52,8 @@ int main(int argc, char **argv) {
         }
     }
 
+//    PIOTR SZCZYGIEŁ TO KOZAK
+
     return 0;
 }
 
