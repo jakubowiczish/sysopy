@@ -145,11 +145,3 @@ clean_all:
 	rm -f out_static
 	rm -f out_shared
 	rm -f out_dynamic
-
-
-	#	sudo cp libcw01zad2.so.1.0.1 /usr/lib
-    #	sudo rm -f /usr/lib/libcw01zad2.so.1
-    #	sudo rm -f /usr/lib/libcw01zad2.so
-    #	sudo ln -s /usr/libcw01zad2.so.1.0.1 /url/lib.so.1
-    #	sudo ln -s /usr/lib.so.1 /url/lib.so
-    #	sudo ldconfig
