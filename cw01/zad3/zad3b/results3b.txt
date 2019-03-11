@@ -1,7 +1,11 @@
-Wyniki uzyskane dla poszczególnych poziomów optymalizacji (-O, -O3 i -Os) są dość nieznaczne,
-podczas wykonywania programu niezauważalne, jednak pomiary wykazują minimalne różnice.
+Wyniki uzyskane dla poszczegolnych poziomow optymalizacji (-O, -O3 i -Os) są dosc nieznaczne,
+podczas wykonywania programu niezauwazalne, jednak pomiary wykazują minimalne roznice.
 
-Różnice w pomiarach pomiędzy różnymi rodzajami bibliotek są, tak samo jak w ćwiczeniu 3a praktycznie pomijalne.
+Roznice w pomiarach pomiedzy roznymi rodzajami bibliotek sa,
+tak samo jak w cwiczeniu 3a praktycznie pomijalne.
+
+Ponownie, wynika to z faktu, ze jedyna operacja,
+ktora ma realny wplyw na szybkosc wykonywania programu to funkcja find.
 
 ---------------------------------
             STATIC -O
