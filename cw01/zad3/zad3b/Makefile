@@ -31,19 +31,73 @@ run_static_O:
 	$(CC) -o $(OUT_STATIC) -O $(SRC) $(LIB_O)
 	make tests_static
 
+run_static_O3:
+	make static
+	$(CC) -o $(OUT_STATIC) -O3 $(SRC) $(LIB_O)
+	make tests_static
+
+run_static_Os:
+	make static
+	$(CC) -o $(OUT_STATIC) -Os $(SRC) $(LIB_O)
+	make tests_static
+
 run_shared:
 	make shared
 	gcc -Wall -std=c99 -g main.c -L./ -lfind -o out_shared
+	make tests_shared
+
+run_shared_O:
+	make shared
+	gcc -Wall -std=c99 -g -O main.c -L./ -lfind -o out_shared
+	make tests_shared
+
+run_shared_O3:
+	make shared
+	gcc -Wall -std=c99 -g -O3 main.c -L./ -lfind -o out_shared
+	make tests_shared
+
+run_shared_Os:
+	make shared
+	gcc -Wall -std=c99 -g -Os main.c -L./ -lfind -o out_shared
 	make tests_shared
 
 run_dynamic:
 	$(CC) -o out_dynamic main.c -ldl -D DYNAMIC
 	make tests_dynamic
 
+run_dynamic_O:
+	$(CC) -o out_dynamic -O main.c -ldl -D DYNAMIC
+	make tests_dynamic
+
+run_dynamic_O3:
+	$(CC) -o out_dynamic -O3 main.c -ldl -D DYNAMIC
+	make tests_dynamic
+
+run_dynamic_Os:
+	$(CC) -o out_dynamic -Os main.c -ldl -D DYNAMIC
+	make tests_dynamic
+
 run_all:
 	make run_static
 	make run_shared
 	make run_dynamic
+
+run_all_O:
+	make run_static_O
+	make run_shared_O
+	make run_dynamic_O
+
+run_all_O3:
+	make run_static_O3
+	make run_shared_O3
+	make run_dynamic_O3
+
+run_all_Os:
+	make run_static_Os
+	make run_shared_Os
+	make run_dynamic_Os
+
+
 
 tests_static:
 	# short search time
