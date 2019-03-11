@@ -1,11 +1,11 @@
-Wyniki uzyskane dla kazdego rodzaju biblioteki są bardzo do siebie zblizone,
+Wyniki uzyskane dla kazdego rodzaju biblioteki sa bardzo do siebie zblizone,
 roznice dla poszczegolnych wynikow sa nieznaczne.
 
-Wynika to z faktu, ze glownie obciazająca byla wykonywana funkcja find,
+Wynika to z faktu, ze glownie obciazajaca byla wykonywana funkcja find,
 a wybor biblioteki z ktorej korzystam nie ma praktycznie
 zadnego znaczenia dla szybkosci wykonywanych operacji.
 
-Czasy tworzenia blokow pamięci i ich usuwania sa bardzo nieznaczne,
+Czasy tworzenia blokow pamieci i ich usuwania sa bardzo nieznaczne,
 praktycznie rowne zeru dla kazdego przypadku.
 
 ---------------------------------

@@ -1,5 +1,5 @@
-Wyniki uzyskane dla poszczegolnych poziomow optymalizacji (-O, -O3 i -Os) są dosc nieznaczne,
-podczas wykonywania programu niezauwazalne, jednak pomiary wykazują minimalne roznice.
+Wyniki uzyskane dla poszczegolnych poziomow optymalizacji (-O, -O3 i -Os) sa dosc nieznaczne,
+podczas wykonywania programu niezauwazalne, jednak pomiary wykazuja minimalne roznice.
 
 Roznice w pomiarach pomiedzy roznymi rodzajami bibliotek sa,
 tak samo jak w cwiczeniu 3a praktycznie pomijalne.
