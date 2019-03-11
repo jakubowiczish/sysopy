@@ -41,10 +41,17 @@ run_all:
 	make run_dynamic
 
 tests_static:
-	./out_static create_table 10 search_directory /usr lib tmp_1.txt remove_block 0
-	./out_static create_table 100 search_directory /usr/lib xorg tmp_2.txt remove_block 0
-	./out_static create_table 10000 search_directory /usr systemd-bootx64.efi tmp_3.txt remove_block 0
-	./out_static create_table 1 create_table 10 create_table 100 create_table 1000 create_table 10000
+	# short search time
+	LD_LIBRARY_PATH=./ ./out_static create_table 1 search_directory /usr/bin zip remove_block 0
+	# medium search time
+	LD_LIBRARY_PATH=./ ./out_static create_table 1 search_directory /usr lib medium.txt remove_block 0
+	# long search time
+	LD_LIBRARY_PATH=./ ./out_static create_table 1 search_directory / efi long.txt remove_block 0
+
+	LD_LIBRARY_PATH=./ ./out_static create_table 2 search_directory /usr/bin xz tmp_4.txt search_directory /usr/bin zip tmp_5.txt remove_block 0 remove_block 1
+
+	LD_LIBRARY_PATH=./ ./out_static create_table 100 search_directory /usr/lib xorg tmp_6.txt
+	LD_LIBRARY_PATH=./ ./out_static create_table 1
 
 tests_shared:
 	LD_LIBRARY_PATH=./ ./out_shared create_table 10 search_directory /usr lib tmp_1.txt remove_block 0

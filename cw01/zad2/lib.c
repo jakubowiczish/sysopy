@@ -23,13 +23,13 @@ void create_table(__uint32_t size_of_array) {
     result_blocks = calloc(size_of_array, sizeof(char *));
     ARRAY_SIZE = size_of_array;
 
-    printf("Allocated array of size: %d \n", size_of_array);
+//    printf("Allocated array of size: %d \n", size_of_array);
 }
 
 void remove_block(int block_index) {
     free(result_blocks[block_index]);
 
-    printf("Deleted block at index: %d \n", block_index);
+//    printf("Deleted block at index: %d \n", block_index);
 }
 
 int search_directory(char *dir, char *file, char *name_file_temp) {
@@ -46,7 +46,7 @@ int search_directory(char *dir, char *file, char *name_file_temp) {
         system(buffer);
     }
 
-    printf("Searching the directory: %s, for: %s, results are stored in: %s file\n", dir, file, name_file_temp);
+//    printf("Searching the directory: %s, for: %s, results are stored in: %s file\n", dir, file, name_file_temp);
 
     int fd = open(searcher->name_file_temp, O_RDONLY);
     long file_size = get_file_size(fd);

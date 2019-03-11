@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
                 long size = strtol(argv[i + 1], &end, 10);
 
                 char buffer[100];
-                sprintf(buffer, "CREATING ARRAY OF SIZE\n: %ld", size);
+                sprintf(buffer, "CREATING ARRAY OF SIZE: %ld\n", size);
 
                 start_timer();
                 create_table((__uint32_t) size);
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
                 char *end = NULL;
                 int block_index = (int) strtol(argv[i + 1], &end, 10);
                 char buffer[100];
-                sprintf(buffer, "REMOVING BLOCK: %s", argv[i + 1]);
+                sprintf(buffer, "REMOVING BLOCK AT INDEX: %s\n", argv[i + 1]);
                 start_timer();
                 remove_block(block_index);
                 stop_timer(buffer);
@@ -96,7 +96,7 @@ void stop_timer(char *logger_message) {
     end_time = times(&end_cpu);
     int64_t clk_tck = sysconf(_SC_CLK_TCK);
 
-    char *statement = calloc(strlen("Real time: 000.0000, User time: 000.0000, System time: 000.0000\n") + 1,
+    char *statement = calloc(strlen("Real time: 000.0000,\nUser time: 000.0000,\nSystem time: 000.0000\n") + 1,
                              sizeof(char *));
 
     double real_time = (double) (end_time - start_time) / clk_tck;
@@ -105,7 +105,7 @@ void stop_timer(char *logger_message) {
     double system_time = (double) (end_cpu.tms_stime - start_cpu.tms_stime) / clk_tck
                          + (double) (end_cpu.tms_cstime - start_cpu.tms_cstime) / clk_tck;
 
-    sprintf(statement, "Real time: %.4fs, User time: %.4fs, System time: %.4fs\n", real_time, user_time, system_time);
+    sprintf(statement, "Real time: %.4fs,\nUser time: %.4fs,\nSystem time: %.4fs\n", real_time, user_time, system_time);
 
     printf("%s", logger_message);
     printf("%s", statement);
