@@ -11,10 +11,9 @@ static void* handle = NULL;
 void (*_create_table)(__uint32_t size_of_array);
 void (*_remove_block)(int);
 int (*_search_directory)(char *, char *, char *);
-//long (*_get_file_size)(int fd);
 
 void init_dynamic_handler() {
-    handle = dlopen("out_dynamic", RTLD_LAZY);
+    handle = dlopen("libfind.so", RTLD_LAZY);
     if(handle == NULL) {
         printf("ERROR WHILE LOADING DYNAMIC LIBRARY\n");
         return;
@@ -23,11 +22,26 @@ void init_dynamic_handler() {
     printf("SUCCESSFUL LOADING OF DYNAMIC LIBRARY\n");
 
     _create_table = dlsym(handle, "create_table");
-    _remove_block = dlsym(handle, "remove_block");
-    _search_directory = dlsym(handle, "search_directory");
-//    _get_file_size = dlsym(handle, "get_file_size");
+    if (dlerror() != NULL) {
+        printf("COULD NOT LOAD CREATE TABLE");
+    }
 
     char* error;
+
+    if ((error = dlerror()) != NULL) {
+        fprintf(stderr, "%s\n", error);
+        exit(1);
+    }
+
+    _remove_block = dlsym(handle, "remove_block");
+
+    if ((error = dlerror()) != NULL) {
+        fprintf(stderr, "%s\n", error);
+        exit(1);
+    }
+    _search_directory = dlsym(handle, "search_directory");
+
+
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "%s\n", error);
         exit(1);
@@ -46,9 +60,6 @@ int search_directory(char *dir, char *file, char *name_file_temp) {
     return (*_search_directory)(dir, file, name_file_temp);
 }
 
-//long get_file_size(int fd) {
-//    return (*_get_file_size)(fd);
-//}
 
 void free_handler_memory() {
     dlclose(handle);

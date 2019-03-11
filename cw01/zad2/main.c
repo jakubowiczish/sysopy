@@ -10,7 +10,9 @@
 #ifdef DYNAMIC
 #include "lib_dynamic.h"
 #else
+
 #include "lib.h"
+
 #endif
 
 void start_timer();
@@ -36,26 +38,35 @@ int main(int argc, char **argv) {
                 char *end = NULL;
                 long size = strtol(argv[i + 1], &end, 10);
 
+                char buffer[100];
+                sprintf(buffer, "CREATING ARRAY OF SIZE\n: %ld", size);
+
                 start_timer();
                 create_table((__uint32_t) size);
-                stop_timer("Time of creating the array: ");
+                stop_timer(buffer);
 
             }
         }
 
         if (strcmp(argv[i], "search_directory") == 0) {
+            char buffer[256];
+            sprintf(buffer, "SEARCHING DIRECTORY %s for file: %s, file with result: %s\n", argv[i + 1], argv[i + 2],
+                    argv[i + 3]);
+
             start_timer();
             search_directory(argv[i + 1], argv[i + 2], argv[i + 3]);
-            stop_timer("Time of searching the directory: ");
+            stop_timer(buffer);
         }
 
         if (strcmp(argv[i], "remove_block") == 0) {
             if (check_if_argument_is_number(argv[i + 1])) {
                 char *end = NULL;
                 int block_index = (int) strtol(argv[i + 1], &end, 10);
+                char buffer[100];
+                sprintf(buffer, "REMOVING BLOCK: %s", argv[i + 1]);
                 start_timer();
                 remove_block(block_index);
-                stop_timer("Time of removing the block: ");
+                stop_timer(buffer);
             }
         }
     }

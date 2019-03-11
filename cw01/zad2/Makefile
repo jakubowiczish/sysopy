@@ -31,10 +31,14 @@ run_shared:
 	gcc -Wall -std=c99 -g main.c -L./ -lfind -o out_shared
 	make tests_shared
 
-
 run_dynamic:
 	$(CC) -o out_dynamic main.c -ldl -D DYNAMIC
 	make tests_dynamic
+
+run_all:
+	make run_static
+	make run_shared
+	make run_dynamic
 
 tests_static:
 	./out_static create_table 10 search_directory /usr lib tmp_1.txt remove_block 0
@@ -54,6 +58,7 @@ tests_dynamic:
 	LD_LIBRARY_PATH=./ ./out_dynamic create_table 100 search_directory /usr/lib xorg tmp_2.txt remove_block 0
 	LD_LIBRARY_PATH=./ ./out_dynamic create_table 10000 search_directory /usr systemd-bootx64.efi tmp_3.txt remove_block 0
 	LD_LIBRARY_PATH=./ ./out_dynamic create_table 1 create_table 10 create_table 100 create_table 1000 create_table 10000
+
 
 clean:
 	rm -f *.o
