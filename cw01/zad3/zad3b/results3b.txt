@@ -1,8 +1,7 @@
+Wyniki uzyskane dla poszczególnych poziomów optymalizacji (-O, -O3 i -Os) są dość nieznaczne,
+podczas wykonywania programu niezauważalne, jednak pomiary wykazują minimalne różnice.
 
-
-
-
-
+Różnice w pomiarach pomiędzy różnymi rodzajami bibliotek są, tak samo jak w ćwiczeniu 3a praktycznie pomijalne.
 
 ---------------------------------
             STATIC -O
