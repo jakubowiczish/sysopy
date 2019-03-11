@@ -1,0 +1,193 @@
+Wyniki uzyskane dla każdego rodzaju biblioteki są bardzo do siebie zbliżone,
+różnice dla poszczególnych wyników są nieznaczne.
+
+
+Wynika to z faktu, że obciążająca była głównie wykonywana funkcja find,
+a wybór biblioteki z której korzystam nie ma praktycznie
+żadnego znaczenia dla szybkości wykonywanych operacji.
+
+Czasy tworzenia bloków pamięci i ich usuwania są bardzo nieznaczne, praktycznie równe zeru dla każdego przypadku.
+
+---------------------------------
+            STATIC
+---------------------------------
+
+CREATING ARRAY OF SIZE: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr/bin for file: zip, file with result: short.txt
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+CREATING ARRAY OF SIZE: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr for file: lib, file with result: medium.txt
+Real time: 0.4800s,
+User time: 0.1600s,
+System time: 0.3000s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+CREATING ARRAY OF SIZE: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY / for file: efi, file with result: long.txt
+Real time: 4.0400s,
+User time: 1.1000s,
+System time: 2.4300s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+CREATING ARRAY OF SIZE: 2
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr/bin for file: xz, file with result: tmp_4.txt
+Real time: 0.0100s,
+User time: 0.0000s,
+System time: 0.0000s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr/bin for file: zip, file with result: tmp_5.txt
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+REMOVING BLOCK AT INDEX: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+
+---------------------------------
+            SHARED
+---------------------------------
+
+
+CREATING ARRAY OF SIZE: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr/bin for file: zip, file with result: short.txt
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+CREATING ARRAY OF SIZE: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr for file: lib, file with result: medium.txt
+Real time: 0.4700s,
+User time: 0.1700s,
+System time: 0.2900s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+CREATING ARRAY OF SIZE: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY / for file: efi, file with result: long.txt
+Real time: 4.0200s,
+User time: 1.2000s,
+System time: 2.2900s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+CREATING ARRAY OF SIZE: 2
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr/bin for file: xz, file with result: tmp_4.txt
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr/bin for file: zip, file with result: tmp_5.txt
+Real time: 0.0100s,
+User time: 0.0000s,
+System time: 0.0000s
+REMOVING BLOCK AT INDEX: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+
+---------------------------------
+            DYNAMIC
+---------------------------------
+
+CREATING ARRAY OF SIZE: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr/bin for file: zip, file with result: short.txt
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+CREATING ARRAY OF SIZE: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr for file: lib, file with result: medium.txt
+Real time: 0.5000s,
+User time: 0.1600s,
+System time: 0.3200s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+CREATING ARRAY OF SIZE: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY / for file: efi, file with result: long.txt
+Real time: 4.0500s,
+User time: 1.1200s,
+System time: 2.4200s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+CREATING ARRAY OF SIZE: 2
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr/bin for file: xz, file with result: tmp_4.txt
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+REMOVING BLOCK AT INDEX: 0
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+SEARCHING DIRECTORY /usr/bin for file: zip, file with result: tmp_5.txt
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
+REMOVING BLOCK AT INDEX: 1
+Real time: 0.0000s,
+User time: 0.0000s,
+System time: 0.0000s
