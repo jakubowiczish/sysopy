@@ -15,4 +15,4 @@ add_executable(sysopy cw01/zad2/main.c
         cw01/zad3/zad3b/lib.h
         cw01/zad3/zad3b/lib_dynamic.h
         cw01/zad3/zad3b/main.c
-        )
+        cw02/zad1/main.c)
