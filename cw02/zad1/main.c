@@ -6,11 +6,11 @@
 #include <fcntl.h>
 #include <zconf.h>
 
-int generate(char *filename, int amount_of_records, int record_length) {
-    FILE *file = fopen(filename, "w+");
+int generate(char *file_path, int amount_of_records, int record_length) {
+    FILE *file = fopen(file_path, "w+");
 
     if (file == NULL) {
-        printf("ERROR HAS OCCURRED WHILE OPENING FILE: %s\n", filename);
+        printf("ERROR HAS OCCURRED WHILE OPENING FILE: %s\n", file_path);
         return -1;
     }
 
@@ -48,10 +48,10 @@ int generate(char *filename, int amount_of_records, int record_length) {
 }
 
 
-void sort_lib(char *filename, int amount_of_records, int record_length) {
-    FILE *file = fopen(filename, "r+");
+void sort_lib(char *file_path, int amount_of_records, int record_length) {
+    FILE *file = fopen(file_path, "r+");
     if (file == NULL) {
-        printf("ERROR HAS OCCURRED WHILE OPENING FILE IN SORT_LIB METHOD: %s\n", filename);
+        printf("ERROR HAS OCCURRED WHILE OPENING FILE IN SORT_LIB METHOD: %s\n", file_path);
         return;
     }
 
@@ -100,10 +100,10 @@ void sort_lib(char *filename, int amount_of_records, int record_length) {
     free(fragment_2);
 }
 
-void sort_sys(char *filename, int amount_of_records, int record_length) {
-    int file = open(filename, O_RDWR);
+void sort_sys(char *file_path, int amount_of_records, int record_length) {
+    int file = open(file_path, O_RDWR);
     if (file == -1) {
-        printf("ERROR HAS OCCURRED WHILE OPENING FILE IN SORT_SYS METHOD: %s\n", filename);
+        printf("ERROR HAS OCCURRED WHILE OPENING FILE IN SORT_SYS METHOD: %s\n", file_path);
         return;
     }
 
@@ -115,27 +115,27 @@ void sort_sys(char *filename, int amount_of_records, int record_length) {
     for (int i = 0; i < amount_of_records; ++i) {
         lseek(file, i * offset, SEEK_SET);
 
-        if (read(file, fragment_1, (size_t) record_length + 1) != record_length + 1) {
+        if (read(file, fragment_1, (size_t) (record_length + 1) * sizeof(char)) != record_length + 1) {
             printf("ERROR HAS OCCURRED WHILE READING IN SORT_SYS METHOD\n");
             return;
         }
 
         for (int j = 0; j < i; ++j) {
             lseek(file, j * offset, SEEK_SET);
-            if (read(file, fragment_2, (size_t) record_length + 1) != record_length + 1) {
+            if (read(file, fragment_2, (size_t) (record_length + 1) * sizeof(char)) != record_length + 1) {
                 printf("ERROR HAS OCCURRED WHILE READING IN SORT_LIB METHOD\n");
                 return;
             }
 
             if (fragment_2[0] > fragment_1[0]) {
                 lseek(file, j * offset, SEEK_SET);
-                if (write(file, fragment_1, (size_t) record_length + 1) != record_length + 1) {
+                if (write(file, fragment_1, (size_t) (record_length + 1) * sizeof(char)) != record_length + 1) {
                     printf("ERROR HAS OCCURRED WHILE WRITING IN SORT_LIB METHOD\n");
                     return;
                 }
 
                 lseek(file, i * offset, SEEK_SET);
-                if (write(file, fragment_2, (size_t) record_length + 1) != record_length + 1) {
+                if (write(file, fragment_2, (size_t) (record_length + 1) * sizeof(char)) != record_length + 1) {
                     printf("ERROR HAS OCCURRED WHILE WRITING IN SORT_LIB METHOD\n");
                     return;
                 }
@@ -152,6 +152,51 @@ void sort_sys(char *filename, int amount_of_records, int record_length) {
     free(fragment_2);
 }
 
+void copy_lib(char *source_path, char *destination_path, int amount_of_records, int record_length) {
+    FILE *source_file = fopen(source_path, "r");
+    FILE *destination_file = fopen(destination_path, "w+");
+
+    char *fragment = malloc((record_length + 1) * sizeof(char));
+
+    for (int i = 0; i < amount_of_records; ++i) {
+        if (fread(fragment, sizeof(char), (size_t) record_length + 1, source_file) != record_length + 1) {
+            printf("ERROR HAS OCCURRED WHILE READING IN COPY_LIB METHOD\n");
+            return;
+        }
+
+        if (fwrite(fragment, sizeof(char), (size_t) record_length + 1, destination_file) != record_length + 1) {
+            printf("ERROR HAS OCCURRED WHILE WRITING IN COPY_LIB METHOD\n");
+            return;
+        }
+    }
+
+    fclose(source_file);
+    fclose(destination_file);
+    free(fragment);
+}
+
+void copy_sys(char *source_path, char *destination_path, int amount_of_records, int record_length) {
+    int source_file = open(source_path, O_RDONLY);
+    int destination_file = open(destination_path, O_WRONLY);
+
+    char *fragment = malloc((record_length + 1) * sizeof(char));
+
+    for (int i = 0; i < amount_of_records; ++i) {
+        if (read(source_file, fragment, (size_t) record_length + 1) != record_length + 1) {
+            printf("ERROR HAS OCCURRED WHILE READING IN COPY_LIB METHOD\n");
+            return;
+        }
+
+        if (write(destination_file, fragment, (size_t) record_length + 1) != record_length + 1) {
+            printf("ERROR HAS OCCURRED WHILE WRITING IN COPY_LIB METHOD\n");
+            return;
+        }
+    }
+
+    close(source_file);
+    close(destination_file);
+    free(fragment);
+}
 
 bool check_if_argument_is_number(char *arg) {
     size_t arg_length = strlen(arg);
@@ -163,6 +208,7 @@ bool check_if_argument_is_number(char *arg) {
     }
     return true;
 }
+
 
 
 int main(int argc, char **argv) {
@@ -201,6 +247,30 @@ int main(int argc, char **argv) {
                 sort_sys(argv[i + 1], (int) strtol(argv[i + 2], &end, 10), (int) strtol(argv[i + 3], &end, 10));
             } else {
                 printf("SOMETHING WENT WRONG WITH THE SORT METHOD!");
+                return -1;
+            }
+        }
+
+        if (strcmp(argv[i], "copy") == 0) {
+            if (!check_if_argument_is_number(argv[i + 3])) {
+                printf("AMOUNT OF BLOCKS SHOULD BE AN INTEGER\n");
+                return -1;
+            }
+
+            if (!check_if_argument_is_number(argv[i + 4])) {
+                printf("RECORD LENGTH SHOULD BE AN INTEGER\n");
+                return -1;
+            }
+
+            char *end = NULL;
+            if (strcmp(argv[i + 5], "lib") == 0) {
+                copy_lib(argv[i + 1], argv[i + 2], (int) strtol(argv[i + 3], &end, 10),
+                         (int) strtol(argv[i + 4], &end, 10));
+            } else if (strcmp(argv[i + 5], "sys") == 0) {
+                copy_sys(argv[i + 1], argv[i + 2], (int) strtol(argv[i + 3], &end, 10),
+                         (int) strtol(argv[i + 4], &end, 10));
+            } else {
+                printf("SOMETHING WENT WRONG WITH THE COPY METHOD!");
                 return -1;
             }
         }
