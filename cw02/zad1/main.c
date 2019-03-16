@@ -5,6 +5,12 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <zconf.h>
+#include <sys/times.h>
+
+clock_t start_time;
+clock_t end_time;
+struct tms start_cpu;
+struct tms end_cpu;
 
 int generate(char *file_path, int amount_of_records, int record_length) {
     FILE *file = fopen(file_path, "w+");
@@ -209,11 +215,41 @@ bool check_if_argument_is_number(char *arg) {
     return true;
 }
 
+void start_timer() {
+    start_time = times(&start_cpu);
+}
 
+void stop_timer(char *logger_message, char *result_file_name) {
+    end_time = times(&end_cpu);
+    int64_t clk_tck = sysconf(_SC_CLK_TCK);
+
+    char *statement = calloc(strlen("User time: 000.0000,\nSystem time: 000.0000\n") + 1, sizeof(char *));
+
+    double user_time = (double) (end_cpu.tms_utime - start_cpu.tms_utime) / clk_tck
+                       + (double) (end_cpu.tms_cutime - start_cpu.tms_cutime) / clk_tck;
+    double system_time = (double) (end_cpu.tms_stime - start_cpu.tms_stime) / clk_tck
+                         + (double) (end_cpu.tms_cstime - start_cpu.tms_cstime) / clk_tck;
+
+    sprintf(statement, "User time: %.4fs,\nSystem time: %.4fs\n", user_time, system_time);
+
+    printf("%s", logger_message);
+    printf("%s", statement);
+
+    FILE *fp = fopen(strcat(result_file_name, ".txt"), "a");
+    fputs(logger_message, fp);
+    fputs(statement, fp);
+    fclose(fp);
+    free(statement);
+}
 
 int main(int argc, char **argv) {
     for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "generate") == 0) {
+            if (argc < 5) {
+                printf("NOT ENOUGH ARGUMENTS FOR GENERATE METHOD!\n");
+                return -1;
+            }
+
             if (!check_if_argument_is_number(argv[i + 2])) {
                 printf("AMOUNT OF BLOCKS SHOULD BE AN INTEGER\n");
                 return -1;
@@ -229,6 +265,11 @@ int main(int argc, char **argv) {
         }
 
         if (strcmp(argv[i], "sort") == 0) {
+            if (argc < 6) {
+                printf("NOT ENOUGH ARGUMENTS FOR SORT METHOD!\n");
+                return -1;
+            }
+
             if (!check_if_argument_is_number(argv[i + 2])) {
                 printf("AMOUNT OF BLOCKS SHOULD BE AN INTEGER\n");
                 return -1;
@@ -252,6 +293,11 @@ int main(int argc, char **argv) {
         }
 
         if (strcmp(argv[i], "copy") == 0) {
+            if (argc < 6) {
+                printf("NOT ENOUGH ARGUMENTS FOR COPY METHOD!\n");
+                return -1;
+            }
+
             if (!check_if_argument_is_number(argv[i + 3])) {
                 printf("AMOUNT OF BLOCKS SHOULD BE AN INTEGER\n");
                 return -1;
