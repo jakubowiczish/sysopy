@@ -20,6 +20,11 @@ int generate(char *filename, int amount_of_records, int record_length) {
 
     char *record = malloc(record_length * sizeof(char) + 1);
     for (int i = 0; i < amount_of_records; ++i) {
+        if (fread(record, sizeof(char), (size_t) record_length + 1, random_file) != record_length + 1) {
+            return 1;
+
+        }
+
         for (int j = 0; j < record_length; ++j) {
             record[j] = (char) (abs(record[j]) % 25 + 'a');
         }
