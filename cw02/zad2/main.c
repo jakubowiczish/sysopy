@@ -1,15 +1,15 @@
+#define _XOPEN_SOURCE 500
+#define __USE_XOPEN 1
+#define _GNU_SOURCE 1
+
 #include <bits/types/time_t.h>
 #include <lzma.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <string.h>
 #include <stdio.h>
-
-#define __USE_XOPEN 1
-#define _GNU_SOURCE 1
-
+#include <ftw.h>
 #include <time.h>
-
 #include <stdlib.h>
 
 char *date_format = "%y.%m%.%d %H:%m";
@@ -94,7 +94,6 @@ void search_directory(char *directory_path, char *eq_operator, time_t date_to_co
         strcat(actual_path, "/");
         strcat(actual_path, directory_reader->d_name);
 
-
         lstat(actual_path, &status);
 
         if (strcmp(directory_reader->d_name, ".") == 0 || strcmp(directory_reader->d_name, "..") == 0) {
@@ -117,10 +116,33 @@ void search_directory(char *directory_path, char *eq_operator, time_t date_to_co
             directory_reader = readdir(directory);
         }
     }
-
     closedir(directory);
 }
 
+time_t global_date;
+char *global_eq_operator;
+
+static int nftw_repeat(char *file_path, struct stat *status, int flag, struct FTW *ftw) {
+    struct tm mtime;
+
+    (void) localtime_r(&status->st_mtime, &mtime);
+
+    if (flag != FTW_F) {
+        return 0;
+    }
+
+    double date_difference = difftime(global_date, status->st_mtime);
+    if (!(
+            (date_difference == 0 && strcmp(global_eq_operator, "=") == 0)
+            || (date_difference > 0 && strcmp(global_eq_operator, "<") == 0)
+            || (date_difference < 0 && strcmp(global_eq_operator, ">") == 0)
+    )) {
+        return 0;
+    }
+
+    print_file_information(file_path, status);
+    return 0;
+}
 
 int main(int argc, char **argv) {
     if (argc < 4) {
@@ -143,6 +165,15 @@ int main(int argc, char **argv) {
     strptime(date_to_compare, date_format, tm);
     time_t date_argument = mktime(tm);
 
+    printf("\n\n\n\n RECURSIVE \n\n\n\n");
 
     search_directory(file_path, eq_operator, date_argument);
+
+    printf("\n\n\n\n NFTW \n\n\n\n");
+
+    global_eq_operator = eq_operator;
+    global_date = date_argument;
+
+    nftw(file_path, (__nftw_func_t) nftw_repeat, 10, FTW_PHYS);
+
 }
