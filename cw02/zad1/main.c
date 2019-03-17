@@ -223,19 +223,19 @@ void stop_timer(char *logger_message, char *result_file_name) {
     end_time = times(&end_cpu);
     int64_t clk_tck = sysconf(_SC_CLK_TCK);
 
-    char *statement = calloc(strlen("User time: 000.0000,\nSystem time: 000.0000\n") + 1, sizeof(char *));
+    char *statement = calloc(strlen("User time: 000.0000\nSystem time: 000.0000\n") + 1, sizeof(char *));
 
     double user_time = (double) (end_cpu.tms_utime - start_cpu.tms_utime) / clk_tck
                        + (double) (end_cpu.tms_cutime - start_cpu.tms_cutime) / clk_tck;
     double system_time = (double) (end_cpu.tms_stime - start_cpu.tms_stime) / clk_tck
                          + (double) (end_cpu.tms_cstime - start_cpu.tms_cstime) / clk_tck;
 
-    sprintf(statement, "User time: %.4fs,\nSystem time: %.4fs\n", user_time, system_time);
+    sprintf(statement, "User time: %.4fs\nSystem time: %.4fs\n", user_time, system_time);
 
     printf("%s", logger_message);
     printf("%s", statement);
 
-    FILE *fp = fopen(strcat(result_file_name, ".txt"), "a");
+    FILE *fp = fopen(result_file_name, "a");
     fputs(logger_message, fp);
     fputs(statement, fp);
     fclose(fp);
@@ -243,6 +243,9 @@ void stop_timer(char *logger_message, char *result_file_name) {
 }
 
 int main(int argc, char **argv) {
+    char *result_file_name = "wyniki.txt"; // name required by the task
+    char *copy_file_name = "copy.txt";
+
     for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "generate") == 0) {
             if (argc < 5) {
@@ -261,7 +264,11 @@ int main(int argc, char **argv) {
             }
 
             char *end = NULL;
-            generate(argv[i + 1], (int) strtol(argv[i + 2], &end, 10), (int) strtol(argv[i + 3], &end, 10));
+
+            int amount_of_records = (int) strtol(argv[i + 2], &end, 10);
+            int record_length = (int) strtol(argv[i + 3], &end, 10);
+
+            generate(argv[i + 1], amount_of_records, record_length);
         }
 
         if (strcmp(argv[i], "sort") == 0) {
@@ -281,11 +288,30 @@ int main(int argc, char **argv) {
             }
 
             char *end = NULL;
+            char logger_message[256];
+            int amount_of_records = (int) strtol(argv[i + 2], &end, 10);
+            int record_length = (int) strtol(argv[i + 3], &end, 10);
+
+            sprintf(logger_message, "Time of SORTING, measured for %d blocks and record length %d \n", amount_of_records,
+                    record_length);
+
+            copy_lib(argv[i + 1], copy_file_name, amount_of_records, record_length);
 
             if (strcmp(argv[i + 4], "lib") == 0) {
-                sort_lib(argv[i + 1], (int) strtol(argv[i + 2], &end, 10), (int) strtol(argv[i + 3], &end, 10));
+
+                start_timer();
+                sort_lib(copy_file_name, (int) strtol(argv[i + 2], &end, 10), (int) strtol(argv[i + 3], &end, 10));
+                stop_timer(logger_message, result_file_name);
+
+                remove(copy_file_name);
             } else if (strcmp(argv[i + 4], "sys") == 0) {
+                copy_lib(argv[i + 1], copy_file_name, amount_of_records, record_length);
+
+                start_timer();
                 sort_sys(argv[i + 1], (int) strtol(argv[i + 2], &end, 10), (int) strtol(argv[i + 3], &end, 10));
+                stop_timer(logger_message, result_file_name);
+
+                remove(copy_file_name);
             } else {
                 printf("SOMETHING WENT WRONG WITH THE SORT METHOD!");
                 return -1;
