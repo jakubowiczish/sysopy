@@ -16,59 +16,13 @@ char *date_format = "%y.%m%.%d %H:%m";
 
 void print_file_status(struct stat *status) {
     printf("File status: ");
-    if (status->st_mode & S_IRUSR) {
-        printf("r");
-    } else {
-        printf("-");
-    }
-
-    if (status->st_mode & S_IWUSR) {
-        printf("w");
-    } else {
-        printf("-");
-    }
-
-    if (status->st_mode & S_IXUSR) {
-        printf("x");
-    } else {
-        printf("-");
-    }
-
-    if (status->st_mode & S_IRGRP) {
-        printf("r");
-    } else {
-        printf("-");
-    }
-
-    if (status->st_mode & S_IWGRP) {
-        printf("w");
-    } else {
-        printf("-");
-    }
-
-    if (status->st_mode & S_IXGRP) {
-        printf("x");
-    } else {
-        printf("-");
-    }
-
-    if (status->st_mode & S_IROTH) {
-        printf("r");
-    } else {
-        printf("-");
-    }
-
-    if (status->st_mode & S_IWOTH) {
-        printf("w");
-    } else {
-        printf("-");
-    }
-
-    if (status->st_mode & S_IXOTH) {
-        printf("x\n");
-    } else {
-        printf("-\n");
-    }
+    if (S_ISREG(status->st_mode)) { printf("File\n"); }
+    if (S_ISDIR(status->st_mode)) { printf("Dir\n"); }
+    if (S_ISCHR(status->st_mode)) { printf("Char dev\n"); }
+    if (S_ISBLK(status->st_mode)) { printf("Block dev\n"); }
+    if (S_ISFIFO(status->st_mode)) { printf("Fifo\n"); }
+    if (S_ISLNK(status->st_mode)) { printf("Slink\n"); }
+    if (S_ISSOCK(status->st_mode)) { printf("Sock\n"); }
 }
 
 
