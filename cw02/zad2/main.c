@@ -122,21 +122,12 @@ void search_directory(char *directory_path, char *eq_operator, time_t date_to_co
 time_t global_date;
 char *global_eq_operator;
 
-static int nftw_repeat(char *file_path, struct stat *status, int flag, struct FTW *ftw) {
-    struct tm mtime;
-
-    (void) localtime_r(&status->st_mtime, &mtime);
-
-    if (flag != FTW_F) {
-        return 0;
-    }
-
+static int nftw_repeat(char *file_path, struct stat *status) {
     double date_difference = difftime(global_date, status->st_mtime);
-    if (!(
-            (date_difference == 0 && strcmp(global_eq_operator, "=") == 0)
-            || (date_difference > 0 && strcmp(global_eq_operator, "<") == 0)
-            || (date_difference < 0 && strcmp(global_eq_operator, ">") == 0)
-    )) {
+    if (!((strcmp(global_eq_operator, "=") == 0 && date_difference == 0)
+          || (strcmp(global_eq_operator, "<") == 0 && date_difference > 0)
+          || (strcmp(global_eq_operator, ">") == 0 && date_difference < 0))
+            ) {
         return 0;
     }
 
@@ -155,7 +146,7 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    char *example_date = "2018.01.01 15:00";
+//    char *example_date = "2018.01.01 15:00";
 
     char *file_path = argv[1];
     char *eq_operator = argv[2];

@@ -288,30 +288,39 @@ int main(int argc, char **argv) {
             }
 
             char *end = NULL;
-            char logger_message[256];
             int amount_of_records = (int) strtol(argv[i + 2], &end, 10);
             int record_length = (int) strtol(argv[i + 3], &end, 10);
 
-            sprintf(logger_message, "Time of SORTING, measured for %d blocks and record length %d \n", amount_of_records,
-                    record_length);
+
 
             copy_lib(argv[i + 1], copy_file_name, amount_of_records, record_length);
 
             if (strcmp(argv[i + 4], "lib") == 0) {
+                char logger_message[256];
+                sprintf(logger_message, "Time of SORTING (LIB), measured for %d blocks and record length %d \n",
+                        amount_of_records,
+                        record_length);
+
+                copy_lib(copy_file_name, argv[i + 1], amount_of_records, record_length);
 
                 start_timer();
-                sort_lib(copy_file_name, (int) strtol(argv[i + 2], &end, 10), (int) strtol(argv[i + 3], &end, 10));
+                sort_lib(argv[i + 1], (int) strtol(argv[i + 2], &end, 10), (int) strtol(argv[i + 3], &end, 10));
                 stop_timer(logger_message, result_file_name);
 
-                remove(copy_file_name);
+//                remove(copy_file_name);
             } else if (strcmp(argv[i + 4], "sys") == 0) {
-                copy_lib(argv[i + 1], copy_file_name, amount_of_records, record_length);
+                char logger_message[256];
+                sprintf(logger_message, "Time of SORTING (SYS), measured for %d blocks and record length %d \n",
+                        amount_of_records,
+                        record_length);
+
+                copy_lib(copy_file_name, argv[i + 1], amount_of_records, record_length);
 
                 start_timer();
                 sort_sys(argv[i + 1], (int) strtol(argv[i + 2], &end, 10), (int) strtol(argv[i + 3], &end, 10));
                 stop_timer(logger_message, result_file_name);
 
-                remove(copy_file_name);
+//                remove(copy_file_name);
             } else {
                 printf("SOMETHING WENT WRONG WITH THE SORT METHOD!");
                 return -1;
@@ -335,12 +344,30 @@ int main(int argc, char **argv) {
             }
 
             char *end = NULL;
+            int amount_of_records = (int) strtol(argv[i + 3], &end, 10);
+            int record_length = (int) strtol(argv[i + 4], &end, 10);
+
+
             if (strcmp(argv[i + 5], "lib") == 0) {
+                char logger_message[256];
+                sprintf(logger_message, "Time of COPYING (LIB), measured for %d blocks and record length %d \n",
+                        amount_of_records,
+                        record_length);
+
+                start_timer();
                 copy_lib(argv[i + 1], argv[i + 2], (int) strtol(argv[i + 3], &end, 10),
                          (int) strtol(argv[i + 4], &end, 10));
+                stop_timer(logger_message, result_file_name);
             } else if (strcmp(argv[i + 5], "sys") == 0) {
+                char logger_message[256];
+                sprintf(logger_message, "Time of COPYING (SYS), measured for %d blocks and record length %d \n",
+                        amount_of_records,
+                        record_length);
+
+                start_timer();
                 copy_sys(argv[i + 1], argv[i + 2], (int) strtol(argv[i + 3], &end, 10),
                          (int) strtol(argv[i + 4], &end, 10));
+                stop_timer(logger_message, result_file_name);
             } else {
                 printf("SOMETHING WENT WRONG WITH THE COPY METHOD!");
                 return -1;

@@ -1,0 +1,63 @@
+Czasy sortowania sa dosc rozne, dla sortowania przy uzyciu funkcji systemowych wolniejsze.
+Czasy kopiowania sa praktycznie zerowe
+
+Time of SORTING (LIB), measured for 10000 blocks and record length 1
+User time: 6.8000s
+System time: 8.4900s
+Time of SORTING (LIB), measured for 8000 blocks and record length 4 
+User time: 4.1700s
+System time: 5.5200s
+Time of SORTING (LIB), measured for 6000 blocks and record length 512 
+User time: 2.9600s
+System time: 4.7600s
+Time of SORTING (LIB), measured for 4000 blocks and record length 4096 
+User time: 2.4000s
+System time: 8.0800s
+Time of SORTING (LIB), measured for 2000 blocks and record length 8192 
+User time: 0.8400s
+System time: 2.7900s
+Time of SORTING (SYS), measured for 10000 blocks and record length 1 
+User time: 10.2900s
+System time: 26.5200s
+Time of SORTING (SYS), measured for 8000 blocks and record length 4 
+User time: 6.2700s
+System time: 16.6600s
+Time of SORTING (SYS), measured for 6000 blocks and record length 512 
+User time: 3.6600s
+System time: 10.3400s
+Time of SORTING (SYS), measured for 4000 blocks and record length 4096 
+User time: 1.5700s
+System time: 8.2400s
+Time of SORTING (SYS), measured for 2000 blocks and record length 8192 
+User time: 0.4300s
+System time: 2.7800s
+Time of COPYING (LIB), measured for 10000 blocks and record length 1 
+User time: 0.0000s
+System time: 0.0000s
+Time of COPYING (LIB), measured for 8000 blocks and record length 4 
+User time: 0.0000s
+System time: 0.0000s
+Time of COPYING (LIB), measured for 6000 blocks and record length 512 
+User time: 0.0000s
+System time: 0.0000s
+Time of COPYING (LIB), measured for 4000 blocks and record length 4096 
+User time: 0.0000s
+System time: 0.0000s
+Time of COPYING (LIB), measured for 2000 blocks and record length 8192 
+User time: 0.0000s
+System time: 0.0000s
+Time of COPYING (SYS), measured for 10000 blocks and record length 1 
+User time: 0.0000s
+System time: 0.0300s
+Time of COPYING (SYS), measured for 8000 blocks and record length 4 
+User time: 0.0000s
+System time: 0.0000s
+Time of COPYING (SYS), measured for 6000 blocks and record length 512 
+User time: 0.0000s
+System time: 0.0000s
+Time of COPYING (SYS), measured for 4000 blocks and record length 4096 
+User time: 0.0000s
+System time: 0.0000s
+Time of COPYING (SYS), measured for 2000 blocks and record length 8192 
+User time: 0.0000s
+System time: 0.0000s
