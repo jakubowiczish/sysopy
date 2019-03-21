@@ -12,7 +12,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-char *date_format = "%y.%m%.%d %H:%m";
+char *date_format = "%y.%m.%d %H:%m";
 
 void print_file_status(struct stat *status) {
     printf("File status: ");

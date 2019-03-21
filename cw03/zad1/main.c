@@ -80,6 +80,7 @@ int main(int argc, char **argv) {
         printf("PROBLEM WITH CHANGING THE PATH TO: %s\n", path);
         return -1;
     }
-    
+
     search_directory();
+
 }

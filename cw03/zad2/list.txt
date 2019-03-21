@@ -1,0 +1,3 @@
+/home/jakub/CLionProjects/sysopy/cw03/zad2/test/test1 2
+/home/jakub/CLionProjects/sysopy/cw03/zad2/test/test 2
+/home/jakub/CLionProjects/sysopy/cw03/zad2/test/test2 2
