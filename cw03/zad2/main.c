@@ -9,7 +9,7 @@
 #include <printf.h>
 #include <stdlib.h>
 
-void monitor(char *list_path, int timeout) {
+void monitor(char *list_path, int timeout, char *mode) {
     FILE *file = fopen(list_path, "r");
     if (file == NULL) {
         printf("FILE DOES NOT EXIST\n");
@@ -70,12 +70,33 @@ void monitor(char *list_path, int timeout) {
 
                     copy_counter++;
 
-                    pid_t pid = fork();
-                    if (pid == 0) {
-                        execl("/bin/cp", "cp", path_on_list, backup_path, (char *) 0);
-                        exit(copy_counter);
+                    if (strcmp(mode, "exec") == 0) {
+                        pid_t pid = fork();
+                        if (pid == 0) {
+                            execl("/bin/cp", "cp", path_on_list, backup_path, (char *) 0);
+                            exit(copy_counter);
+                        }
+                    } else if (strcmp(mode, "regular") == 0) {
+                        pid_t pid = fork();
+                        if (pid == 0) {
+                            FILE *source_file = fopen(path_on_list, "r");
+                            if (source_file == NULL) {
+                                printf("PROBLEM WITH OPENING FILE!");
+                                return;
+                            }
+                            FILE *dest_file = fopen(backup_path, "w+");
+                            char buffer[512];
+                            size_t n = 1;
+                            while (n == 1) {
+                                n = fread(buffer, sizeof(char), sizeof(buffer), file);
+                                if (n == 0) break;
+                                fwrite(buffer, sizeof(char), sizeof(buffer), dest_file);
+                            }
+                            fclose(source_file);
+                            fclose(dest_file);
+                            exit(copy_counter);
+                        }
                     }
-
                 }
 
                 timeout -= interval;
@@ -95,7 +116,7 @@ void monitor(char *list_path, int timeout) {
 
 int main(int argc, char **argv) {
 //    printf("%s\n", argv[1]);
-    monitor(argv[1], atoi(argv[2]));
+    monitor(argv[1], atoi(argv[2]), argv[3]);
 
 }
 
