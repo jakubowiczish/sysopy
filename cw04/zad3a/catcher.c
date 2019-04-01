@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
     } else if (strcmp(mode, "SIGRT") == 0) {
         initialize_signals(rt_catch, 1);
     } else {
-        printf("UNKNOWN MODE");
+        printf("UNKNOWN MODE\n");
     }
 
     printf("PID: %d\n", (int) getpid());

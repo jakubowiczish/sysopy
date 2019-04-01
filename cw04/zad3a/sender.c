@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     char *mode = argv[3];
 
     if (strcmp(mode, "KILL") == 0) {
-        initialize_signals(kill_send, 0);
+        initialize_signals(kill_send);
 
         int i;
         for (i = 0; i < expected_signal_counter; ++i) {
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
         }
 
     } else if (strcmp(mode, "SIGQUEUE") == 0) {
-        initialize_signals(queue_send, 0);
+        initialize_signals(queue_send);
 
         int i;
         for (i = 0; i < expected_signal_counter; ++i) {
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
         }
 
     } else if (strcmp(mode, "SIGRT") == 0) {
-        initialize_signals(rt_send, 1);
+        initialize_rt_signals(rt_send);
 
         int i;
         for (i = 0; i < expected_signal_counter; ++i) {
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
         }
 
     } else {
-        printf("UNKNOWN MODE");
+        printf("UNKNOWN MODE\n");
 
     }
 
