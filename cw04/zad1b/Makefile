@@ -3,8 +3,8 @@ CC = gcc -Wall -ggdb
 out_file: main.c
 	$(CC) -o out_file main.c
 
-test: out_sender
+test: out_file
 	./out_file
 
-clean: out_sender
+clean: out_file
 	rm out_file
