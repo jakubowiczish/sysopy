@@ -21,16 +21,16 @@ int main(int argc, char **argv) {
     char *mode = argv[1];
 
     if (strcmp(mode, "KILL") == 0) {
-        initialize_signals(kill_catch, 0);
+        initialize_signals(kill_catch);
     } else if (strcmp(mode, "SIGQUEUE") == 0) {
-        initialize_signals(queue_catch, 0);
+        initialize_signals(queue_catch);
     } else if (strcmp(mode, "SIGRT") == 0) {
-        initialize_signals(rt_catch, 1);
+        initialize_rt_signals(rt_catch);
     } else {
         printf("UNKNOWN MODE\n");
     }
 
-    printf("PID: %d\n", (int) getpid());
+    printf("\nPID: %d\n", (int) getpid());
 
     while (1) {
         pause();
@@ -85,6 +85,7 @@ static void rt_catch(int sig, siginfo_t *siginfo, void *context) {
                 printf("PROBLEM WITH KILL IN RT CATCH\n");
             }
         }
+
         if (kill(siginfo->si_pid, SIGRTMAX) != 0) {
             printf("PROBLEM WITH KILL IN RT CATCH (SIGRTMAX)\n");
         }

@@ -44,7 +44,6 @@ void initialize_rt_signals(void(*fun)(int, siginfo_t *, void *)) {
         return;
     }
 
-
     sigdelset(&signals, SIGRTMIN);
     sigdelset(&signals, SIGRTMAX);
 
@@ -57,6 +56,9 @@ void initialize_rt_signals(void(*fun)(int, siginfo_t *, void *)) {
         printf("PROBLEM WITH SIGEMPTYSET METHOD\n");
         return;
     }
+
+    sigaddset(&signals, SIGRTMIN);
+    sigaddset(&signals, SIGRTMAX);
 
     struct sigaction sigaction1;
     sigaction1.sa_sigaction = fun;
