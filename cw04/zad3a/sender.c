@@ -7,7 +7,7 @@
 int expected_signal_counter = 0;
 int actual_signal_counter = 0;
 
-void kill_catch(int sig, siginfo_t *siginfo, void *context);
+static void kill_catch(int sig, siginfo_t *siginfo, void *context);
 
 
 int main(int argc, char **argv) {
@@ -28,10 +28,12 @@ int main(int argc, char **argv) {
                 printf("PROBLEM WITH SIGUSR1\n");
             }
         }
-
         if (kill(pid, SIGUSR2) != 0) {
             printf("PROBLEM WITH SIGUSR2\n");
         }
+    } else {
+        printf("UNKNOWN MODE");
+
     }
 
     while (1)  {
@@ -43,11 +45,11 @@ int main(int argc, char **argv) {
 
 
 
-void kill_catch(int sig, siginfo_t *siginfo, void *context) {
+static void kill_catch(int sig, siginfo_t *siginfo, void *context) {
     if (sig == SIGUSR1) {
         ++actual_signal_counter;
     } else {
         printf("Expected counter: %d, Actual counter: %d\n", expected_signal_counter, actual_signal_counter);
-        return;
+        exit(0);
     }
 }
