@@ -4,7 +4,11 @@
 #include <unistd.h>
 #include "utils.h"
 
-void kill_catch(int sig, siginfo_t *siginfo, void *context);
+static void kill_catch(int sig, siginfo_t *siginfo, void *context);
+
+static void queue_catch(int sig, siginfo_t *siginfo, void *context);
+
+static void rt_catch(int sig, siginfo_t *siginfo, void *context);
 
 int signal_counter = 0;
 
@@ -17,7 +21,11 @@ int main(int argc, char **argv) {
     char *mode = argv[1];
 
     if (strcmp(mode, "KILL") == 0) {
-        initialize_signals(kill_catch);
+        initialize_signals(kill_catch, 0);
+    } else if (strcmp(mode, "SIGQUEUE") == 0) {
+        initialize_signals(queue_catch, 0);
+    } else if (strcmp(mode, "SIGRT") == 0) {
+        initialize_signals(rt_catch, 1);
     } else {
         printf("UNKNOWN MODE");
     }
@@ -31,7 +39,7 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void kill_catch(int sig, siginfo_t *siginfo, void *context) {
+static void kill_catch(int sig, siginfo_t *siginfo, void *context) {
     if (sig == SIGUSR1) {
         ++signal_counter;
     } else {
@@ -45,8 +53,41 @@ void kill_catch(int sig, siginfo_t *siginfo, void *context) {
             printf("PROBLEM WITH KILL IN CATCHER\n");
         }
 
-        printf("CAUGHT %d: SIGNALS\n", signal_counter);
+//        printf("%d: SIGNALS\n", signal_counter);
 
+        exit(0);
+    }
+}
+
+static void queue_catch(int sig, siginfo_t *siginfo, void *context) {
+    if (sig == SIGUSR1) {
+        ++signal_counter;
+    } else {
+        for (int i = 0; i < signal_counter; ++i) {
+            union sigval value = {i};
+            if (sigqueue(siginfo->si_pid, SIGUSR1, value) != 0) {
+                printf("PROBLEM WITH SIGQUEUE METHOD\n");
+            }
+        }
+        if (kill(siginfo->si_pid, SIGUSR2) != 0) {
+            printf("PROBLEM WITH KILL IN SIGQUEUE CATCH (SIGUSR2)\n");
+        }
+        exit(0);
+    }
+}
+
+static void rt_catch(int sig, siginfo_t *siginfo, void *context) {
+    if (sig == SIGRTMIN) {
+        ++signal_counter;
+    } else {
+        for (int i = 0; i < signal_counter; ++i) {
+            if (kill(siginfo->si_pid, SIGRTMIN) != 0) {
+                printf("PROBLEM WITH KILL IN RT CATCH\n");
+            }
+        }
+        if (kill(siginfo->si_pid, SIGRTMAX) != 0) {
+            printf("PROBLEM WITH KILL IN RT CATCH (SIGRTMAX)\n");
+        }
         exit(0);
     }
 }

@@ -3,6 +3,6 @@
 #include <signal.h>
 #include <stdio.h>
 
-void initialize_signals(void(*fun)(int, siginfo_t *, void *));
+void initialize_signals(void(*fun)(int, siginfo_t *, void *), int is_rt);
 
 #endif //SYSOPY_UTILS_H
