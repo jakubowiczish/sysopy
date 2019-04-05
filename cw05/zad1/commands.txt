@@ -1,0 +1,3 @@
+ls -la | wc -l
+ps -aux
+cat /etc/passwd | head -5

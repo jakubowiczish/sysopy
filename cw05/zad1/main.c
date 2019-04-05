@@ -18,10 +18,10 @@ void print_error_message_and_exit(char *error_message) {
     exit(EXIT_FAILURE);
 }
 
-void execute_command(char *arguments_line) {
+void execute_command(char *command_line) {
     int command_counter = 1;
-    for (int i = 0; i < strlen(arguments_line); ++i) {
-        if (arguments_line[i] == '|') {
+    for (int i = 0; i < strlen(command_line); ++i) {
+        if (command_line[i] == '|') {
             ++command_counter;
         }
     }
@@ -38,13 +38,13 @@ void execute_command(char *arguments_line) {
     }
 
     char *command_end;
-    char *command = strtok_r(arguments_line, "|", &command_end);
+    char *command = strtok_r(command_line, "|", &command_end);
     int i = 0;
     while (command != NULL) {
         int j = 0;
-
         char *argument_end;
         char *argument = strtok_r(command, " \t", &argument_end);
+
         while (argument != NULL) {
             commands[i][j] = argument;
             argument = strtok_r(NULL, " \t", &argument_end);
@@ -75,24 +75,24 @@ void execute_command(char *arguments_line) {
             }
 
             if (i != 0) {
-                dup2(pipes[i][0], STDIN_FILENO);
+                dup2(pipes[i - 1][0], STDIN_FILENO);
             }
 
             for (int j = 0; j < pipe_counter; ++j) {
                 close(pipes[j][0]);
                 close(pipes[j][1]);
             }
-        }
 
-        execvp(commands[i][0], commands[i]);
-        exit(EXIT_FAILURE);
+            execvp(commands[i][0], commands[i]);
+            exit(EXIT_FAILURE);
+        }
     }
 
-    for (int l = 0; l < pipe_counter; ++l) {
+    for (int i = 0; i < pipe_counter; ++i) {
         close(pipes[i][1]);
     }
 
-    for (int m = 0; m < command_counter; ++m) {
+    for (int i = 0; i < command_counter; ++i) {
         wait(0);
     }
 }
@@ -110,9 +110,11 @@ int main(int argc, char **argv) {
     }
 
     char *line = malloc(sizeof(char) * MAX_LINE_LENGTH);
-    while (fgets(line, sizeof(line), file) != NULL) {
+    while (fgets(line, MAX_LINE_LENGTH, file) != NULL) {
+        printf("CURRENTLY EXECUTED COMMAND: %s\n", line);
         execute_command(line);
     }
 
     free(line);
+    fclose(file);
 }
