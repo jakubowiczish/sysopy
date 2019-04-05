@@ -3,7 +3,7 @@
 
 int main(int argc, char **argv) {
     if (argc != 2) {
-        print_error_message_and_exit("WRONG NUMBER OF ARGUMENTS");
+        print_error_message_and_exit("WRONG NUMBER OF ARGUMENTS! TRY AGAIN");
     }
 
     char *named_pipe_path = argv[1];
@@ -12,18 +12,18 @@ int main(int argc, char **argv) {
         print_error_message("PROBLEM WITH CREATING FIFO");
     }
 
-    FILE *file = fopen(named_pipe_path, "r");
+    FILE *named_pipe_file = fopen(named_pipe_path, "r");
 
-    if (file == NULL) {
+    if (named_pipe_file == NULL) {
         print_error_message("PROBLEM WITH READING FILE");
     }
 
     char line[BUFFER_SIZE];
     while (1) {
-        while (fgets(line, BUFFER_SIZE, file) != NULL) {
+        while (fgets(line, BUFFER_SIZE, named_pipe_file) != NULL) {
             printf("%s\n", line);
         }
     }
 
-    fclose(file);
+    fclose(named_pipe_file);
 }
