@@ -7,7 +7,6 @@
 
 #define MAX_PROGRAMS_AMOUNT 256
 #define MAX_ARGUMENTS_AMOUNT 128
-#define MAX_LINE_LENGTH 1024
 
 void print_error_message(char *error_message) {
     printf("%s\n", error_message);
