@@ -5,9 +5,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#define MAX_PROGRAMS_AMOUNT 16
-#define MAX_ARGUMENTS_AMOUNT 8
-#define MAX_LINE_LENGTH 128
+#define MAX_PROGRAMS_AMOUNT 256
+#define MAX_ARGUMENTS_AMOUNT 128
+#define MAX_LINE_LENGTH 1024
 
 void print_error_message(char *error_message) {
     printf("%s\n", error_message);
@@ -19,14 +19,14 @@ void print_error_message_and_exit(char *error_message) {
 }
 
 void execute_command(char *command_line) {
-    int command_counter = 1;
+    int commands_counter = 1;
     for (int i = 0; i < strlen(command_line); ++i) {
         if (command_line[i] == '|') {
-            ++command_counter;
+            ++commands_counter;
         }
     }
 
-    if (command_counter > MAX_PROGRAMS_AMOUNT) {
+    if (commands_counter > MAX_PROGRAMS_AMOUNT) {
         print_error_message_and_exit("MAXIMUM PROGRAMS AMOUNT EXCEEDED");
     }
 
@@ -54,23 +54,22 @@ void execute_command(char *command_line) {
         ++i;
     }
 
-    int pipe_counter = command_counter - 1;
+    int pipes_counter = commands_counter - 1;
     int pipes[MAX_PROGRAMS_AMOUNT][2];
-
-    for (int k = 0; k < pipe_counter; ++k) {
+    for (int i = 0; i < pipes_counter; ++i) {
         if (pipe(pipes[i]) < 0) {
             print_error_message("PROBLEM WITH CREATING PIPE");
         }
     }
 
-    for (int i = 0; i < command_counter; ++i) {
+    for (int i = 0; i < commands_counter; ++i) {
         pid_t pid = fork();
 
         if (pid < 0) {
             print_error_message("PROBLEM WITH FORK");
         } else if (pid == 0) {
 
-            if (i != command_counter - 1) {
+            if (i != commands_counter - 1) {
                 dup2(pipes[i][1], STDOUT_FILENO);
             }
 
@@ -78,7 +77,7 @@ void execute_command(char *command_line) {
                 dup2(pipes[i - 1][0], STDIN_FILENO);
             }
 
-            for (int j = 0; j < pipe_counter; ++j) {
+            for (int j = 0; j < pipes_counter; ++j) {
                 close(pipes[j][0]);
                 close(pipes[j][1]);
             }
@@ -88,11 +87,11 @@ void execute_command(char *command_line) {
         }
     }
 
-    for (int i = 0; i < pipe_counter; ++i) {
+    for (int i = 0; i < pipes_counter; ++i) {
         close(pipes[i][1]);
     }
 
-    for (int i = 0; i < command_counter; ++i) {
+    for (int i = 0; i < commands_counter; ++i) {
         wait(0);
     }
 }
@@ -109,12 +108,25 @@ int main(int argc, char **argv) {
         print_error_message_and_exit("PROBLEM WITH OPENING THE FILE WITH COMMANDS!");
     }
 
-    char *line = malloc(sizeof(char) * MAX_LINE_LENGTH);
-    while (fgets(line, MAX_LINE_LENGTH, file) != NULL) {
-        printf("CURRENTLY EXECUTED COMMAND: %s\n", line);
-        execute_command(line);
+    fseek(file, 0, SEEK_END);
+    long file_size = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    char *buffer = malloc(sizeof(char) * file_size + 1);
+    if (fread(buffer, sizeof(char), file_size, file) != file_size) {
+        print_error_message("PROBLEM WITH READING A FILE WITH COMMANDS");
     }
 
-    free(line);
     fclose(file);
+
+    buffer[file_size - 1] = '\0';
+
+    char *line = strtok(buffer, "\r\n");
+    while (line != NULL) {
+        printf("CURRENTLY EXECUTED COMMAND: %s\n", line);
+        execute_command(line);
+        line = strtok(NULL, "\r\n");
+    }
+
+    free(buffer);
 }
