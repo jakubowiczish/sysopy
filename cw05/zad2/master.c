@@ -1,4 +1,6 @@
 #include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "utils.h"
 
 int main(int argc, char **argv) {
@@ -12,18 +14,18 @@ int main(int argc, char **argv) {
         print_error_message("PROBLEM WITH CREATING FIFO");
     }
 
-    FILE *named_pipe_file = fopen(named_pipe_path, "r");
+    int named_pipe_file = open(named_pipe_path, O_RDONLY);
 
-    if (named_pipe_file == NULL) {
+    if (named_pipe_file < 0) {
         print_error_message("PROBLEM WITH READING FILE");
     }
 
     char line[BUFFER_SIZE];
     while (1) {
-        while (fgets(line, BUFFER_SIZE, named_pipe_file) != NULL) {
+        while (read(named_pipe_file, line, BUFFER_SIZE) > 0) {
             printf("%s\n", line);
         }
     }
 
-    fclose(named_pipe_file);
+    close(named_pipe_file);
 }
