@@ -30,5 +30,6 @@ add_executable(
         "tests/SiwikWtorek14:40/zad2(ok) - to samo co KozlakSroda9:35zad3/main.c"
         tests/SiwikWtorek14:40/zad3/main.c
         tests/KolosEom/zad2/main.c
+        "tests/KolosEom/zad3(ok)/main.c"
 
 )
