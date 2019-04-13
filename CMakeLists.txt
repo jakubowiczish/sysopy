@@ -22,7 +22,7 @@ add_executable(
         cw05/zad2/utils.c
         cw05/zad2/utils.h
         cw05/zad2/slave.c
-        tests/KolosEom/zad1/main.c
+        "tests/KolosEom/zad1(ok)/main.c"
         tests/KozlakSroda9:35/zad1/main.c
         "tests/KozlakSroda9:35/zad2(ok)/main.c"
         "tests/KozlakSroda9:35/zad3(ok)/main.c"

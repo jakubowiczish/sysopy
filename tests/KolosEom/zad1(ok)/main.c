@@ -19,11 +19,15 @@ int main(int argc, char *argv[]) {
        Jeśli podczas tej operacji wartość errno zostanie ustawiona, zwróć błąd funkcji czytającej oraz wartość 2*/
 
     char *directory_path = argv[1];
-    
+
     if ((directory = opendir(directory_path)) != NULL) {
         while ((position = readdir(directory)) != NULL) {
             if (strcmp(position->d_name, ".") != 0 && strcmp(position->d_name, "..") != 0)
                 printf("%s\n", position->d_name);
+            if (errno != 0) {
+                perror("READDIR");
+                return 2;
+            }
         }
     } else {
         perror("Something went wrong");
