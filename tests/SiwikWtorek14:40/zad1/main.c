@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
         //na konsole przekazana przez rodzica wraz z sygnalem SIGUSR1 wartosc
     } else {
         //wyslij do procesu potomnego sygnal przekazany jako argv[2]
-        //wraz z wartoscia przekazana jako argv[1]
+        //wraz z wartoscia przekazana jako argv[KolosEom]
     }
 
     return 0;

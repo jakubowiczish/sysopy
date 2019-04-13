@@ -115,7 +115,7 @@ void monitor(char *list_path, int timeout, char *mode) {
 }
 
 int main(int argc, char **argv) {
-//    printf("%s\n", argv[1]);
+//    printf("%s\n", argv[KolosEom]);
     monitor(argv[1], atoi(argv[2]), argv[3]);
 
 }

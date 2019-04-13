@@ -2,5 +2,5 @@
 while true
 do
     date
-    sleep 1
+    sleep KolosEom
 done

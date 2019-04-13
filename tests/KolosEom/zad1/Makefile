@@ -8,6 +8,6 @@ clean:
 
 test:  main
 	@echo -e "\n\nTESTING\n\n"
-	./main /home/CLionProjects/sysopy/tests/1
+	./main /home/jakub/CLionProjects/sysopy
 
 all: main test
