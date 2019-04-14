@@ -19,7 +19,8 @@ int main(int argc, char *argv[]) {
     exit(0);
 }
 
-static void do_cmd(char *cmd, int instruction, int final)      /* wykonaj program, policz jego czasy, sprawdz, czy to nie jest ostatni program */
+static void do_cmd(char *cmd, int instruction,
+                   int final)      /* wykonaj program, policz jego czasy, sprawdz, czy to nie jest ostatni program */
 {
     struct tms tmsstart, tmsend;
     clock_t start, end;
@@ -27,11 +28,14 @@ static void do_cmd(char *cmd, int instruction, int final)      /* wykonaj progra
 
     printf("\ncommand: %s\n", cmd);
 
-    if (/*DO ZROBIENIA: zapamietaj czas w chwili aktualnej w zmiennych start i tmsstart*/) == -1)           /* zapamietaj wartosci poczatkowe pomiaru czasu*/
+    /*DO ZROBIENIA: zapamietaj czas w chwili aktualnej w zmiennych start i tmsstart*/
+
+    if ((start = (times(&tmsstart))) == -1)           /* zapamietaj wartosci poczatkowe pomiaru czasu*/
     {
         printf("times error");
         exit(-1);
     }
+
 
     if ((status = system(cmd)) < 0)         /* wykonaj polecenie */
     {
@@ -39,7 +43,9 @@ static void do_cmd(char *cmd, int instruction, int final)      /* wykonaj progra
         exit(-1);
     }
 
-    if (/*DO ZROBIENIA: zapamietaj czas w chwili aktualnej w zmiennych end i tmsend*/) == -1)      /* zapamietaj wartosci koncowe */
+    /*DO ZROBIENIA: zapamietaj czas w chwili aktualnej w zmiennych end i tmsend*/
+
+    if ((end = (times(&tmsend))) == -1)      /* zapamietaj wartosci koncowe */
     {
         printf("times error");
         exit(-1);
