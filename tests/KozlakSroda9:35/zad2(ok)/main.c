@@ -21,6 +21,8 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
+        /* CHANGES FROM HERE */
+
         /* TU UZUPELNIC warunek rozpoznajacy zwykly plik*/
 
         if (S_ISREG(buf.st_mode)) { // ADDED BY ME
@@ -39,6 +41,7 @@ int main(int argc, char *argv[]) {
             tekst = "link symboliczny";
         }
 
+            /* TILL HERE */
 
         else {
             tekst = "**** cos innego !!! ****";

@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
+#include <dirent.h>
+#include <string.h>
 
 int main(int argc, char *argv[]) {
     int pdesk[2];
@@ -15,11 +18,6 @@ int main(int argc, char *argv[]) {
             return 2;
         case 0:
             dup2(pdesk[1], STDOUT_FILENO);
-
-//            // ??
-//            close(pdesk[0]);
-//            close(pdesk[1]);
-
             execvp("ls", argv);
             perror("EXECVP ls");
             exit(1);
@@ -29,16 +27,19 @@ int main(int argc, char *argv[]) {
              * wykonaj  tr "a-z" "A-Z", w przypadku błędu  obsłuż go i wyjdź, zwracając 3.
             */
 
+            /* ADDED BY ME - FROM HERE */
+
             close(pdesk[1]);
 
             dup2(pdesk[0], STDIN_FILENO);
 
             if (execlp("tr", "tr", "\"a-z\"", "\"A-Z\"", (char *) NULL) == -1) {
                 perror("EXECLP tr");
+                strerror(errno);
                 return 3;
             }
 
-            /* koniec */
+            /* TILL HERE */
         }
     }
     return 0;

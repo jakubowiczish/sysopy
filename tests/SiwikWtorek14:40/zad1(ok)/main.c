@@ -22,11 +22,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // ADDED BY ME
+    /* CHANGES FROM HERE */
 
     struct sigaction action;
-    action.sa_sigaction = &sig_handler;
-    action.sa_flags = SA_SIGINFO;
+
+    action.sa_sigaction = &sig_handler; // takes three arguments, thus sa_sigaction, not sa_handler
+    action.sa_flags = SA_SIGINFO; // The signal handler takes three arguments, not one - because of SA_SIGINFO
 
     sigset_t mask;
 
@@ -43,12 +44,11 @@ int main(int argc, char *argv[]) {
         // zdefiniuj obsluge SIGUSR1 w taki sposob zeby proces potomny wydrukowal
         // na konsole przekazana przez rodzica wraz z sygnalem SIGUSR1 wartosc
 
-        // obsluga - sig_handler
-
         sigprocmask(SIG_BLOCK, &mask, NULL);
-        sigaction(SIGUSR1, &action, NULL);
-        pause();
 
+        sigaction(SIGUSR1, &action, NULL);
+
+        pause();
 
     } else {
         // wyslij do procesu potomnego sygnal przekazany jako argv[2]
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
         sigqueue(child, signal, sv);
     }
 
-    // END
+    /* TILL HERE */
 
     return 0;
 }

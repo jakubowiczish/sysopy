@@ -28,6 +28,8 @@ static void do_cmd(char *cmd, int instruction,
 
     printf("\ncommand: %s\n", cmd);
 
+    /* CHANGES FROM HERE */
+
     /*DO ZROBIENIA: zapamietaj czas w chwili aktualnej w zmiennych start i tmsstart*/
 
     if ((start = (times(&tmsstart))) == -1)           /* zapamietaj wartosci poczatkowe pomiaru czasu*/
@@ -50,6 +52,8 @@ static void do_cmd(char *cmd, int instruction,
         printf("times error");
         exit(-1);
     }
+
+    /* TILL HERE */
 
     display_times(end - start, &tmsstart, &tmsend);
 

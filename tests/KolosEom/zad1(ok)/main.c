@@ -11,12 +11,12 @@ int main(int argc, char *argv[]) {
     }
     struct dirent *position;
 
-//    printf("%s\n", argv[1]);
-
     /*
      * Otwórz katalog, w przypadku błędu otwarcia zwróć błąd funkcji otwierającej i wartość 1.
        Wyświetl zawartość katalogu katalog, pomijając "." i ".."
        Jeśli podczas tej operacji wartość errno zostanie ustawiona, zwróć błąd funkcji czytającej oraz wartość 2*/
+
+    /* ADDED BY ME - FROM HERE */
 
     char *directory_path = argv[1];
 
@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
                 printf("%s\n", position->d_name);
             if (errno != 0) {
                 perror("READDIR");
+                strerror(errno);
                 return 2;
             }
         }
@@ -34,7 +35,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-/*koniec*/
+    /* TILL HERE */
+
     closedir(directory);
     return (0);
 }

@@ -11,22 +11,24 @@ int main(int argc, char *argv[]) {
     } else {
         for (i = 0; i < atoi(argv[1]); i++) {
             //*********************************************************
-            //Uzupelnij petle w taki sposob aby stworzyc dokladnie argv[KolosEom] procesow potomnych, bedacych dziecmi
-            //   tego samego procesu macierzystego.
+            // Uzupelnij petle w taki sposob aby stworzyc dokladnie argv[1] procesow potomnych,
+            // bedacych dziecmi tego samego procesu macierzystego.
             // Kazdy proces potomny powinien:
             // - "powiedziec ktorym jest dzieckiem",
-            //-  jaki ma pid,
-            //- kto jest jego rodzicem
+            // - jaki ma pid,
+            // - kto jest jego rodzicem
             //******************************************************
 
-            /* ADDED BY ME: */
+            /* ADDED BY ME - FROM HERE */
+
             pid = fork();
+
             if (pid == 0) {
                 printf("I am child number %d, my pid is: %d, my parent's pid is: %d\n", i, getpid(), getppid());
                 break;
             }
-            /* TILL HERE*/
 
+            /* TILL HERE*/
         }
     }
     return 0;

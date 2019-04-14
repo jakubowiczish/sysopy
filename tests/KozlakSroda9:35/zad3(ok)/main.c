@@ -27,6 +27,8 @@ int main(int argc, char *argv[]) {
 
     if ((pid = fork()) == 0) {
 
+        /* CHANGES FROM HERE */
+
         //odczytaj z potoku nienazwanego wartosc przekazana przez proces macierzysty i zapisz w zmiennej val2
 
         read(toChildFD[0], &val2, sizeof(int)); // ADDED BY ME
@@ -50,6 +52,8 @@ int main(int argc, char *argv[]) {
         //odczytaj z potoku nienazwanego wartosc przekazana przez proces potomny i zapisz w zmiennej val3
 
         read(toParentFD[0], &val3, sizeof(int)); // ADDED BY ME
+
+        /* TILL HERE */
 
         printf("%d square is: %d\n", val1, val3);
     }

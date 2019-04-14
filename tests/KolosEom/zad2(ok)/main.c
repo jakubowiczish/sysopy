@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <signal.h>
+#include <string.h>
+#include <errno.h>
 
 int main() {
     pid_t child;
@@ -22,6 +24,8 @@ int main() {
  * tym razem zawieszając pracę do czasu zakończenia sygnału
  * jeśli się powiodło, wypisuje komunikat sukcesu zakończenia procesu potomka z numerem jego PID i statusem zakończenia. */
 
+        /* ADDED BY ME - FROM HERE */
+
         waitpid(child, &status, WNOHANG);
 
         kill(child, SIGKILL);
@@ -31,9 +35,10 @@ int main() {
             printf("PID: %d, status: %d, return val: %d\n", getpid(), status, retval);
         } else {
             perror("WAITPID");
+            strerror(errno);
         }
 
-/* koniec*/
-    } //else
+        /* TILL HERE */
+    }
     exit(EXIT_SUCCESS);
 }
