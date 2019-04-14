@@ -3,9 +3,17 @@
 #include <signal.h>
 #include <unistd.h>
 
+/*
+ * 1. Ojciec wysyła dany sygnał wraz wartością z argv[2]
+ *    Dziecko blokuje wszystkie sygnały oprócz SIGUSR1,
+ *    oraz wypisuje wiadaomość którą dostał wraz z sygnałem.
+ *    sigqueue, siginfo itp.
+ */
+
 void sig_handler(int sig, siginfo_t *siginfo, void *context) {
     printf("Child: %d\n", siginfo->si_value.sival_int);
 }
+
 
 int main(int argc, char *argv[]) {
 
@@ -43,10 +51,12 @@ int main(int argc, char *argv[]) {
         // wraz z wartoscia przekazana jako argv[1]
 
         sleep(1);
+
         union sigval sv;
         sv.sival_int = atoi(argv[1]);
 
         int signal = atoi(argv[2]);
+
         sigqueue(child, signal, sv);
     }
 

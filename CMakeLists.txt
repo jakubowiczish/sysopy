@@ -26,10 +26,10 @@ add_executable(
         tests/KozlakSroda9:35/zad1/main.c
         "tests/KozlakSroda9:35/zad2(ok)/main.c"
         "tests/KozlakSroda9:35/zad3(ok)/main.c"
-        tests/SiwikWtorek14:40/zad1/main.c
+        "tests/SiwikWtorek14:40/zad1(ok)/main.c"
         "tests/SiwikWtorek14:40/zad2(ok) - to samo co KozlakSroda9:35zad3/main.c"
-        tests/SiwikWtorek14:40/zad3/main.c
-        tests/KolosEom/zad2/main.c
+        "tests/SiwikWtorek14:40/zad3(ok)/main.c"
+        "tests/KolosEom/zad2(ok)/main.c"
         "tests/KolosEom/zad3(ok)/main.c"
 
 )
