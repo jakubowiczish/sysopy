@@ -28,8 +28,11 @@ int main(int argc, char *argv[]) {
              * skopiuj deskyptor końca do odczytu tego potoku na deskryptor wejścia standardowego,
              * wykonaj  tr "a-z" "A-Z", w przypadku błędu  obsłuż go i wyjdź, zwracając 3.
             */
+
             close(pdesk[1]);
+
             dup2(pdesk[0], STDIN_FILENO);
+
             if (execlp("tr", "tr", "\"a-z\"", "\"A-Z\"", (char *) NULL) == -1) {
                 perror("EXECLP tr");
                 return 3;

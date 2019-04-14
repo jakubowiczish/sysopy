@@ -4,6 +4,7 @@
 #include <wait.h>
 #include <string.h>
 
+
 // 3. Obustronna komunikacja między dwoma procesami za pomocą 2 pipeów
 
 
@@ -43,7 +44,6 @@ int main(int argc, char *argv[]) {
         //wyslij val1 potokiem nienazwanym do priocesu potomnego
 
         write(toChildFD[1], &val1, sizeof(int)); // ADDED BY ME
-
 
         sleep(1);
 

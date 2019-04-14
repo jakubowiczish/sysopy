@@ -22,18 +22,28 @@ int main(int argc, char *argv[]) {
         }
 
         /* TU UZUPELNIC warunek rozpoznajacy zwykly plik*/
-        if (S_ISREG(buf.st_mode)) // ADDED BY ME
+
+        if (S_ISREG(buf.st_mode)) { // ADDED BY ME
             tekst = "zwykly plik";
+        }
 
             /* TU UZUPELNIC warunek rozpoznajacy katalog*/
-        else if (S_ISDIR(buf.st_mode)) // ADDED BY ME
+
+        else if (S_ISDIR(buf.st_mode)) { // ADDED BY ME
             tekst = "katalog";
+        }
 
             /* TU UZUPELNIC warunek rozpoznajacy link symboliczny*/
-        else if (S_ISLNK(buf.st_mode)) // ADDED BY ME
+
+        else if (S_ISLNK(buf.st_mode)) {// ADDED BY ME
             tekst = "link symboliczny";
-        else
+        }
+
+
+        else {
             tekst = "**** cos innego !!! ****";
+        }
+
         printf("%s\n", tekst);
     }
 

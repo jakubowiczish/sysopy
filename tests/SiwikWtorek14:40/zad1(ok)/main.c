@@ -22,11 +22,14 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // ADDED BY ME
+
     struct sigaction action;
     action.sa_sigaction = &sig_handler;
     action.sa_flags = SA_SIGINFO;
 
     sigset_t mask;
+
     if (sigfillset(&mask) == -1) {
         perror("SIGFILLSET problem");
     }
@@ -34,6 +37,7 @@ int main(int argc, char *argv[]) {
     sigdelset(&mask, SIGUSR1);
 
     int child = fork();
+
     if (child == 0) {
         // zablokuj wszystkie sygnaly za wyjatkiem SIGUSR1
         // zdefiniuj obsluge SIGUSR1 w taki sposob zeby proces potomny wydrukowal
@@ -59,6 +63,8 @@ int main(int argc, char *argv[]) {
 
         sigqueue(child, signal, sv);
     }
+
+    // END
 
     return 0;
 }
