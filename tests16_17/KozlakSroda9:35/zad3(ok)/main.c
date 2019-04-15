@@ -33,7 +33,6 @@ int main(int argc, char *argv[]) {
 
         read(toChildFD[0], &val2, sizeof(int)); // ADDED BY ME
 
-
         val2 = val2 * val2;
 
         //wyslij potokiem nienazwanym val2 do procesu macierzysego

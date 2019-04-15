@@ -22,14 +22,17 @@ add_executable(
         cw05/zad2/utils.c
         cw05/zad2/utils.h
         cw05/zad2/slave.c
-        "tests/KolosEom/zad1(ok)/main.c"
-        "tests/KozlakSroda9:35/zad1(ok)/main.c"
-        "tests/KozlakSroda9:35/zad2(ok)/main.c"
-        "tests/KozlakSroda9:35/zad3(ok)/main.c"
-        "tests/SiwikWtorek14:40/zad1(ok)/main.c"
-        "tests/SiwikWtorek14:40/zad2(ok) - to samo co KozlakSroda9:35zad3/main.c"
-        "tests/SiwikWtorek14:40/zad3(ok)/main.c"
-        "tests/KolosEom/zad2(ok)/main.c"
-        "tests/KolosEom/zad3(ok)/main.c"
+        "tests16_17/KolosEom/zad1(ok)/main.c"
+        "tests16_17/KozlakSroda9:35/zad1(ok)/main.c"
+        "tests16_17/KozlakSroda9:35/zad2(ok)/main.c"
+        "tests16_17/KozlakSroda9:35/zad3(ok)/main.c"
+        "tests16_17/SiwikWtorek14:40/zad1(ok)/main.c"
+        "tests16_17/SiwikWtorek14:40/zad2(ok) - to samo co KozlakSroda9:35zad3/main.c"
+        "tests16_17/SiwikWtorek14:40/zad3(ok)/main.c"
+        "tests16_17/KolosEom/zad2(ok)/main.c"
+        "tests16_17/KolosEom/zad3(ok)/main.c"
+        "tests16_17/kolospoprawkowyzforum/zad2/sender.c"
+        "tests16_17/kolospoprawkowyzforum/zad2/receiver.c"
+
 
 )
