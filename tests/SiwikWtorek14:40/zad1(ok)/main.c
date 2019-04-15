@@ -29,6 +29,8 @@ int main(int argc, char *argv[]) {
     action.sa_sigaction = &sig_handler; // takes three arguments, thus sa_sigaction, not sa_handler
     action.sa_flags = SA_SIGINFO; // The signal handler takes three arguments, not one - because of SA_SIGINFO
 
+    sigemptyset(&action.sa_mask);
+
     sigset_t mask;
 
     if (sigfillset(&mask) == -1) {
