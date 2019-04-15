@@ -31,8 +31,9 @@ add_executable(
         "tests16_17/test_1/SiwikWtorek14:40/zad3(ok)/main.c"
         "tests16_17/test_1/KolosEom/zad2(ok)/main.c"
         "tests16_17/test_1/KolosEom/zad3(ok)/main.c"
-        "tests16_17/test_1/kolospoprawkowyzforum/zad2/sender.c"
-        "tests16_17/test_1/kolospoprawkowyzforum/zad2/receiver.c"
+        "tests16_17/test_1/kolospoprawkowyzforum/zad2(ok)/sender.c"
+        "tests16_17/test_1/kolospoprawkowyzforum/zad2(ok)/receiver.c"
+        "tests16_17/test_1/kolospoprawkowyzforum/zad3/main.c"
 
 
 )
