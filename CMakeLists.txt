@@ -22,21 +22,21 @@ add_executable(
         cw05/zad2/utils.c
         cw05/zad2/utils.h
         cw05/zad2/slave.c
-        "tests_16_17/test_1/KolosEom/zad1(ok)/main.c"
-        "tests_16_17/test_1/KozlakSroda9:35/zad1(ok)/main.c"
-        "tests_16_17/test_1/KozlakSroda9:35/zad2(ok)/main.c"
-        "tests_16_17/test_1/KozlakSroda9:35/zad3(ok)/main.c"
-        "tests_16_17/test_1/SiwikWtorek14:40/zad1(ok)/main.c"
-        "tests_16_17/test_1/SiwikWtorek14:40/zad2(ok) - to samo co KozlakSroda9:35zad3/main.c"
-        "tests_16_17/test_1/SiwikWtorek14:40/zad3(ok)/main.c"
-        "tests_16_17/test_1/KolosEom/zad2(ok)/main.c"
-        "tests_16_17/test_1/KolosEom/zad3(ok)/main.c"
-        "tests_16_17/test_1/kolospoprawkowyzforum/zad2(ok)/sender.c"
-        "tests_16_17/test_1/kolospoprawkowyzforum/zad2(ok)/receiver.c"
-        "tests_16_17/test_1/kolospoprawkowyzforum/zad3(ok)/main.c"
-        "tests_17_18/mytest/zad1(ok)/main.c"
-        "tests_17_18/mytest/zad2(ok)/main.c"
-        "tests_17_18/mytest/zad3(ok)/main.c"
+        "tests_17_18/test_1/KolosEom/zad1(ok)/main.c"
+        "tests_17_18/test_1/KozlakSroda9:35/zad1(ok)/main.c"
+        "tests_17_18/test_1/KozlakSroda9:35/zad2(ok)/main.c"
+        "tests_17_18/test_1/KozlakSroda9:35/zad3(ok)/main.c"
+        "tests_17_18/test_1/SiwikWtorek14:40/zad1(ok)/main.c"
+        "tests_17_18/test_1/SiwikWtorek14:40/zad2(ok) - to samo co KozlakSroda9:35zad3/main.c"
+        "tests_17_18/test_1/SiwikWtorek14:40/zad3(ok)/main.c"
+        "tests_17_18/test_1/KolosEom/zad2(ok)/main.c"
+        "tests_17_18/test_1/KolosEom/zad3(ok)/main.c"
+        "tests_17_18/test_1/kolospoprawkowyzforum/zad2(ok)/sender.c"
+        "tests_17_18/test_1/kolospoprawkowyzforum/zad2(ok)/receiver.c"
+        "tests_17_18/test_1/kolospoprawkowyzforum/zad3(ok)/main.c"
+        "tests_18_19/mytest/zad1(ok)/main.c"
+        "tests_18_19/mytest/zad2(ok)/main.c"
+        "tests_18_19/mytest/zad3(ok)/main.c"
 
 
 )
