@@ -39,4 +39,4 @@ add_executable(
         "tests_18_19/mytest/zad3(ok)/main.c"
 
 
-)
+        cw06/zad1/client.c cw06/zad1/helper.h)
