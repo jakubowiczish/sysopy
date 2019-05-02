@@ -8,7 +8,25 @@
 
 /* MESSAGE TYPES */
 
-#define INIT 5
+#define STOP 10
+
+#define LIST 11
+
+#define FRIENDS 12
+
+#define INIT 15
+
+#define ECHO 16
+
+#define _2ALL 17
+
+#define _2FRIENDS 18
+
+#define _2ONE 19
+
+#define ADD 20
+
+#define DEL 21
 
 
 struct msg_text {
@@ -29,9 +47,58 @@ void print_error_and_exit(char *error_message) {
     exit(-1);
 }
 
+void print_error(char *error_message) {
+    printf("\033[1;31m%s\n", error_message);
+}
+
 
 void print_some_info(char *info) {
     printf("\033[1;32m%s\n", info);
+}
+
+
+char *get_type_as_string(int type) {
+    switch (type) {
+        case STOP: {
+            return "STOP";
+        }
+
+        case LIST: {
+            return "LIST";
+        }
+
+        case FRIENDS: {
+            return "FRIENDS";
+        }
+
+        case INIT: {
+            return "INIT";
+        }
+
+        case ECHO: {
+            return "ECHO";
+        }
+
+        case _2ALL: {
+            return "2ALL";
+        }
+
+        case _2FRIENDS: {
+            return "2FRIENDS";
+        }
+
+        case _2ONE: {
+            return "2ONE";
+        }
+
+        case ADD: {
+            return "ADD";
+        }
+
+        case DEL: {
+            return "DEL";
+        }
+    }
 }
 
 
