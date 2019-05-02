@@ -16,7 +16,7 @@
 
 #define MAX_GROUP_SIZE 8
 
-
+#define SHIFTID 100
 
 /* MESSAGE TYPES */
 
@@ -36,11 +36,12 @@
 
 #define _2ONE 19
 
-#define ADD 20
+#define ADD 23
 
-#define DEL 21
+#define DEL 24
 
 
+#define ERROR 404
 
 struct msg_text {
     int id;

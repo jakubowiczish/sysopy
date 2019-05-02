@@ -15,12 +15,13 @@ void handle_SIGINT();
 
 void end_client();
 
+int execute_command(struct string_array *command_args);
+
 void send_message();
 
 void stop_command(struct string_array *command_args);
 
 void list_command(struct string_array *command_args);
-
 
 void friends_command(struct string_array *pArray);
 
@@ -35,6 +36,7 @@ void _2all_command(struct string_array *command_args);
 void _2friends_command(struct string_array *command_args);
 
 void _2one_command(struct string_array *command_args);
+
 
 int server_queue, client_queue;
 
@@ -51,8 +53,6 @@ int is_client_running = 1;
 
 
 int main(int argc, char **argv) {
-
-//    print_error_and_exit("oootakooo");
 
     char *home_directory = getenv("HOME");
 
@@ -239,54 +239,84 @@ int execute_command(struct string_array *command_args) {
 }
 
 
-void memcpy_command_args(struct string_array command_args, int index) {
-
+void memcpy_command_args(struct string_array *command_args, int index) {
+    memcpy(client_request.msg_text.buf, command_args->data[index], strlen(command_args->data[index]));
+    client_request.msg_text.buf[strlen(command_args->data[index])] = '\0';
 }
 
-void stop_command(struct string_array *command_args) {
 
+void stop_command(struct string_array *command_args) {
+    is_client_running = 0;
+    memcpy_command_args(command_args, 0);
 }
 
 
 void list_command(struct string_array *command_args) {
-
+    memcpy_command_args(command_args, 0);
 }
 
-void friends_command(struct string_array *command_args) {
 
+void friends_command(struct string_array *command_args) {
+    if (command_args->size == 2) {
+        memcpy_command_args(command_args, 1);
+    } else {
+        client_request.msg_text.buf[0] = '\0';
+    }
 }
 
 
 void add_command(struct string_array *command_args) {
-
+    memcpy_command_args(command_args, 1);
 }
 
 
 void del_command(struct string_array *command_args) {
-
+    memcpy_command_args(command_args, 1);
 }
 
 
 void echo_command(struct string_array *command_args) {
-
+    memcpy_command_args(command_args, 1);
 }
+
 
 void _2all_command(struct string_array *command_args) {
-
+    memcpy_command_args(command_args, 1);
 }
 
-void _2friends_command(struct string_array *command_args) {
 
+void _2friends_command(struct string_array *command_args) {
+    memcpy_command_args(command_args, 1);
 }
 
 
 void _2one_command(struct string_array *command_args) {
-
+    memcpy_command_args(command_args, 2);
+    client_request.msg_text.additional_arg = strtol(command_args->data[1], NULL, 0);
 }
 
 
 void catcher() {
+    while (1) {
+        if ((msgrcv(client_queue, &server_response, sizeof(struct msg_text), -200, 0)) == -1) {
+            print_error("ERROR while reading the data");
+        } else {
+            char message_received_buffer[512];
 
+            sprintf(message_received_buffer,
+                    "Client, message received\n\t type: %ld, id: %d, message: %s \n",
+                    server_response.msg_type,
+                    server_response.msg_text.id,
+                    server_response.msg_text.buf
+            );
+
+            print_some_info(message_received_buffer);
+        }
+
+        if (server_response.msg_type == SHUTDOWN) {
+            break;
+        }
+    }
 }
 
 
