@@ -1,6 +1,6 @@
-##Kolejki komunikatów - materiały pomocnicze
+## Kolejki komunikatów - materiały pomocnicze
 
-###Mechanizmy IPC
+### Mechanizmy IPC
 - Podobnie jak łącza, mechanizmy IPC (Inter Process Communication) 
 jest grupą mechanizmów komunikacji i synchronizacji procesów działających w ramach tego samego systemu operacyjnego.
  
@@ -390,7 +390,7 @@ mqd_t mq_open(const char *name, int oflag [, mode_t mode, struct mq_attr *attr])
 
 - Zwraca deskryptor kolejki, jeśli się powiedzie lub -1 w przypadku błędu.
 
-#####- Uwaga! Nazwa musi zaczynać się od znaku /
+- Uwaga! Nazwa musi zaczynać się od znaku /
 
 - Parametr oflag ma analogiczne znaczenie, jak w przypadku otwierania plików ( unixowymi metodami obsługi plików).
 
