@@ -6,6 +6,18 @@
 
 #define PROJ_ID 'P'
 
+#define SERVER_ID -100
+
+#define SHUTDOWN -101
+
+#define QUEUE_PERMISSIONS 0660
+
+#define MAX_CLIENTS_NUMBER 16
+
+#define MAX_GROUP_SIZE 8
+
+
+
 /* MESSAGE TYPES */
 
 #define STOP 10
@@ -29,6 +41,7 @@
 #define DEL 21
 
 
+
 struct msg_text {
     int id;
     int additional_arg;
@@ -42,9 +55,15 @@ struct msg {
 };
 
 
-void print_error_and_exit(char *error_message) {
+struct string_array {
+    unsigned int size;
+    char **data;
+};
+
+
+void print_sth_and_exit(char *error_message, int error_status) {
     printf("\033[1;31m%s\n", error_message);
-    exit(-1);
+    exit(error_status);
 }
 
 void print_error(char *error_message) {

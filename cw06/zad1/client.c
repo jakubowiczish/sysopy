@@ -5,6 +5,7 @@
 #include <sys/msg.h>
 #include <unistd.h>
 #include <signal.h>
+#include <string.h>
 
 void catcher();
 
@@ -16,6 +17,24 @@ void end_client();
 
 void send_message();
 
+void stop_command(struct string_array *command_args);
+
+void list_command(struct string_array *command_args);
+
+
+void friends_command(struct string_array *pArray);
+
+void add_command(struct string_array *command_args);
+
+void del_command(struct string_array *command_args);
+
+void echo_command(struct string_array *command_args);
+
+void _2all_command(struct string_array *command_args);
+
+void _2friends_command(struct string_array *command_args);
+
+void _2one_command(struct string_array *command_args);
 
 int server_queue, client_queue;
 
@@ -28,6 +47,9 @@ pid_t pid;
 
 int mode = 0;
 
+int is_client_running = 1;
+
+
 int main(int argc, char **argv) {
 
 //    print_error_and_exit("oootakooo");
@@ -36,16 +58,16 @@ int main(int argc, char **argv) {
 
     key_t server_queue_key;
 
-    if ((client_queue = msgget(IPC_PRIVATE, 0660) == -1)) {
-        print_error_and_exit("ERROR occurred while initializing client queue");
+    if ((client_queue = msgget(IPC_PRIVATE, QUEUE_PERMISSIONS) == -1)) {
+        print_sth_and_exit("ERROR occurred while initializing client queue", 1);
     }
 
     if ((server_queue_key = ftok(home_directory, PROJ_ID)) == -1) {
-        print_error_and_exit("ERROR occurred while getting key using ftok method");
+        print_sth_and_exit("ERROR occurred while getting key using ftok method", 2);
     }
 
     if ((server_queue = msgget(server_queue_key, 0)) == -1) {
-        print_error_and_exit("ERROR occurred while initializing server queue");
+        print_sth_and_exit("ERROR occurred while initializing server queue", 3);
     }
 
 
@@ -58,7 +80,7 @@ int main(int argc, char **argv) {
     // sending message to the server
 
     if (msgsnd(server_queue, &client_request, sizeof(struct msg_text), 0) == -1) {
-        print_error_and_exit("ERROR occurred while sending INIT to the server");
+        print_sth_and_exit("ERROR occurred while sending INIT to the server", 4);
     } else {
         print_some_info("INIT sent to the server");
     }
@@ -67,7 +89,7 @@ int main(int argc, char **argv) {
     // reading response from the server
 
     if (msgrcv(client_queue, &server_response, sizeof(struct msg_text), 0, 0) == -1) {
-        print_error_and_exit("ERROR occurred while reading reading INIT response from the server");
+        print_sth_and_exit("ERROR occurred while reading reading INIT response from the server", 5);
     } else {
         char message_received_buffer[512];
 
@@ -136,13 +158,142 @@ void send_message() {
 }
 
 
+int execute_command(struct string_array *command_args) {
+    client_request.msg_text.id = USR_ID;
+
+    if (strcmp(command_args->data[0], "STOP") == 0) {
+        client_request.msg_type = STOP;
+        stop_command(command_args);
+
+    } else if (strcmp(command_args->data[0], "LIST") == 0) {
+
+        if (command_args->size != 1) {
+            return 0;
+        }
+
+        client_request.msg_type = LIST;
+        list_command(command_args);
+
+    } else if (strcmp(command_args->data[0], "FRIENDS") == 0) {
+        if (command_args->size != 1 && command_args->size != 2) {
+            return 0;
+        }
+
+        client_request.msg_type = FRIENDS;
+        friends_command(command_args);
+
+    } else if (strcmp(command_args->data[0], "ADD") == 0) {
+        if (command_args->size != 2) {
+            return 0;
+        }
+
+        client_request.msg_type = ADD;
+        add_command(command_args);
+
+    } else if (strcmp(command_args->data[0], "DEL") == 0) {
+        if (command_args->size != 2) {
+            return 0;
+        }
+
+        client_request.msg_type = DEL;
+        del_command(command_args);
+
+    } else if (strcmp(command_args->data[0], "ECHO") == 0) {
+        if (command_args->size != 2) {
+            return 0;
+        }
+
+        client_request.msg_type = ECHO;
+        echo_command(command_args);
+
+    } else if (strcmp(command_args->data[0], "2ALL") == 0) {
+        if (command_args->size != 2) {
+            return 0;
+        }
+
+
+        client_request.msg_type = _2ALL;
+        _2all_command(command_args);
+
+    } else if (strcmp(command_args->data[0], "2FRIENDS") == 0) {
+        if (command_args->size != 2) {
+            return 0;
+        }
+
+        client_request.msg_type = _2FRIENDS;
+        _2friends_command(command_args);
+    } else if (strcmp(command_args->data[0], "2ONE") == 0) {
+        if (command_args->size != 2) {
+            return 0;
+        }
+
+        client_request.msg_type = _2ONE;
+        _2one_command(command_args);
+    } else {
+        return 0;
+    }
+
+    send_message();
+
+    return 1;
+}
+
+
+void memcpy_command_args(struct string_array command_args, int index) {
+
+}
+
+void stop_command(struct string_array *command_args) {
+
+}
+
+
+void list_command(struct string_array *command_args) {
+
+}
+
+void friends_command(struct string_array *command_args) {
+
+}
+
+
+void add_command(struct string_array *command_args) {
+
+}
+
+
+void del_command(struct string_array *command_args) {
+
+}
+
+
+void echo_command(struct string_array *command_args) {
+
+}
+
+void _2all_command(struct string_array *command_args) {
+
+}
+
+void _2friends_command(struct string_array *command_args) {
+
+}
+
+
+void _2one_command(struct string_array *command_args) {
+
+}
+
+
 void catcher() {
 
 }
 
+
 void sender() {
 
 }
+
 
 void handle_SIGINT(int signal_num) {
     print_some_info("RECEIVED signal SIGINT");
