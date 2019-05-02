@@ -155,7 +155,7 @@ od wszystkich klientów serwer usuwa swoją kolejkę i kończy pracę.(kolejki k
 
 
 ## Zadanie 2. Prosty chat - POSIX (50%)
-#####Zrealizuj zadanie analogiczne do Zadania 1, wykorzystując kolejki komunikatów POSIX.
+##### Zrealizuj zadanie analogiczne do Zadania 1, wykorzystując kolejki komunikatów POSIX.
  
 Kolejka klienta powinna mieć losową nazwę zgodną z wymaganiami stawianymi przez POSIX. 
  
