@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define PROJ_ID 'P'
 
@@ -123,6 +124,56 @@ char *get_type_as_string(int type) {
     }
 
     return "";
+}
+
+
+struct string_array process_file(char *string, long length, char delimiter) {
+    struct string_array items_array;
+    char **items = NULL;
+    int items_counter = 0;
+
+    items_array.size = 0;
+    items_array.data = NULL;
+
+    if (string == NULL || length == 0) {
+        return items_array;
+    }
+
+    ++items_counter;
+
+    for (int i = 0; i < length; ++i) {
+        if (string[i] == delimiter)
+            ++items_counter;
+    }
+
+    items = calloc(items_counter, sizeof(char *));
+
+    int global_index = 0;
+    int start_index = 0;
+
+    for (int i = 0; i < items_counter; ++i) {
+        start_index = global_index;
+
+        while (global_index < length && string[global_index] != delimiter)
+            ++global_index;
+
+        if (start_index == global_index) {
+            --items_counter;
+            --i;
+            continue;
+        }
+
+        items[i] = calloc(global_index - start_index + 1, sizeof(char));
+
+        memcpy(items[i], string + start_index, (global_index - start_index) * sizeof(char));
+
+        ++global_index;
+    }
+
+    items_array.size = items_counter;
+    items_array.data = items;
+
+    return items_array;
 }
 
 

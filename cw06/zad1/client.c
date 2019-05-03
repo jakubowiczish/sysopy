@@ -353,9 +353,18 @@ void execute_commands_from_file(struct string_array *command_args) {
     char *file_content = calloc(file_size, sizeof(char));
     fread(file_content, file_size, sizeof(char), file);
 
-//    struct string_array command =
+    struct string_array command = process_file(file_content, file_size, '\n');
 
+    for (int i = 0; i < command.size; ++i) {
+        struct string_array command_arguments = process_file(command.data[i], strlen(command.data[i]), ' ');
 
+        execute_command(&command_arguments);
+
+        free(command_arguments.data);
+    }
+
+    free(file_content);
+    free(command.data);
 }
 
 
