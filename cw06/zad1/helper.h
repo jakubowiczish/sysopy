@@ -19,6 +19,8 @@
 
 #define SHIFTID 100
 
+#define BUFFER_SIZE 1024
+
 
 /* MESSAGE TYPES */
 

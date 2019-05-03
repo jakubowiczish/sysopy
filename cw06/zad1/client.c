@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
     if (msgrcv(client_queue, &server_response, sizeof(struct msg_text), 0, 0) == -1) {
         print_sth_and_exit("ERROR occurred while reading reading INIT response from the server", 5);
     } else {
-        char message_received_buffer[512];
+        char message_received_buffer[BUFFER_SIZE];
 
         sprintf(message_received_buffer,
                 "Message RECEIVED\n\ttype: %ld, id: %d, message: %s \n",
@@ -409,7 +409,7 @@ void catcher() {
         if ((msgrcv(client_queue, &server_response, sizeof(struct msg_text), -200, 0)) == -1) {
             print_error("ERROR while reading the data");
         } else {
-            char message_received_buffer[512];
+            char message_received_buffer[BUFFER_SIZE];
 
             sprintf(message_received_buffer,
                     "Client, message received\n\t type: %ld, id: %d, message: %s \n",
@@ -440,7 +440,7 @@ void execute_commands_from_file(struct string_array *command_args) {
     FILE *file = fopen(command_args->data[1], "r");
 
     if (file == NULL) {
-        char error_buffer[512];
+        char error_buffer[BUFFER_SIZE];
 
         sprintf(error_buffer,
                 "ERROR while opening file: %s\n",

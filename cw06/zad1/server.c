@@ -109,7 +109,7 @@ int main(int argc, char **argv) {
             continue;
 
         } else {
-            char message_received_buffer[512];
+            char message_received_buffer[BUFFER_SIZE];
 
             sprintf(message_received_buffer,
                     "Message RECEIVED\n\ttype: %s, id: %d, message: %s \n",
