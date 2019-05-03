@@ -19,6 +19,7 @@
 
 #define SHIFTID 100
 
+
 /* MESSAGE TYPES */
 
 #define STOP 10
@@ -121,9 +122,11 @@ char *type_to_string(int type) {
         case DEL: {
             return "DEL";
         }
-    }
 
-    return "";
+        default: {
+            return "";
+        }
+    }
 }
 
 
