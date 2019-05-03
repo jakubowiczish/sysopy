@@ -80,7 +80,7 @@ void print_some_info(char *info) {
 }
 
 
-char *get_type_as_string(int type) {
+char *type_to_string(int type) {
     switch (type) {
         case STOP: {
             return "STOP";

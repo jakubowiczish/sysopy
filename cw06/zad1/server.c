@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
 
             sprintf(message_received_buffer,
                     "Message RECEIVED\n\ttype: %s, id: %d, message: %s \n",
-                    get_type_as_string(message.msg_type),
+                    type_to_string(message.msg_type),
                     message.msg_text.id,
                     message.msg_text.buf
             );

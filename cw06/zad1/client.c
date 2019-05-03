@@ -7,13 +7,13 @@
 #include <signal.h>
 #include <string.h>
 
+
+/* ##################################################################################################################
+ * ################################################################################################################## */
+
 void catcher();
 
 void sender();
-
-void handle_SIGINT();
-
-void end_client();
 
 int execute_command(struct string_array *command_args);
 
@@ -23,7 +23,7 @@ void stop_command(struct string_array *command_args);
 
 void list_command(struct string_array *command_args);
 
-void friends_command(struct string_array *pArray);
+void friends_command(struct string_array *command_args);
 
 void add_command(struct string_array *command_args);
 
@@ -38,19 +38,31 @@ void _2friends_command(struct string_array *command_args);
 void _2one_command(struct string_array *command_args);
 
 
+void execute_commands_from_file(struct string_array *command_args);
+
+void end_client();
+
+void handle_SIGINT(int signal_num);
+
+
+/* ##################################################################################################################
+ * ################################################################################################################## */
+
+
 int server_queue, client_queue;
 
 struct msg client_request, server_response;
-
 
 int user_id = -1;
 
 pid_t pid;
 
-int mode = 0;
-
 int is_client_running = 1;
 
+int command_length = 256;
+
+/* ##################################################################################################################
+ * ################################################################################################################## */
 
 int main(int argc, char **argv) {
 
@@ -114,9 +126,8 @@ int main(int argc, char **argv) {
         action.sa_flags = 0;
         sigaction(SIGINT, &action, NULL);
 
-        mode = 1;
-
         sender();
+
     } else if (pid > 0) {
         struct sigaction action;
         action.sa_handler = handle_SIGINT;
@@ -128,9 +139,8 @@ int main(int argc, char **argv) {
 
         sigaction(SIGINT, &action, NULL);
 
-        mode = 2;
-
         catcher();
+
     } else {
         print_error("ERROR while creating a fork");
     }
@@ -142,6 +152,12 @@ int main(int argc, char **argv) {
 }
 
 
+/* ##################################################################################################################
+ *
+ *
+ * ################################################################################################################## */
+
+
 void send_message() {
     if (msgsnd(server_queue, &client_request, sizeof(struct msg_text), 0) == -1) {
         print_error("ERROR while sending a request to the server");
@@ -150,7 +166,7 @@ void send_message() {
 
         sprintf(send_message_buffer,
                 "Message SENT to the server %s\n",
-                get_type_as_string(client_request.msg_type)
+                type_to_string(client_request.msg_type)
         );
 
         print_some_info(send_message_buffer);
@@ -211,7 +227,6 @@ int execute_command(struct string_array *command_args) {
             return 0;
         }
 
-
         client_request.msg_type = _2ALL;
         _2all_command(command_args);
 
@@ -222,6 +237,7 @@ int execute_command(struct string_array *command_args) {
 
         client_request.msg_type = _2FRIENDS;
         _2friends_command(command_args);
+
     } else if (strcmp(command_args->data[0], "2ONE") == 0) {
         if (command_args->size != 2) {
             return 0;
@@ -229,6 +245,7 @@ int execute_command(struct string_array *command_args) {
 
         client_request.msg_type = _2ONE;
         _2one_command(command_args);
+
     } else {
         return 0;
     }
@@ -239,8 +256,16 @@ int execute_command(struct string_array *command_args) {
 }
 
 
+/* ##################################################################################################################
+ * ################################################################################################################## */
+
 void memcpy_command_args(struct string_array *command_args, int index) {
-    memcpy(client_request.msg_text.buf, command_args->data[index], strlen(command_args->data[index]));
+    memcpy(
+            client_request.msg_text.buf,
+            command_args->data[index],
+            strlen(command_args->data[index])
+    );
+
     client_request.msg_text.buf[strlen(command_args->data[index])] = '\0';
 }
 
@@ -296,6 +321,49 @@ void _2one_command(struct string_array *command_args) {
 }
 
 
+/* ##################################################################################################################
+ * ################################################################################################################## */
+
+
+void sender() {
+    while (is_client_running) {
+        char *command = calloc(command_length, sizeof(char));
+
+        printf(">> ");
+
+        int simple_char = 0;
+        char *ptr = command;
+
+        while ((simple_char = fgetc(stdin)) != '\n') {
+            if (command + command_length > ptr) {
+                (*ptr++) = (char) simple_char;
+            } else {
+                command[command_length - 1] = '\0';
+            }
+        }
+
+        struct string_array command_args = process_file(command, strlen(command), ' ');
+
+        if (command_args.size < 1) {
+            print_error("Command not found!");
+        }
+
+        if (strcmp(command_args.data[0], "READ") == 0) {
+            execute_commands_from_file(&command_args);
+        } else {
+            if (!execute_command(&command_args)) {
+                print_error("Command not found!");
+            }
+        }
+
+
+        free(command_args.data);
+        free(command);
+        sleep(1);
+    }
+}
+
+
 void catcher() {
     for (EVER) {
         if ((msgrcv(client_queue, &server_response, sizeof(struct msg_text), -200, 0)) == -1) {
@@ -320,9 +388,8 @@ void catcher() {
 }
 
 
-void sender() {
-
-}
+/* ##################################################################################################################
+ * ################################################################################################################## */
 
 
 void execute_commands_from_file(struct string_array *command_args) {
@@ -362,6 +429,8 @@ void execute_commands_from_file(struct string_array *command_args) {
 
         free(command_arguments.data);
     }
+
+    fclose(file);
 
     free(file_content);
     free(command.data);
