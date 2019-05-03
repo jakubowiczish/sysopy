@@ -43,7 +43,7 @@ int server_queue, client_queue;
 struct msg client_request, server_response;
 
 
-int USR_ID = -1;
+int user_id = -1;
 
 pid_t pid;
 
@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
 
         print_some_info(message_received_buffer);
 
-        USR_ID = server_response.msg_type;
+        user_id = server_response.msg_type;
     }
 
 
@@ -159,7 +159,7 @@ void send_message() {
 
 
 int execute_command(struct string_array *command_args) {
-    client_request.msg_text.id = USR_ID;
+    client_request.msg_text.id = user_id;
 
     if (strcmp(command_args->data[0], "STOP") == 0) {
         client_request.msg_type = STOP;
@@ -297,7 +297,7 @@ void _2one_command(struct string_array *command_args) {
 
 
 void catcher() {
-    while (1) {
+    for (EVER) {
         if ((msgrcv(client_queue, &server_response, sizeof(struct msg_text), -200, 0)) == -1) {
             print_error("ERROR while reading the data");
         } else {
@@ -332,6 +332,16 @@ void handle_SIGINT(int signal_num) {
 
 
 void end_client() {
+    client_request.msg_text.id = user_id;
+    client_request.msg_type = STOP;
+
+    sprintf(
+            client_request.msg_text.buf,
+            "STOP from client: %d",
+            user_id
+    );
+
+
 
 }
 

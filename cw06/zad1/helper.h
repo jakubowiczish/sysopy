@@ -43,6 +43,8 @@
 
 #define ERROR 404
 
+#define EVER ;;
+
 struct msg_text {
     int id;
     int additional_arg;
