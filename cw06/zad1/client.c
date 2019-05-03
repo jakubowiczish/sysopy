@@ -270,17 +270,32 @@ void memcpy_command_args(struct string_array *command_args, int index) {
 }
 
 
+/*
+ * Zgłoszenie zakończenia pracy klienta.
+ * Klient wysyła ten komunikat, kiedy kończy pracę, aby serwer mógł usunąć z listy jego kolejkę.
+ * Następnie kończy pracę, usuwając swoją kolejkę.
+ * Komunikat ten wysyłany jest również, gdy po stronie klienta zostanie wysłany sygnał SIGINT.
+ */
+
 void stop_command(struct string_array *command_args) {
     is_client_running = 0;
     memcpy_command_args(command_args, 0);
 }
 
 
+// Zlecenie wypisania listy wszystkich aktywnych klientów
+
 void list_command(struct string_array *command_args) {
     memcpy_command_args(command_args, 0);
 }
 
 
+/*
+ * Klient wysyła do serwera listę klientów, z którymi chce się grupowo komunikować.
+ * Serwer przechowuje tylko ostatnią listę.
+ * Kolejne wysłanie komunikatu FRIENDS nadpisuje poprzednią listę.
+ * Wysłanie samego FRIENDS czyści listę.
+ */
 void friends_command(struct string_array *command_args) {
     if (command_args->size == 2) {
         memcpy_command_args(command_args, 1);
@@ -289,7 +304,12 @@ void friends_command(struct string_array *command_args) {
     }
 }
 
-
+/*
+ * Grupę można modyfikować, wysyłając do serwera komunikaty:
+ * ADD lista_id_klientów oraz DEL lista_id_klientów.
+ * Wysłanie ADD lista_id_klientów po uprzednim wyczyszczeniu listy jest analogiczne z wysłaniem FRIENDS lista_id_klientów.
+ * Próba wysłania ADD i DEL bez argumentów powinna zostać obsłużona po stronie klienta.
+ */
 void add_command(struct string_array *command_args) {
     memcpy_command_args(command_args, 1);
 }
@@ -300,21 +320,41 @@ void del_command(struct string_array *command_args) {
 }
 
 
+/*
+ *   Klient wysyła ciąg znaków.
+ *   Serwer odsyła ten sam ciąg z powrotem, dodatkowo podając datę jego otrzymania.
+ *   Klient po odebraniu wysyła go na standardowe wyjście.
+ */
 void echo_command(struct string_array *command_args) {
     memcpy_command_args(command_args, 1);
 }
 
 
+/*
+ * Zlecenie wysłania komunikatu do wszystkich pozostałych klientów.
+ * Klient wysyła ciąg znaków.
+ * Serwer wysyła ten ciąg wraz z identyfikatorem klienta-nadawcy oraz aktualną datą do wszystkich pozostałych klientów.
+ */
 void _2all_command(struct string_array *command_args) {
     memcpy_command_args(command_args, 1);
 }
 
 
+/*
+ * Zlecenie wysłania komunikatu do zdefiniowanej wcześniej grupy klientów.
+ * Klient wysyła ciąg znaków.
+ * Serwer wysyła ten ciąg wraz z identyfikatorem klienta-nadawcy oraz aktualną datą do zdefiniowanej wcześniej grupy klientów.
+ */
 void _2friends_command(struct string_array *command_args) {
     memcpy_command_args(command_args, 1);
 }
 
 
+/*
+ * Zlecenie wysłania komunikatu do konkretnego klienta.
+ * Klient wysyła ciąg znaków podając jako adresata konkretnego klienta o identyfikatorze z listy aktywnych klientów.
+ * Serwer wysyła ten ciąg wraz z identyfikatorem klienta-nadawcy oraz aktualną datą do wskazanego klienta.
+ */
 void _2one_command(struct string_array *command_args) {
     memcpy_command_args(command_args, 2);
     client_request.msg_text.additional_arg = strtol(command_args->data[1], NULL, 0);

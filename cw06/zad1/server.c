@@ -22,6 +22,8 @@ void handle_SIGINT(int signal_num);
 
 void send_shutdown_to_all_clients();
 
+int send_message(int id, struct msg *output, int type);
+
 /* ##################################################################################################################
  * ################################################################################################################## */
 
@@ -53,7 +55,7 @@ void _2one_command(struct msg *input, struct msg *output);
 
 int clients_queue_id[MAX_CLIENTS_NUMBER];
 
-int groups_size[MAX_CLIENTS_NUMBER];
+int groups_size_arr[MAX_CLIENTS_NUMBER];
 
 int friends_groups[MAX_CLIENTS_NUMBER][MAX_GROUP_SIZE];
 
@@ -146,7 +148,7 @@ int main(int argc, char **argv) {
 void initialize_arrays() {
     for (int i = 0; i < MAX_CLIENTS_NUMBER; ++i) {
         clients_queue_id[i] = -1;
-        groups_size[i] = -1;
+        groups_size_arr[i] = -1;
     }
 }
 
@@ -312,7 +314,7 @@ int get_free_index() {
 
 
 int exists_in_group(int actual_user_id, int friendsId) {
-    for (int i = 0; i < groups_size[actual_user_id]; i++) {
+    for (int i = 0; i < groups_size_arr[actual_user_id]; i++) {
         if (friends_groups[actual_user_id][i] == friendsId)
             return 1;
     }
@@ -362,6 +364,12 @@ void send_shutdown_to_all_clients() {
  *
  * ################################################################################################################## */
 
+/*
+ * Zgłoszenie zakończenia pracy klienta.
+ * Klient wysyła ten komunikat, kiedy kończy pracę, aby serwer mógł usunąć z listy jego kolejkę.
+ * Następnie kończy pracę, usuwając swoją kolejkę.
+ * Komunikat ten wysyłany jest również, gdy po stronie klienta zostanie wysłany sygnał SIGINT.
+ */
 
 void stop_command(struct msg *input, struct msg *output) {
     //remove queue
@@ -371,15 +379,15 @@ void stop_command(struct msg *input, struct msg *output) {
     // remove from any group
 
     for (int i = 0; i < next_client_id; i++) {
-        for (int j = 0; j < groups_size[i]; j++) {
+        for (int j = 0; j < groups_size_arr[i]; j++) {
 
             if (friends_groups[i][j] == actual_usr_id) {
 
-                for (int k = j; k < groups_size[i] - 1; k++) {
+                for (int k = j; k < groups_size_arr[i] - 1; k++) {
                     friends_groups[i][k] = friends_groups[i][k + 1];
                 }
 
-                groups_size[i]--;
+                groups_size_arr[i]--;
                 break;
             }
         }
@@ -399,7 +407,7 @@ void stop_command(struct msg *input, struct msg *output) {
 
 
 
-/// in order to print all active clients
+// Zlecenie wypisania listy wszystkich aktywnych klientów
 
 void list_command(struct msg *input, struct msg *output) {
     char item[10];
@@ -424,100 +432,147 @@ void list_command(struct msg *input, struct msg *output) {
     *(output->msg_text.buf + offset) = '\0';
 }
 
-
+/*
+ * Klient wysyła do serwera listę klientów, z którymi chce się grupowo komunikować.
+ * Serwer przechowuje tylko ostatnią listę.
+ * Kolejne wysłanie komunikatu FRIENDS nadpisuje poprzednią listę.
+ * Wysłanie samego FRIENDS czyści listę.
+ */
 void friends_command(struct msg *input, struct msg *output) {
-    //explode ids list
-    struct StringArray idList = explode(input->message_text.buf, strlen(input->message_text.buf), ',');
+    struct string_array id_list = process_file(input->msg_text.buf, strlen(input->msg_text.buf), ',');
 
-    if (idList.size > MAX_GROUP_SIZE) {
-        sprintf(output->message_text.buf, "FRIENDS - To many users.");
+    if (id_list.size > MAX_GROUP_SIZE) {
+        sprintf(output->msg_text.buf, "FRIENDS - Too many users.");
         return;
     }
 
-    int groupSize = 0;;
-    for (int i = 0; i < idList.size; i++) {
-        friendsGroups[actualUserId][groupSize] = strtol(idList.data[i], NULL, 0);
-        if (
-                friendsGroups[actualUserId][groupSize] >= 0 &&
-                userExist(friendsGroups[actualUserId][groupSize]) &&
-                !exists_in_group(actualUserId, friendsGroups[actualUserId][groupSize]) &&
-                friendsGroups[actualUserId][groupSize] != actualUserId
+    int groups_size = 0;
+
+    for (int i = 0; i < id_list.size; i++) {
+
+        friends_groups[actual_usr_id][groups_size] = strtol(id_list.data[i], NULL, 0);
+
+        if (friends_groups[actual_usr_id][groups_size] >= 0
+            && user_exists(friends_groups[actual_usr_id][groups_size])
+            && !exists_in_group(actual_usr_id, friends_groups[actual_usr_id][groups_size])
+            && friends_groups[actual_usr_id][groups_size] != actual_usr_id
                 ) {
-            groupSize++;
+
+            ++groups_size;
         }
     }
-    groupsSize[actualUserId] = groupSize;
 
-    if (groupSize == 0) {
-        sprintf(output->message_text.buf, "FRIENDS - Empty group.");
+    groups_size_arr[actual_usr_id] = groups_size;
+
+    if (groups_size == 0) {
+        sprintf(
+                output->msg_text.buf,
+                "FRIENDS - Empty group."
+        );
     } else {
-        sprintf(output->message_text.buf, "FRIENDS - Create group with size %d.", groupsSize[actualUserId]);
+        sprintf(
+                output->msg_text.buf,
+                "FRIENDS - Create group with size %d.",
+                groups_size_arr[actual_usr_id]
+        );
     }
-    free(idList.data);
+
+    free(id_list.data);
 }
 
 
+/*
+ * Grupę można modyfikować, wysyłając do serwera komunikaty:
+ * ADD lista_id_klientów oraz DEL lista_id_klientów.
+ * Wysłanie ADD lista_id_klientów po uprzednim wyczyszczeniu listy jest analogiczne z wysłaniem FRIENDS lista_id_klientów.
+ * Próba wysłania ADD i DEL bez argumentów powinna zostać obsłużona po stronie klienta.
+ */
 void add_command(struct msg *input, struct msg *output) {
-    //explode ids list
-    struct StringArray idList = explode(input->msg_text.buf, strlen(input->msg_text.buf), ',');
+    struct string_array id_list = process_file(input->msg_text.buf, strlen(input->msg_text.buf), ',');
 
-    int groupSize = groupsSize[actualUserId];
-    if (idList.size + groupSize > MAX_GROUP_SIZE) {
-        sprintf(output->message_text.buf, "To many users.");
+    int groups_size = groups_size_arr[actual_usr_id];
+
+    if (id_list.size + groups_size > MAX_GROUP_SIZE) {
+        sprintf(output->msg_text.buf, "Too many users.");
         return;
     }
 
-    for (int i = 0; i < idList.size; i++) {
-        friendsGroups[actualUserId][groupSize] = strtol(idList.data[i], NULL, 0);
+    for (int i = 0; i < id_list.size; i++) {
+
+        friends_groups[actual_usr_id][groups_size] = strtol(id_list.data[i], NULL, 0);
+
         if (
-                friendsGroups[actualUserId][groupSize] >= 0 &&
-                userExist(friendsGroups[actualUserId][groupSize]) &&
-                !exists_in_group(actualUserId, friendsGroups[actualUserId][groupSize]) &&
-                friendsGroups[actualUserId][groupSize] != actualUserId
+                friends_groups[actual_usr_id][groups_size] >= 0
+                && user_exists(friends_groups[actual_usr_id][groups_size])
+                && !exists_in_group(actual_usr_id, friends_groups[actual_usr_id][groups_size])
+                && friends_groups[actual_usr_id][groups_size] != actual_usr_id
                 ) {
-            groupSize++;
+
+            ++groups_size;
         }
     }
-    groupsSize[actualUserId] = groupSize;
 
-    if (groupSize == 0) {
-        sprintf(output->msg_text.buf, "ADD - Empty group.");
+    groups_size_arr[actual_usr_id] = groups_size;
+
+    if (groups_size == 0) {
+        sprintf(
+                output->msg_text.buf,
+                "ADD - empty group."
+        );
     } else {
-        sprintf(output->msg_text.buf, "ADD - Create group with size %d.", groupsSize[actualUserId]);
+        sprintf(
+                output->msg_text.buf,
+                "ADD - Create group with size %d.",
+                groups_size_arr[actual_usr_id]
+        );
     }
-    free(idList.data);
+
+    free(id_list.data);
 }
 
 
 void del_command(struct msg *input, struct msg *output) {
-    int userId = actual_usr_id;
+    int user_id = actual_usr_id;
 
-    //explode ids list
-
-    struct string_array id_list = explode(input->msg_text.buf, strlen(input->msg_text.buf), ',');
+    struct string_array id_list = process_file(input->msg_text.buf, strlen(input->msg_text.buf), ',');
 
     //remove from group
 
-    int userGroupId = 0;
-    int groupIndex = groupsSize[userId];
-    for (int i = 0; i < id_list.size; i++) {
-        userGroupId = strtol(id_list.data[i], NULL, 0);
-        for (int j = 0; j < groupIndex; j++) {
-            if (friendsGroups[userId][j] == userGroupId) {
-                for (int k = j; k < groupIndex - 1; k++) {
-                    friendsGroups[userId][k] = friendsGroups[userId][k + 1];
+    int user_group_id = 0;
+
+    int group_index = groups_size_arr[user_id];
+
+    for (int i = 0; i < id_list.size; ++i) {
+
+        user_group_id = strtol(id_list.data[i], NULL, 0);
+
+        for (int j = 0; j < group_index; ++j) {
+
+            if (friends_groups[user_id][j] == user_group_id) {
+
+                for (int k = j; k < group_index - 1; ++k) {
+                    friends_groups[user_id][k] = friends_groups[user_id][k + 1];
                 }
-                groupIndex--;
+
+                --group_index;
                 break;
             }
         }
     }
-    groupsSize[userId] = groupIndex;
 
-    if (groupIndex == 0) {
-        sprintf(output->msg_text.buf, "DEL - Empty group.");
+    groups_size_arr[user_id] = group_index;
+
+    if (group_index == 0) {
+        sprintf(
+                output->msg_text.buf,
+                "DEL - Empty group."
+        );
     } else {
-        sprintf(output->msg_text.buf, "DEL - New group size is %d.", groupsSize[userId]);
+        sprintf(
+                output->msg_text.buf,
+                "DEL - New group size is %d.",
+                groups_size_arr[user_id]
+        );
     }
 
     free(id_list.data);
@@ -527,28 +582,45 @@ void del_command(struct msg *input, struct msg *output) {
 void init_command(struct msg *input, struct msg *output) {
     int user_queue_id = strtol(input->msg_text.buf, NULL, 0);
 
-    if (user_queue_exist(user_queue_id)) {
-        sprintf(output->msg_text.buf, "INIT - the user already exists.");
+    if (user_queue_exists(user_queue_id)) {
+        sprintf(
+                output->msg_text.buf,
+                "INIT - user already exists."
+        );
+
         output->msg_type = -1;
+
     } else {
         int index = get_free_index();
 
         if (index != -1) {
             sprintf(output->msg_text.buf, "%d", index);
-            clientsQueueId[index] = user_queue_id;
-            actualUserId = index;
+
+            clients_queue_id[index] = user_queue_id;
+
+            actual_usr_id = index;
+
             output->msg_type = index;
-            activeUserCount++;
+
+            ++active_users_counter;
+
         } else {
-            sprintf(output->msg_text.buf, "INIT - There are too many clients.");
+            sprintf(
+                    output->msg_text.buf,
+                    "INIT - There are too many clients."
+            );
+
             output->msg_type = -1;
         }
     }
 }
 
 
-/// in order to print string with data added to it
-
+/*
+ *   Klient wysyła ciąg znaków.
+ *   Serwer odsyła ten sam ciąg z powrotem, dodatkowo podając datę jego otrzymania.
+ *   Klient po odebraniu wysyła go na standardowe wyjście.
+ */
 void echo_command(struct msg *input, struct msg *output) {
     __time_t now;
     time(&now);
@@ -564,7 +636,11 @@ void echo_command(struct msg *input, struct msg *output) {
     );
 }
 
-
+/*
+ * Zlecenie wysłania komunikatu do wszystkich pozostałych klientów.
+ * Klient wysyła ciąg znaków.
+ * Serwer wysyła ten ciąg wraz z identyfikatorem klienta-nadawcy oraz aktualną datą do wszystkich pozostałych klientów.
+ */
 void _2all_command(struct msg *input, struct msg *output) {
     prepare_message(input, output);
 
@@ -578,12 +654,17 @@ void _2all_command(struct msg *input, struct msg *output) {
 }
 
 
+/*
+ * Zlecenie wysłania komunikatu do zdefiniowanej wcześniej grupy klientów.
+ * Klient wysyła ciąg znaków.
+ * Serwer wysyła ten ciąg wraz z identyfikatorem klienta-nadawcy oraz aktualną datą do zdefiniowanej wcześniej grupy klientów.
+ */
 void _2friends_command(struct msg *input, struct msg *output) {
     prepare_message(input, output);
 
     int sent_counter = 0;
 
-    for (int i = 0; i < groups_size[actual_usr_id]; i++) {
+    for (int i = 0; i < groups_size_arr[actual_usr_id]; i++) {
 
         if (friends_groups[actual_usr_id][i] != actual_usr_id &&
             send_message(friends_groups[actual_usr_id][i], output, 1))
@@ -594,11 +675,15 @@ void _2friends_command(struct msg *input, struct msg *output) {
             output->msg_text.buf,
             "2FRIENDS Send %d/%d message",
             sent_counter,
-            groups_size[actual_usr_id]
+            groups_size_arr[actual_usr_id]
     );
 }
 
-
+/*
+ * Zlecenie wysłania komunikatu do konkretnego klienta.
+ * Klient wysyła ciąg znaków podając jako adresata konkretnego klienta o identyfikatorze z listy aktywnych klientów.
+ * Serwer wysyła ten ciąg wraz z identyfikatorem klienta-nadawcy oraz aktualną datą do wskazanego klienta.
+ */
 void _2one_command(struct msg *input, struct msg *output) {
     prepare_message(input, output);
 
