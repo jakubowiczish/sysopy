@@ -65,17 +65,17 @@ struct string_array {
 
 
 void print_sth_and_exit(char *error_message, int error_status) {
-    printf("\033[1;31m%s\n", error_message);
+    printf("\033[1;31m%s \033[0m \n", error_message);
     exit(error_status);
 }
 
 void print_error(char *error_message) {
-    printf("\033[1;31m%s\n", error_message);
+    printf("\033[1;31m%s \033[0m \n", error_message);
 }
 
 
 void print_some_info(char *info) {
-    printf("\033[1;32m%s\n", info);
+    printf("\033[1;32m%s \033[0m \n", info);
 }
 
 
@@ -121,6 +121,8 @@ char *get_type_as_string(int type) {
             return "DEL";
         }
     }
+
+    return "";
 }
 
 

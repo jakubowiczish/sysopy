@@ -325,9 +325,37 @@ void sender() {
 }
 
 
-void handle_SIGINT(int signal_num) {
-    print_some_info("RECEIVED signal SIGINT");
-    end_client();
+void execute_commands_from_file(struct string_array *command_args) {
+    if (command_args->size != 2) {
+        print_error("Invalid number of arguments (client)");
+    }
+
+    FILE *file = fopen(command_args->data[1], "r");
+
+    if (file == NULL) {
+        char error_buffer[512];
+
+        sprintf(error_buffer,
+                "ERROR while opening file: %s\n",
+                command_args->data[1]
+        );
+
+        print_error(error_buffer);
+    }
+
+    long file_size = 0;
+
+    fseek(file, 0, SEEK_END);
+    file_size = ftell(file);
+    rewind(file);
+
+
+    char *file_content = calloc(file_size, sizeof(char));
+    fread(file_content, file_size, sizeof(char), file);
+
+//    struct string_array command =
+
+
 }
 
 
@@ -341,15 +369,26 @@ void end_client() {
             user_id
     );
 
+    if ((msgsnd(server_queue, &client_request, sizeof(struct msg_text), 0) == -1)) {
+        print_error("ERROR while sending data about STOP communicate");
+    } else {
+        print_some_info("Information about STOP has been sent");
+    }
 
 
+    if (msgctl(client_queue, IPC_RMID, NULL) == -1) {
+        print_sth_and_exit("ERROR while closing client queue", -1);
+    }
+
+    kill(pid, 9);
+
+    print_some_info("Closing client");
+
+    exit(0);
 }
 
 
-
-
-
-
-
-
-
+void handle_SIGINT(int signal_num) {
+    print_some_info("RECEIVED signal SIGINT");
+    end_client();
+}
