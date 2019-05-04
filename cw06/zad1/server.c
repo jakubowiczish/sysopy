@@ -14,18 +14,8 @@
 
 #include "helper.h"
 
-int next_client_id = 0;
-
-int clients_queue_id_arr[MAX_CLIENTS_NUMBER];
-
-int groups_size_arr[MAX_CLIENTS_NUMBER];
-int friends_groups_arr[MAX_CLIENTS_NUMBER][MAX_GROUP_SIZE];
-
-int actual_usr_id = 0;
-
-int active_users_counter = 0;
-
-int is_server_running = 1;
+/* ##################################################################################################################
+ * ################################################################################################################## */
 
 void execute_command(struct msg *input, struct msg *output);
 
@@ -57,6 +47,24 @@ void _2one_command(struct msg *input, struct msg *output);
 
 void handle_SIGINT(int signal_num);
 
+/* ##################################################################################################################
+ * ################################################################################################################## */
+
+int next_client_id = 0;
+
+int clients_queue_id_arr[MAX_CLIENTS_NUMBER];
+
+int groups_size_arr[MAX_CLIENTS_NUMBER];
+int friends_groups_arr[MAX_CLIENTS_NUMBER][MAX_GROUP_SIZE];
+
+int actual_usr_id = 0;
+
+int active_users_counter = 0;
+
+int is_server_running = 1;
+
+/* ##################################################################################################################
+ * ################################################################################################################## */
 
 int main(int argc, char *argv[], char *env[]) {
 
@@ -133,6 +141,11 @@ int main(int argc, char *argv[], char *env[]) {
     return 0;
 }
 
+
+/* ##################################################################################################################
+ * ################################################################################################################## */
+
+
 void execute_command(struct msg *input, struct msg *output) {
 
     actual_usr_id = input->msg_text.id - SHIFT_ID;
@@ -207,6 +220,8 @@ void execute_command(struct msg *input, struct msg *output) {
     output->msg_type = actual_usr_id + SHIFT_ID;
 }
 
+/* ##################################################################################################################
+ * ################################################################################################################## */
 
 int user_exists(int user_id) {
     if (user_id > next_client_id) return 0;
@@ -277,7 +292,7 @@ int get_free_index() {
     return -1;
 }
 
-int existInGroup(int actual_user_id, int friends_id) {
+int exists_in_group(int actual_user_id, int friends_id) {
 
     for (int i = 0; i < groups_size_arr[actual_user_id]; i++) {
         if (friends_groups_arr[actual_user_id][i] == friends_id)
@@ -287,6 +302,8 @@ int existInGroup(int actual_user_id, int friends_id) {
     return 0;
 }
 
+/* ##################################################################################################################
+ * ################################################################################################################## */
 
 void send_shutdown_to_all_clients() {
 
@@ -323,6 +340,8 @@ void handle_SIGINT(int signal_num) {
     }
 }
 
+/* ##################################################################################################################
+ * ################################################################################################################## */
 
 /*
  * Zgłoszenie zakończenia pracy klienta.
@@ -412,7 +431,7 @@ void friends_command(struct msg *input, struct msg *output) {
         if (
                 friends_groups_arr[actual_usr_id][groups_size] >= 0
                 && user_exists(friends_groups_arr[actual_usr_id][groups_size])
-                && !existInGroup(actual_usr_id, friends_groups_arr[actual_usr_id][groups_size])
+                && !exists_in_group(actual_usr_id, friends_groups_arr[actual_usr_id][groups_size])
                 && friends_groups_arr[actual_usr_id][groups_size] != actual_usr_id
                 ) {
 
@@ -457,7 +476,7 @@ void add_command(struct msg *input, struct msg *output) {
         if (
                 friends_groups_arr[actual_usr_id][groups_size] >= 0
                 && user_exists(friends_groups_arr[actual_usr_id][groups_size])
-                && !existInGroup(actual_usr_id, friends_groups_arr[actual_usr_id][groups_size])
+                && !exists_in_group(actual_usr_id, friends_groups_arr[actual_usr_id][groups_size])
                 && friends_groups_arr[actual_usr_id][groups_size] != actual_usr_id
                 ) {
 
