@@ -1,23 +1,23 @@
-#include "helper.h"
-
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/msg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <memory.h>
 #include <unistd.h>
-#include <signal.h>
-#include <string.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <time.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <libgen.h>
+#include <sys/msg.h>
+#include <sys/ipc.h>
+
+#include "helper.h"
 
 
 /* ##################################################################################################################
  * ################################################################################################################## */
 
-void catcher();
-
-void sender();
-
-int execute_command(struct string_array *command_args);
-
-void send_message();
+void mem_cpy_command_args(struct string_array *commandArgs, int index);
 
 void stop_command(struct string_array *command_args);
 
@@ -37,8 +37,14 @@ void _2friends_command(struct string_array *command_args);
 
 void _2one_command(struct string_array *command_args);
 
+/* ##################################################################################################################
+ * ################################################################################################################## */
 
-void execute_commands_from_file(struct string_array *command_args);
+void sender();
+
+void catcher();
+
+void execute_file(struct string_array *command_args);
 
 void end_client();
 
@@ -49,7 +55,11 @@ void handle_SIGINT(int signal_num);
  * ################################################################################################################## */
 
 
+int is_client_running = 1;
+
 int server_queue, client_queue;
+
+int command_length = 512;
 
 struct msg client_request, server_response;
 
@@ -57,29 +67,25 @@ int user_id = -1;
 
 pid_t pid;
 
-int is_client_running = 1;
-
-int command_length = 256;
-
 /* ##################################################################################################################
  * ################################################################################################################## */
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
 
-    char *home_directory = getenv("HOME");
+    char *homedir = getenv("HOME");
 
     key_t server_queue_key;
 
-    if ((client_queue = msgget(IPC_PRIVATE, QUEUE_PERMISSIONS) == -1)) {
-        print_sth_and_exit("ERROR occurred while initializing client queue", 1);
+    if ((client_queue = msgget(IPC_PRIVATE, 0660)) == -1) {
+        print_sth_and_exit("ERROR while initializing client queue", 1);
     }
 
-    if ((server_queue_key = ftok(home_directory, PROJ_ID)) == -1) {
-        print_sth_and_exit("ERROR occurred while getting key using ftok method", 2);
+    if ((server_queue_key = ftok(homedir, PROJ_ID)) == -1) {
+        print_sth_and_exit("ERROR while getting key using ftok", 2);
     }
 
     if ((server_queue = msgget(server_queue_key, 0)) == -1) {
-        print_sth_and_exit("ERROR occurred while initializing server queue", 3);
+        print_sth_and_exit("ERROR while initializing access to the server queue!", 3);
     }
 
 
@@ -89,19 +95,19 @@ int main(int argc, char **argv) {
     sprintf(client_request.msg_text.buf, "%d", client_queue);
 
 
-    // sending message to the server
+    // send message to server
 
     if (msgsnd(server_queue, &client_request, sizeof(struct msg_text), 0) == -1) {
-        print_sth_and_exit("ERROR occurred while sending INIT to the server", 4);
+        print_sth_and_exit("ERROR while sending INIT response to the server", 4);
     } else {
-        print_some_info("INIT sent to the server");
+        print_some_info("INIT action sent to the server");
     }
 
-
-    // reading response from the server
+    // read response from server
 
     if (msgrcv(client_queue, &server_response, sizeof(struct msg_text), 0, 0) == -1) {
-        print_sth_and_exit("ERROR occurred while reading reading INIT response from the server", 5);
+        print_sth_and_exit("ERROR while reading INIT response from the server", 5);
+
     } else {
         char message_received_buffer[BUFFER_SIZE];
 
@@ -122,14 +128,18 @@ int main(int argc, char **argv) {
 
     if (pid == 0) {
         struct sigaction action;
+
         action.sa_handler = NULL;
         action.sa_flags = 0;
+
         sigaction(SIGINT, &action, NULL);
 
         sender();
 
     } else if (pid > 0) {
+
         struct sigaction action;
+
         action.sa_handler = handle_SIGINT;
 
         sigemptyset(&action.sa_mask);
@@ -142,7 +152,7 @@ int main(int argc, char **argv) {
         catcher();
 
     } else {
-        print_error("ERROR while creating a fork");
+        print_error("ERROR while creating fork");
     }
 
 
@@ -152,17 +162,12 @@ int main(int argc, char **argv) {
 }
 
 
-/* ##################################################################################################################
- *
- *
- * ################################################################################################################## */
-
-
 void send_message() {
     if (msgsnd(server_queue, &client_request, sizeof(struct msg_text), 0) == -1) {
-        print_error("ERROR while sending a request to the server");
+        print_some_info("ERROR while sending request to the server");
+
     } else {
-        char send_message_buffer[512];
+        char send_message_buffer[BUFFER_SIZE];
 
         sprintf(send_message_buffer,
                 "Message SENT to the server %s\n",
@@ -175,75 +180,79 @@ void send_message() {
 
 
 int execute_command(struct string_array *command_args) {
+
     client_request.msg_text.id = user_id;
 
     if (strcmp(command_args->data[0], "STOP") == 0) {
+
         client_request.msg_type = STOP;
+
         stop_command(command_args);
 
     } else if (strcmp(command_args->data[0], "LIST") == 0) {
 
-        if (command_args->size != 1) {
-            return 0;
-        }
+        if (command_args->size != 1) return 0;
 
         client_request.msg_type = LIST;
+
         list_command(command_args);
 
     } else if (strcmp(command_args->data[0], "FRIENDS") == 0) {
-        if (command_args->size != 1 && command_args->size != 2) {
+
+        if (command_args->size != 1 && command_args->size != 2)
             return 0;
-        }
 
         client_request.msg_type = FRIENDS;
+
         friends_command(command_args);
 
     } else if (strcmp(command_args->data[0], "ADD") == 0) {
-        if (command_args->size != 2) {
+
+        if (command_args->size != 2)
             return 0;
-        }
 
         client_request.msg_type = ADD;
+
         add_command(command_args);
 
     } else if (strcmp(command_args->data[0], "DEL") == 0) {
-        if (command_args->size != 2) {
-            return 0;
-        }
 
+        if (command_args->size != 2) return 0;
         client_request.msg_type = DEL;
         del_command(command_args);
 
     } else if (strcmp(command_args->data[0], "ECHO") == 0) {
-        if (command_args->size != 2) {
-            return 0;
-        }
+
+        if (command_args->size != 2) return 0;
 
         client_request.msg_type = ECHO;
+
         echo_command(command_args);
 
     } else if (strcmp(command_args->data[0], "2ALL") == 0) {
-        if (command_args->size != 2) {
-            return 0;
-        }
+
+        if (command_args->size != 2) return 0;
 
         client_request.msg_type = _2ALL;
+
         _2all_command(command_args);
 
     } else if (strcmp(command_args->data[0], "2FRIENDS") == 0) {
-        if (command_args->size != 2) {
+
+        if (command_args->size != 2)
             return 0;
-        }
 
         client_request.msg_type = _2FRIENDS;
+
         _2friends_command(command_args);
 
     } else if (strcmp(command_args->data[0], "2ONE") == 0) {
-        if (command_args->size != 2) {
+
+        if (command_args->size != 3)
             return 0;
-        }
 
         client_request.msg_type = _2ONE;
+
         _2one_command(command_args);
 
     } else {
@@ -256,127 +265,82 @@ int execute_command(struct string_array *command_args) {
 }
 
 
-/* ##################################################################################################################
- * ################################################################################################################## */
-
-void memcpy_command_args(struct string_array *command_args, int index) {
-    memcpy(
-            client_request.msg_text.buf,
-            command_args->data[index],
-            strlen(command_args->data[index])
-    );
-
-    client_request.msg_text.buf[strlen(command_args->data[index])] = '\0';
+void mem_cpy_command_args(struct string_array *commandArgs, int index) {
+    memcpy(client_request.msg_text.buf, commandArgs->data[index], strlen(commandArgs->data[index]));
+    client_request.msg_text.buf[strlen(commandArgs->data[index])] = '\0';
 }
 
-
-/*
- * Zgłoszenie zakończenia pracy klienta.
- * Klient wysyła ten komunikat, kiedy kończy pracę, aby serwer mógł usunąć z listy jego kolejkę.
- * Następnie kończy pracę, usuwając swoją kolejkę.
- * Komunikat ten wysyłany jest również, gdy po stronie klienta zostanie wysłany sygnał SIGINT.
- */
 
 void stop_command(struct string_array *command_args) {
     is_client_running = 0;
-    memcpy_command_args(command_args, 0);
+
+    mem_cpy_command_args(command_args, 0);
 }
 
-
-// Zlecenie wypisania listy wszystkich aktywnych klientów
 
 void list_command(struct string_array *command_args) {
-    memcpy_command_args(command_args, 0);
+    mem_cpy_command_args(command_args, 0);
 }
 
 
-/*
- * Klient wysyła do serwera listę klientów, z którymi chce się grupowo komunikować.
- * Serwer przechowuje tylko ostatnią listę.
- * Kolejne wysłanie komunikatu FRIENDS nadpisuje poprzednią listę.
- * Wysłanie samego FRIENDS czyści listę.
- */
 void friends_command(struct string_array *command_args) {
     if (command_args->size == 2) {
-        memcpy_command_args(command_args, 1);
+        mem_cpy_command_args(command_args, 1);
+
     } else {
         client_request.msg_text.buf[0] = '\0';
     }
 }
 
-/*
- * Grupę można modyfikować, wysyłając do serwera komunikaty:
- * ADD lista_id_klientów oraz DEL lista_id_klientów.
- * Wysłanie ADD lista_id_klientów po uprzednim wyczyszczeniu listy jest analogiczne z wysłaniem FRIENDS lista_id_klientów.
- * Próba wysłania ADD i DEL bez argumentów powinna zostać obsłużona po stronie klienta.
- */
+
 void add_command(struct string_array *command_args) {
-    memcpy_command_args(command_args, 1);
+    mem_cpy_command_args(command_args, 1);
 }
 
 
 void del_command(struct string_array *command_args) {
-    memcpy_command_args(command_args, 1);
+    mem_cpy_command_args(command_args, 1);
 }
 
 
-/*
- *   Klient wysyła ciąg znaków.
- *   Serwer odsyła ten sam ciąg z powrotem, dodatkowo podając datę jego otrzymania.
- *   Klient po odebraniu wysyła go na standardowe wyjście.
- */
 void echo_command(struct string_array *command_args) {
-    memcpy_command_args(command_args, 1);
+    mem_cpy_command_args(command_args, 1);
 }
 
 
-/*
- * Zlecenie wysłania komunikatu do wszystkich pozostałych klientów.
- * Klient wysyła ciąg znaków.
- * Serwer wysyła ten ciąg wraz z identyfikatorem klienta-nadawcy oraz aktualną datą do wszystkich pozostałych klientów.
- */
 void _2all_command(struct string_array *command_args) {
-    memcpy_command_args(command_args, 1);
+    mem_cpy_command_args(command_args, 1);
 }
 
 
-/*
- * Zlecenie wysłania komunikatu do zdefiniowanej wcześniej grupy klientów.
- * Klient wysyła ciąg znaków.
- * Serwer wysyła ten ciąg wraz z identyfikatorem klienta-nadawcy oraz aktualną datą do zdefiniowanej wcześniej grupy klientów.
- */
 void _2friends_command(struct string_array *command_args) {
-    memcpy_command_args(command_args, 1);
+    mem_cpy_command_args(command_args, 1);
 }
 
 
-/*
- * Zlecenie wysłania komunikatu do konkretnego klienta.
- * Klient wysyła ciąg znaków podając jako adresata konkretnego klienta o identyfikatorze z listy aktywnych klientów.
- * Serwer wysyła ten ciąg wraz z identyfikatorem klienta-nadawcy oraz aktualną datą do wskazanego klienta.
- */
 void _2one_command(struct string_array *command_args) {
-    memcpy_command_args(command_args, 2);
+    mem_cpy_command_args(command_args, 2);
+
     client_request.msg_text.additional_arg = strtol(command_args->data[1], NULL, 0);
 }
 
 
-/* ##################################################################################################################
- * ################################################################################################################## */
-
-
 void sender() {
+    //receive data from stdin
+
     while (is_client_running) {
         char *command = calloc(command_length, sizeof(char));
 
         printf(">> ");
 
         int simple_char = 0;
-        char *ptr = command;
 
+        char *ptr = command;
         while ((simple_char = fgetc(stdin)) != '\n') {
+
             if (command + command_length > ptr) {
                 (*ptr++) = (char) simple_char;
+
             } else {
                 command[command_length - 1] = '\0';
             }
@@ -385,30 +349,33 @@ void sender() {
         struct string_array command_args = process_file(command, strlen(command), ' ');
 
         if (command_args.size < 1) {
-            print_error("Command not found!");
+            print_some_info("Client: Command not recognized");
         }
 
         if (strcmp(command_args.data[0], "READ") == 0) {
-            execute_commands_from_file(&command_args);
+            execute_file(&command_args);
         } else {
             if (!execute_command(&command_args)) {
-                print_error("Command not found!");
+                print_some_info("Command not recognized!");
             }
         }
 
-
         free(command_args.data);
         free(command);
+
         sleep(1);
     }
 }
 
-
 void catcher() {
     for (EVER) {
-        if ((msgrcv(client_queue, &server_response, sizeof(struct msg_text), -200, 0)) == -1) {
-            print_error("ERROR while reading the data");
+        // read an incoming message, with priority order
+
+        if (msgrcv(client_queue, &server_response, sizeof(struct msg_text), -200, 0) == -1) {
+            print_error("ERROR while reading input data");
+
         } else {
+
             char message_received_buffer[BUFFER_SIZE];
 
             sprintf(message_received_buffer,
@@ -428,14 +395,11 @@ void catcher() {
 }
 
 
-/* ##################################################################################################################
- * ################################################################################################################## */
-
-
-void execute_commands_from_file(struct string_array *command_args) {
+void execute_file(struct string_array *command_args) {
     if (command_args->size != 2) {
-        print_error("Invalid number of arguments (client)");
+        print_error("Client: invalid arguments!");
     }
+
 
     FILE *file = fopen(command_args->data[1], "r");
 
@@ -443,12 +407,13 @@ void execute_commands_from_file(struct string_array *command_args) {
         char error_buffer[BUFFER_SIZE];
 
         sprintf(error_buffer,
-                "ERROR while opening file: %s\n",
+                "Client: ERROR while opening file: %s \n",
                 command_args->data[1]
         );
 
         print_error(error_buffer);
     }
+
 
     long file_size = 0;
 
@@ -456,23 +421,21 @@ void execute_commands_from_file(struct string_array *command_args) {
     file_size = ftell(file);
     rewind(file);
 
+    char *fileContent = calloc(file_size, sizeof(char));
 
-    char *file_content = calloc(file_size, sizeof(char));
-    fread(file_content, file_size, sizeof(char), file);
+    fread(fileContent, file_size, sizeof(char), file);
 
-    struct string_array command = process_file(file_content, file_size, '\n');
+    struct string_array command = process_file(fileContent, file_size, '\n');
 
-    for (int i = 0; i < command.size; ++i) {
-        struct string_array command_arguments = process_file(command.data[i], strlen(command.data[i]), ' ');
+    for (int i = 0; i < command.size; i++) {
+        struct string_array command_args_inside = process_file(command.data[i], strlen(command.data[i]), ' ');
 
-        execute_command(&command_arguments);
+        execute_command(&command_args_inside);
 
-        free(command_arguments.data);
+        free(command_args_inside.data);
     }
 
-    fclose(file);
-
-    free(file_content);
+    free(fileContent);
     free(command.data);
 }
 
@@ -481,32 +444,29 @@ void end_client() {
     client_request.msg_text.id = user_id;
     client_request.msg_type = STOP;
 
-    sprintf(
-            client_request.msg_text.buf,
-            "STOP from client: %d",
-            user_id
-    );
+    sprintf(client_request.msg_text.buf, "STOP from client %d", user_id);
 
-    if ((msgsnd(server_queue, &client_request, sizeof(struct msg_text), 0) == -1)) {
-        print_error("ERROR while sending data about STOP communicate");
+    if (msgsnd(server_queue, &client_request, sizeof(struct msg_text), 0) == -1) {
+        print_error("Client: ERROR while sending data about STOP");
     } else {
-        print_some_info("Information about STOP has been sent");
+        print_error("Client: Sending information about STOP");
     }
 
 
     if (msgctl(client_queue, IPC_RMID, NULL) == -1) {
-        print_sth_and_exit("ERROR while closing client queue", -1);
+        print_sth_and_exit("ERROR while closing client queue", 1);
     }
 
     kill(pid, 9);
 
-    print_some_info("Closing client");
+    print_some_info("Closing client!");
 
     exit(0);
 }
 
 
 void handle_SIGINT(int signal_num) {
-    print_some_info("RECEIVED signal SIGINT");
+    print_some_info("Received signal SIGINT");
+
     end_client();
 }

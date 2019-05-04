@@ -1,0 +1,17 @@
+LIST
+ECHO echo_test123
+FRIENDS 1,2
+2FRIENDS wiadomosc_do_friends1
+DEL 1
+2FRIENDS wiadomosc_do_friends2
+DEL 2
+2FRIENDS wiadomosc_do_friends3
+ADD 1
+ADD 2
+2FRIENDS wiadomosc_do_friends4
+FRIENDS
+2FRIENDS wiadomosc_do_friends5
+2ALL do_wszystkich
+2ONE 1 do_1
+2ONE 2 do_2
+STOP

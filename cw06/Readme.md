@@ -1,3 +1,24 @@
+#### Odpalanie
+Kompilacja:
+```bash
+make all
+```
+odpalenie serwera w jednym terminalu:
+ ```bash
+ ./server
+```
+
+odpalenie różnych klientów w różnych terminalach:
+```bash
+./client 
+```
+w kazdym terminalu
+
+wczytywanie z pliku w kliencie: 
+```bash
+READ <scieżka_do_pliku>
+```
+
 ## Zadania - Zestaw 6
 ### IPC - kolejki komunikatów
 
