@@ -472,7 +472,7 @@ int mq_send(mqd_t mqdes, const char* ptr, size_t len, unsigned int prio);
 
 ##### Odbieranie komunikatów
 ```C
-ssize_t mq_receive(mqd_t mqdes, char *ptr, size_t len, unsigned int *priop);
+size_t mq_receive(mqd_t mqdes, char *ptr, size_t len, unsigned int *priop);
 ```
 - Odbiera komunikat z kolejki o deskryptorze mqdes o długości len (co najmniej tyle, ile w polu mq_msgsize w strukturze struct mq_attr). 
 
