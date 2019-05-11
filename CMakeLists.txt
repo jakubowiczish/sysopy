@@ -39,4 +39,4 @@ add_executable(
         "tests_18_19/mytest/zad3(ok)/main.c"
 
 
-        cw06/zad1/client.c cw06/zad1/helper.h cw06/zad1/server.c cw06/zad2/client.c cw06/zad2/helper.h cw06/zad2/server.c cw07/lab/main.c cw07/zad1/error.c cw07/zad1/error.h cw07/zad1/shared.h cw07/zad1/systemv.c)
+        cw06/zad1/client.c cw06/zad1/helper.h cw06/zad1/server.c cw06/zad2/client.c cw06/zad2/helper.h cw06/zad2/server.c cw07/lab/main.c cw07/zad1/error.c cw07/zad1/error.h cw07/zad1/shared.h cw07/zad1/systemv.c cw07/zad1/queue.h cw07/zad1/queue.c)

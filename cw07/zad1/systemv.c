@@ -6,6 +6,8 @@
 
 #include "error.h"
 
+/* ################################################################################################################## */
+
 int create_shared_mem(int key, size_t size) {
     int segment_id = shmget(key, size, IPC_CREAT | IPC_EXCL | 0644);
 
@@ -68,6 +70,43 @@ sem_id_t create_semaphore(int key) {
     }
 
     return semaphore_set_id;
+}
+
+
+sem_id_t open_semaphore(int key) {
+    sem_id_t semaphore_set_id = semget(key, 1, 0);
+
+    if (semaphore_set_id == -1) {
+        print_error("error while opening a semaphore");
+    }
+
+    return semaphore_set_id;
+}
+
+
+void lock_semaphore(sem_id_t id) {
+    struct sembuf sem_buf;
+
+    sem_buf.sem_num = 0;
+    sem_buf.sem_op = -1;
+    sem_buf.sem_flg = 0;
+
+    if (semop(id, &sem_buf, 1) == -1) {
+        print_error("error while locking semaphore");
+    }
+}
+
+
+void unlock_semaphore(sem_id_t id) {
+    struct sembuf sem_buf;
+
+    sem_buf.sem_num = 0;
+    sem_buf.sem_op = 1;
+    sem_buf.sem_flg = 0;
+
+    if (semop(id, &sem_buf, 1) == -1) {
+        print_error("error while unlocking semaphore");
+    }
 }
 
 
