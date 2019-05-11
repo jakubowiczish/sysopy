@@ -22,7 +22,6 @@ void unmap_shared_mem(void *ptr, size_t size);
 void remove_shared_mem(int key, int id);
 
 
-
 sem_id_t create_semaphore(int key);
 
 sem_id_t open_semaphore(int key);
