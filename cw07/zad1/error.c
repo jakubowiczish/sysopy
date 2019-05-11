@@ -15,19 +15,19 @@
 
 void print_coloured_message(char *message, char *colour) {
     if (strcmp(colour, "red") == 0) {
-        printf(RED "%s" RESET "\n", message);
+        printf("\n" RED "%s" RESET "\n\n", message);
     } else if (strcmp(colour, "green") == 0) {
-        printf(GRN "%s" RESET "\n", message);
+        printf("\n" GRN "%s" RESET "\n\n", message);
     } else if (strcmp(colour, "yellow") == 0) {
-        printf(YEL "%s" RESET "\n", message);
+        printf("\n" YEL "%s" RESET "\n\n", message);
     } else if (strcmp(colour, "blue") == 0) {
-        printf(BLU "%s" RESET "\n", message);
+        printf("\n" BLU "%s" RESET "\n\n", message);
     } else if (strcmp(colour, "magenta") == 0) {
-        printf(MAG "%s" RESET "\n", message);
+        printf("\n" MAG "%s" RESET "\n\n", message);
     } else if (strcmp(colour, "cyan") == 0) {
-        printf(CYN "%s" RESET "\n", message);
+        printf("\n" CYN "%s" RESET "\n\n", message);
     } else if (strcmp(colour, "white") == 0) {
-        printf(WHT "%s" RESET "\n", message);
+        printf("\n" WHT "%s" RESET "\n\n", message);
     }
 }
 
