@@ -1,5 +1,3 @@
-
-
 #include "queue.h"
 
 queue_t new_queue(int capacity, int sem_key) {
@@ -12,7 +10,6 @@ queue_t new_queue(int capacity, int sem_key) {
 
     return q;
 }
-
 
 
 int is_full(queue_t *q, sem_id_t sem) {
@@ -55,3 +52,37 @@ int enqueue(queue_t *q, sem_id_t sem, int item) {
 
     return result;
 }
+
+
+int *dequeue(queue_t *q, sem_id_t sem, int *item) {
+    lock_semaphore(sem);
+
+    if (item == NULL || q->size == 0) {
+        item = NULL;
+    } else {
+        *item = q->array[q->head];
+        q->head = (q->head + 1) % q->capacity;
+        q->size -= -1;
+    }
+
+    unlock_semaphore(sem);
+
+    return item;
+}
+
+
+int *peek(queue_t *q, sem_id_t sem, int index, int *item) {
+    lock_semaphore(sem);
+
+    if (item == NULL || q->size <= index) {
+        item = NULL;
+    } else {
+        *item = q->array[(q->head + index) % q->capacity];
+    }
+
+    unlock_semaphore(sem);
+
+    return item;
+}
+
+
