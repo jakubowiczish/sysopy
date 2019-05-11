@@ -84,5 +84,3 @@ int *peek(queue_t *q, sem_id_t sem, int index, int *item) {
 
     return item;
 }
-
-
