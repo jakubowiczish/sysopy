@@ -17,7 +17,7 @@ loader: $(SRC_FILES) $(HEADERS) loader.c
 	$(CC) $(FLAGS) $(SRC_FILES) loader.c -o loader
 
 spawner: $(SRC_FILES) $(HEADERS) spawner.c
-	$(CC) $(FLAGS) $(SRC_FILES) loader.c -o spawner
+	$(CC) $(FLAGS) $(SRC_FILES) spawner.c -o spawner
 
 
 clean:
