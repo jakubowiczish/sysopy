@@ -77,6 +77,21 @@ void remove_shared_mem(int key, int id) {
 
 /* ################################################################################################################## */
 
+sem_id_t create_semaphore(int key) {
+    char path[64];
+    sprintf(path, "/%d", key);
+
+    sem_id_t id = sem_open(path, O_RDWR | O_CREAT | O_EXCL, 0644);
+
+    if (id == SEM_FAILED) {
+        print_error("error while creating semaphore");
+    }
+
+    unlock_semaphore(id);
+
+    return id;
+}
+
 
 sem_id_t open_semaphore(int key) {
     char path[64];
