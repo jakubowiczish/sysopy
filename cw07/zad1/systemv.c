@@ -110,4 +110,13 @@ void unlock_semaphore(sem_id_t id) {
 }
 
 
+void close_semaphore(sem_id_t sem) {
+    return;
+}
 
+
+void remove_semaphore(int key, sem_id_t id) {
+    if (semctl(id, 0, IPC_RMID) == -1) {
+        print_error("error while removing semaphore");
+    }
+}
