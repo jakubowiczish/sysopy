@@ -97,7 +97,8 @@ int main(int argc, char **argv) {
             print_coloured_message("passed arguments are invalid!", RED);
         }
     } else {
-        print_coloured_message("invalid number of arguments (loader)", RED);
+        print_coloured_message(
+                "invalid number of arguments (loader) - necessary argument: weight, optional argument: cycles", RED);
     }
 
 
