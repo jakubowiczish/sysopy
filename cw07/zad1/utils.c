@@ -3,10 +3,10 @@
 
 
 int get_trucker_key() {
-    return ftok(getenv("HOME"), 1337);
+    return ftok(getenv("HOME"), 2137);
 }
 
 
 int get_queue_key() {
-    return ftok(getenv("HOME"), 666);
+    return ftok(getenv("HOME"), 1337);
 }
