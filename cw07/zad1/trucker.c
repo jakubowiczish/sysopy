@@ -20,7 +20,7 @@ void do_the_cleanup() {
     remove_semaphore(get_queue_key(), q_sem);
     unmap_shared_mem(cb, CB_SIZE);
     remove_shared_mem(get_trucker_key(), mem_id);
-    printf("cleaned up!\n");
+    print_coloured_message("\n(TRUCKER) cleaned up!\n", GREEN);
 }
 
 

@@ -27,7 +27,7 @@ void do_the_cleanup() {
     unmap_shared_mem(cb, CB_SIZE);
 
     char buffer[128];
-    sprintf(buffer, "%d cleaned up\n\n", pid);
+    sprintf(buffer, "\n%d (LOADER) cleaned up\n\n", pid);
     print_coloured_message(buffer, GREEN);
 }
 
