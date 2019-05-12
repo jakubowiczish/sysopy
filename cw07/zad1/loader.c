@@ -115,12 +115,12 @@ int main(int argc, char **argv) {
     if (cycles == 0) {
         while (1) {
             place_pack();
-            usleep(1000);
+            sleep(1);
         }
     } else {
         for (int i = 0; i < cycles; ++i) {
             place_pack();
-            usleep(1000);
+            sleep(1);
         }
     }
 

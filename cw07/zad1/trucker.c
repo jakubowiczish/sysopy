@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 
     while (1) {
         fflush(stdout);
-        usleep(500);
+        sleep(1);
 
         if (dequeue(&cb->q, q_sem, &pack) == NULL) {
             if (empty == 0) {

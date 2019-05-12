@@ -6,10 +6,9 @@ HEADERS = shared.h queue.h pack.h error.h utils.h
 
 SRC_FILES = systemv.c queue.c pack.c error.c utils.c
 
-.DEFAULT all
+.DEFAULT: all
 
-all trucker loader spawner
-
+all: trucker loader spawner
 
 trucker: $(SRC_FILES) $(HEADERS) trucker.c
 	$(CC) $(FLAGS) $(SRC_FILES) trucker.c -o trucker
