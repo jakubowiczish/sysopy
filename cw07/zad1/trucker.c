@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include "conveyor_belt.h"
 #include "utils.h"
@@ -36,6 +37,7 @@ int main(int argc, char **argv) {
 
     atexit(do_the_cleanup);
 
+    signal(SIGINT, handle_SIGINT);
 
     int truck_capacity;
     int belt_size;
