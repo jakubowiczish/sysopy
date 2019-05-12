@@ -6,14 +6,14 @@
 
 #include "error.h"
 #include "pack.h"
-#include "conveyor_belt.h"
 #include "shared.h"
 #include "utils.h"
+#include "conveyor_belt.h"
 
 
 static sem_id_t sem;
 
-static conveyor_belt_t *cb;
+static conveyor_belt_t *queue;
 
 static int weight;
 
@@ -24,10 +24,10 @@ static pid_t pid;
 
 void do_the_cleanup() {
     close_semaphore(sem);
-    unmap_shared_mem(cb, CB_SIZE);
+    unmap_shared_mem(queue, CB_SIZE);
 
     char buffer[128];
-    sprintf(buffer, "\n%d (LOADER) cleaned up\n\n", pid);
+    sprintf(buffer, "\n%d (LOADER) cleaned up\n", pid);
     print_coloured_message(buffer, GREEN);
 }
 
@@ -40,7 +40,7 @@ void handle_SIGINT(int signal_num) {
 void place_pack() {
     pack_t pack = new_pack(weight);
 
-    int result = enqueue(&cb->q, sem, pack);
+    int result = enqueue(queue, sem, pack);
 
     if (result == 0) {
         char loader_buffer[1024];
@@ -103,8 +103,8 @@ int main(int argc, char **argv) {
 
 
     int mem_id = open_shared_mem(get_trucker_key(), CB_SIZE);
-    cb = map_shared_mem(mem_id, CB_SIZE);
-    sem = open_semaphore(cb->q.sem_key);
+    queue = map_shared_mem(mem_id, CB_SIZE);
+    sem = open_semaphore(queue->sem_key);
 
 
     atexit(do_the_cleanup);

@@ -2,9 +2,9 @@ CC = gcc
 
 FLAGS = -Wall -O3 -std=c99
 
-HEADERS = shared.h queue.h pack.h error.h utils.h
+HEADERS = shared.h conveyor_belt.h pack.h error.h utils.h
 
-SRC_FILES = systemv.c queue.c pack.c error.c utils.c
+SRC_FILES = systemv.c conveyor_belt.c pack.c error.c utils.c
 
 .DEFAULT: all
 

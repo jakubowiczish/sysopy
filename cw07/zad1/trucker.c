@@ -3,21 +3,22 @@
 #include <unistd.h>
 #include <signal.h>
 
-#include "conveyor_belt.h"
 #include "utils.h"
 #include "error.h"
+#include "shared.h"
+#include "conveyor_belt.h"
 
 
 static int mem_id;
 
 static conveyor_belt_t *cb;
 
-static sem_id_t q_sem;
+static sem_id_t cb_sem;
 
 
 void do_the_cleanup() {
     fflush(stdout);
-    remove_semaphore(get_queue_key(), q_sem);
+    remove_semaphore(get_queue_key(), cb_sem);
     unmap_shared_mem(cb, CB_SIZE);
     remove_shared_mem(get_trucker_key(), mem_id);
     print_coloured_message("\n(TRUCKER) cleaned up!\n", GREEN);
@@ -55,8 +56,8 @@ int main(int argc, char **argv) {
 
     cb->max_weight = belt_capacity;
 
-    q_sem = create_semaphore(get_queue_key());
-    cb->q = new_queue(belt_size, belt_capacity, get_queue_key());
+    cb_sem = create_semaphore(get_queue_key());
+    *cb = new_queue(belt_size, belt_capacity, get_queue_key());
 
 
     int current_weight = 0;
@@ -73,7 +74,7 @@ int main(int argc, char **argv) {
         fflush(stdout);
         sleep(1);
 
-        if (dequeue(&cb->q, q_sem, &pack) == NULL) {
+        if (dequeue(cb, cb_sem, &pack) == NULL) {
             if (empty == 0) {
                 print_coloured_message("conveyor belt is empty!", MAGENTA);
             }
@@ -86,7 +87,7 @@ int main(int argc, char **argv) {
 
 
         if (current_weight + pack.weight > truck_capacity) {
-            lock_semaphore(q_sem);
+            lock_semaphore(cb_sem);
 
             print_coloured_message("truck is full - unloading", GREEN);
 
@@ -96,7 +97,7 @@ int main(int argc, char **argv) {
 
             print_coloured_message("empty truck has just arrived!", CYAN);
 
-            unlock_semaphore(q_sem);
+            unlock_semaphore(cb_sem);
         }
 
 
@@ -113,7 +114,7 @@ int main(int argc, char **argv) {
         char info_buffer[1024];
         sprintf(
                 info_buffer,
-                "PID %7d   TIME %10dus   WEIGHT %3dkg   OCCUPIED  %3dkg   LEFT %3dkg\n\n",
+                "PID %7d   TIME %10dus   WEIGHT %3dkg   OCCUPIED  %3dkg   LEFT %3dkg\n",
                 pack.pid,
                 elapsed_time,
                 pack.weight,
