@@ -92,7 +92,9 @@ int main(int argc, char **argv) {
             print_coloured_message("passed argument is invalid!", RED);
         }
     } else if (argc == 3) {
-        if (sscanf(argv[1], "%d", &weight) != 1 || sscanf(argv[2], "%d", &cycles)) {
+        if (sscanf(argv[1], "%d", &weight) != 1
+            || sscanf(argv[2], "%d", &cycles) != 1) {
+
             print_coloured_message("passed arguments are invalid!", RED);
         }
     } else {
