@@ -13,7 +13,7 @@
 
 static sem_id_t sem;
 
-static conveyor_belt_t *queue;
+static conveyor_belt_t *cb;
 
 static int weight;
 
@@ -24,10 +24,10 @@ static pid_t pid;
 
 void do_the_cleanup() {
     close_semaphore(sem);
-    unmap_shared_mem(queue, CB_SIZE);
+    unmap_shared_mem(cb, CB_SIZE);
 
     char buffer[128];
-    sprintf(buffer, "\n%d (LOADER) cleaned up\n", pid);
+    sprintf(buffer, "%d (LOADER) cleaned up", pid);
     print_coloured_message(buffer, GREEN);
 }
 
@@ -40,16 +40,15 @@ void handle_SIGINT(int signal_num) {
 void place_pack() {
     pack_t pack = new_pack(weight);
 
-    int result = enqueue(queue, sem, pack);
+    int result = enqueue(cb, sem, pack);
 
     if (result == 0) {
         char loader_buffer[1024];
 
         sprintf(
                 loader_buffer,
-                "%7d %5ld %5ld  loaded %dkg\n",
+                "loader with PID: %7d, timestamp in microseconds: %5ld, loaded %dkg",
                 pid,
-                pack.timestamp.tv_sec,
                 pack.timestamp.tv_usec,
                 weight
         );
@@ -61,7 +60,7 @@ void place_pack() {
 
         sprintf(
                 full_conveyor_belt_buffer,
-                "%7d conveyor belt is full!\n",
+                "%7d conveyor belt is full!",
                 pid
         );
 
@@ -72,7 +71,7 @@ void place_pack() {
 
         sprintf(
                 maximum_weight_reached_buffer,
-                "%7d maximum conveyor belt weight reached!\n",
+                "%7d maximum conveyor belt weight reached!",
                 pid
         );
 
@@ -103,8 +102,8 @@ int main(int argc, char **argv) {
 
 
     int mem_id = open_shared_mem(get_trucker_key(), CB_SIZE);
-    queue = map_shared_mem(mem_id, CB_SIZE);
-    sem = open_semaphore(queue->sem_key);
+    cb = map_shared_mem(mem_id, CB_SIZE);
+    sem = open_semaphore(cb->sem_key);
 
 
     atexit(do_the_cleanup);

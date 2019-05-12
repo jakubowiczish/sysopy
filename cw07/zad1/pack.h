@@ -8,7 +8,6 @@ typedef struct pack_t {
     int weight;
     int pid;
     struct timeval timestamp;
-
 } pack_t;
 
 

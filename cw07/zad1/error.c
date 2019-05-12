@@ -7,25 +7,25 @@
 
 void print_coloured_message(char *message, char *colour) {
     if (strcmp(colour, RED) == 0) {
-        printf("\n" RED "%s" RESET "\n\n", message);
+        printf("\n" RED "%s" RESET "\n", message);
 
     } else if (strcmp(colour, GREEN) == 0) {
-        printf("\n" GREEN "%s" RESET "\n\n", message);
+        printf("\n" GREEN "%s" RESET "\n", message);
 
     } else if (strcmp(colour, GREEN) == 0) {
-        printf("\n" YELLOW "%s" RESET "\n\n", message);
+        printf("\n" YELLOW "%s" RESET "\n", message);
 
     } else if (strcmp(colour, BLUE) == 0) {
-        printf("\n" BLUE "%s" RESET "\n\n", message);
+        printf("\n" BLUE "%s" RESET "\n", message);
 
     } else if (strcmp(colour, MAGENTA) == 0) {
-        printf("\n" MAGENTA "%s" RESET "\n\n", message);
+        printf("\n" MAGENTA "%s" RESET "\n", message);
 
     } else if (strcmp(colour, CYAN) == 0) {
-        printf("\n" CYAN "%s" RESET "\n\n", message);
+        printf("\n" CYAN "%s" RESET "\n", message);
 
     } else if (strcmp(colour, WHITE) == 0) {
-        printf("\n" WHITE "%s" RESET "\n\n", message);
+        printf("\n" WHITE "%s" RESET "\n", message);
     }
 }
 

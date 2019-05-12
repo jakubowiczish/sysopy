@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
         if (current_weight + pack.weight > truck_capacity) {
             lock_semaphore(cb_sem);
 
-            print_coloured_message("truck is full - unloading", GREEN);
+            print_coloured_message("truck is full - unpacking...", GREEN);
 
             current_weight = 0;
 
@@ -114,7 +114,7 @@ int main(int argc, char **argv) {
         char info_buffer[1024];
         sprintf(
                 info_buffer,
-                "PID %7d   TIME %10dus   WEIGHT %3dkg   OCCUPIED  %3dkg   LEFT %3dkg\n",
+                "PID %7d   TIME %10dus   WEIGHT %3dkg   OCCUPIED  %3dkg   LEFT %3dkg",
                 pack.pid,
                 elapsed_time,
                 pack.weight,
