@@ -47,7 +47,7 @@ void place_pack() {
 
         sprintf(
                 loader_buffer,
-                "loader with PID: %7d, timestamp in microseconds: %5ld, loaded %dkg",
+                "PID: %7d, TIMESTAMP: %5ld, loaded %dkg",
                 pid,
                 pack.timestamp.tv_usec,
                 weight
@@ -114,7 +114,7 @@ int main(int argc, char **argv) {
 
 
     if (cycles == 0) {
-        while (1) {
+        forever {
             place_pack();
             sleep(1);
         }

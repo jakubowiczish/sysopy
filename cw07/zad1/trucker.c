@@ -70,13 +70,15 @@ int main(int argc, char **argv) {
     int empty = 0;
 
 
-    while (1) {
+    forever {
         fflush(stdout);
         sleep(1);
+
 
         if (dequeue(cb, cb_sem, &pack) == NULL) {
             if (empty == 0) {
                 print_coloured_message("conveyor belt is empty!", MAGENTA);
+                print_coloured_message("waiting to be loaded....", WHITE);
             }
 
             empty = 1;
