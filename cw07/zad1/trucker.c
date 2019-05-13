@@ -23,7 +23,7 @@ void do_the_cleanup() {
     remove_shared_mem(get_trucker_key(), mem_id);
 
     char cleaned_up_buffer[1024];
-    sprintf(cleaned_up_buffer, "\n(TRUCKER) cleaned up!, TIMESTAMP: %10ld\n", get_timestamp());
+    sprintf(cleaned_up_buffer, "\n(TRUCKER) cleaned up!, TIMESTAMP: %10ldus\n", get_timestamp());
 
     print_coloured_message(cleaned_up_buffer, GREEN);
 }
@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
         char error_buffer[1024];
         sprintf(
                 error_buffer,
-                "invalid arguments given - necessary arguments: truck_capacity, belt_size, belt_capacity, TIMESTAMP %10ld",
+                "invalid arguments given - necessary arguments: truck_capacity, belt_size, belt_capacity, TIMESTAMP %10ldus",
                 get_timestamp()
         );
 
@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
         char error_buffer[1024];
         sprintf(
                 error_buffer,
-                "given arguments are invalid, TIMESTAMP %10ld",
+                "given arguments are invalid, TIMESTAMP %10ldus",
                 get_timestamp()
         );
 
@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
 
 
     char empty_truck_buffer[1024];
-    sprintf(empty_truck_buffer, "empty truck has arrived %10ld", get_timestamp());
+    sprintf(empty_truck_buffer, "empty truck has arrived %10ldus", get_timestamp());
     print_coloured_message(empty_truck_buffer, BRIGHT_MAGENTA);
 
     int empty = 0;
@@ -98,10 +98,10 @@ int main(int argc, char **argv) {
         if (dequeue(cb, cb_sem, &pack) == NULL) {
             if (empty == 0) {
                 char conveyor_belt_empty[1024];
-                sprintf(conveyor_belt_empty, "conveyor belt is empty! TIMESTAMP %10ld", get_timestamp());
+                sprintf(conveyor_belt_empty, "conveyor belt is empty! TIMESTAMP %10ldus", get_timestamp());
 
                 char waiting_buffer[1024];
-                sprintf(waiting_buffer, "waiting to be loader.... TIMESTAMP %10ld", get_timestamp());
+                sprintf(waiting_buffer, "waiting to be loaded.... TIMESTAMP %10ldus", get_timestamp());
 
                 print_coloured_message(conveyor_belt_empty, MAGENTA);
                 print_coloured_message(waiting_buffer, WHITE);
@@ -118,7 +118,7 @@ int main(int argc, char **argv) {
             lock_semaphore(cb_sem);
 
             char full_truck_buffer[1024];
-            sprintf(full_truck_buffer, "truck is full - unpacking. TIMESTAMP %10ld", get_timestamp());
+            sprintf(full_truck_buffer, "truck is full - unpacking. TIMESTAMP %10ldus", get_timestamp());
 
             print_coloured_message(full_truck_buffer, GREEN);
 
@@ -127,7 +127,7 @@ int main(int argc, char **argv) {
             sleep(1);
 
             char empty_truck_buff[1024];
-            sprintf(empty_truck_buff, "empty truck has just arrived!. TIMESTAMP %10ld", get_timestamp());
+            sprintf(empty_truck_buff, "empty truck has just arrived!. TIMESTAMP %10ldus", get_timestamp());
 
             print_coloured_message(empty_truck_buff, CYAN);
 
@@ -137,7 +137,7 @@ int main(int argc, char **argv) {
 
         if (pack.weight > truck_capacity) {
             char capacity_buffer[1024];
-            sprintf(capacity_buffer, "capacity of the truck is too small for the pack. TIMESTAMP %10ld", get_timestamp());
+            sprintf(capacity_buffer, "capacity of the truck is too small for the pack. TIMESTAMP %10ldus", get_timestamp());
 
             print_coloured_message(capacity_buffer, YELLOW);
         }

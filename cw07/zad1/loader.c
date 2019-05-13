@@ -27,7 +27,7 @@ void do_the_cleanup() {
     unmap_shared_mem(cb, CB_SIZE);
 
     char buffer[128];
-    sprintf(buffer, "PID: %d - loader cleaned up, TIMESTAMP: %10ld", pid, get_timestamp());
+    sprintf(buffer, "PID: %d - loader cleaned up, TIMESTAMP: %10ldus", pid, get_timestamp());
     print_coloured_message(buffer, GREEN);
 }
 
@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
     if (argc == 2) {
         if (sscanf(argv[1], "%d", &weight) != 1) {
             char buffer[1024];
-            sprintf(buffer, "passed argument is invalid! TIMESTAMP: %10ld", get_timestamp());
+            sprintf(buffer, "passed argument is invalid! TIMESTAMP: %10ldus", get_timestamp());
 
             print_coloured_message(buffer, RED);
         }
@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
             || sscanf(argv[2], "%d", &cycles) != 1) {
 
             char buffer[1024];
-            sprintf(buffer, "passed arguments are invalid! TIMESTAMP: %10ld", get_timestamp());
+            sprintf(buffer, "passed arguments are invalid! TIMESTAMP: %10ldus", get_timestamp());
 
             print_coloured_message(buffer, RED);
         }
@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
         char buffer[1024];
         sprintf(
                 buffer,
-                "\"invalid number of arguments (loader) - necessary argument: weight, optional argument: cycles\" TIMESTAMP: %10ld",
+                "\"invalid number of arguments (loader) - necessary argument: weight, optional argument: cycles\" TIMESTAMP: %10ldus",
                 get_timestamp()
         );
 
