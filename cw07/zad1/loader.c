@@ -27,7 +27,7 @@ void do_the_cleanup() {
     unmap_shared_mem(cb, CB_SIZE);
 
     char buffer[128];
-    sprintf(buffer, "PID: %d - loader cleaned up", pid);
+    sprintf(buffer, "PID: %d - loader cleaned up, TIMESTAMP: %10ld", pid, get_timestamp());
     print_coloured_message(buffer, GREEN);
 }
 
@@ -47,10 +47,10 @@ void place_pack() {
 
         sprintf(
                 loader_buffer,
-                "PID: %7d, TIMESTAMP: %5ld - loaded %dkg",
+                "PID: %7d, loaded %dkg. TIMESTAMP: %10ldus",
                 pid,
-                pack.timestamp.tv_usec,
-                weight
+                weight,
+                get_timestamp()
         );
 
         print_coloured_message(loader_buffer, BRIGHT_BLUE);
@@ -60,8 +60,9 @@ void place_pack() {
 
         sprintf(
                 full_conveyor_belt_buffer,
-                "PID: %7d - conveyor belt is full!",
-                pid
+                "PID: %7d - conveyor belt is full! TIMESTAMP: %10ldus",
+                pid,
+                get_timestamp()
         );
 
         print_coloured_message(full_conveyor_belt_buffer, YELLOW);
@@ -71,8 +72,9 @@ void place_pack() {
 
         sprintf(
                 maximum_weight_reached_buffer,
-                "PID: %7d - maximum conveyor belt weight reached!",
-                pid
+                "PID: %7d - maximum conveyor belt weight reached! TIMESTAMP: %10ldus",
+                pid,
+                get_timestamp()
         );
 
         print_coloured_message(maximum_weight_reached_buffer, YELLOW);
@@ -89,17 +91,30 @@ int main(int argc, char **argv) {
 
     if (argc == 2) {
         if (sscanf(argv[1], "%d", &weight) != 1) {
-            print_coloured_message("passed argument is invalid!", RED);
+            char buffer[1024];
+            sprintf(buffer, "passed argument is invalid! TIMESTAMP: %10ld", get_timestamp());
+
+            print_coloured_message(buffer, RED);
         }
     } else if (argc == 3) {
         if (sscanf(argv[1], "%d", &weight) != 1
             || sscanf(argv[2], "%d", &cycles) != 1) {
 
-            print_coloured_message("passed arguments are invalid!", RED);
+            char buffer[1024];
+            sprintf(buffer, "passed arguments are invalid! TIMESTAMP: %10ld", get_timestamp());
+
+            print_coloured_message(buffer, RED);
         }
     } else {
-        print_coloured_message(
-                "invalid number of arguments (loader) - necessary argument: weight, optional argument: cycles", RED);
+
+        char buffer[1024];
+        sprintf(
+                buffer,
+                "\"invalid number of arguments (loader) - necessary argument: weight, optional argument: cycles\" TIMESTAMP: %10ld",
+                get_timestamp()
+        );
+
+        print_coloured_message(buffer, RED);
     }
 
 
