@@ -107,19 +107,20 @@ int main(int argc, char **argv) {
 
         current_weight += pack.weight;
 
-
+        // since he tried to put the pack till it's in the truck
         int elapsed_time = ((timestamp.tv_sec - pack.timestamp.tv_sec) * 1000000) +
-                           (timestamp.tv_usec - pack.timestamp.tv_usec);
+                (timestamp.tv_usec - pack.timestamp.tv_usec);
 
         char info_buffer[1024];
         sprintf(
                 info_buffer,
-                "PID %7d   TIME %10dus   WEIGHT %3dkg   OCCUPIED  %3dkg   LEFT %3dkg",
+                "PID %7d, TIME %10dus, WEIGHT %3dkg, OCCUPIED %3dkg, LEFT %3dkg, TIMESTAMP %5ld",
                 pack.pid,
                 elapsed_time,
                 pack.weight,
                 current_weight,
-                truck_capacity - current_weight
+                truck_capacity - current_weight,
+                timestamp.tv_usec
         );
 
 
