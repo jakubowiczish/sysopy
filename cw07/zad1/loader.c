@@ -27,7 +27,7 @@ void do_the_cleanup() {
     unmap_shared_mem(cb, CB_SIZE);
 
     char buffer[128];
-    sprintf(buffer, "%d (LOADER) cleaned up", pid);
+    sprintf(buffer, "PID: %d - loader cleaned up", pid);
     print_coloured_message(buffer, GREEN);
 }
 
@@ -47,20 +47,20 @@ void place_pack() {
 
         sprintf(
                 loader_buffer,
-                "PID: %7d, TIMESTAMP: %5ld, loaded %dkg",
+                "PID: %7d, TIMESTAMP: %5ld - loaded %dkg",
                 pid,
                 pack.timestamp.tv_usec,
                 weight
         );
 
-        print_coloured_message(loader_buffer, BLUE);
+        print_coloured_message(loader_buffer, BRIGHT_BLUE);
 
     } else if (result == -1 && last_result != -1) {
         char full_conveyor_belt_buffer[1024];
 
         sprintf(
                 full_conveyor_belt_buffer,
-                "%7d conveyor belt is full!",
+                "PID: %7d - conveyor belt is full!",
                 pid
         );
 
@@ -71,7 +71,7 @@ void place_pack() {
 
         sprintf(
                 maximum_weight_reached_buffer,
-                "%7d maximum conveyor belt weight reached!",
+                "PID: %7d - maximum conveyor belt weight reached!",
                 pid
         );
 

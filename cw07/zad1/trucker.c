@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
     pack_t pack;
     struct timeval timestamp;
 
-    print_coloured_message("empty truck has arrived!", BLUE);
+    print_coloured_message("empty truck has arrived!", BRIGHT_MAGENTA);
 
     int empty = 0;
 
@@ -107,13 +107,16 @@ int main(int argc, char **argv) {
             print_coloured_message("capacity of the truck is too small for the pack", YELLOW);
         }
 
+
         current_weight += pack.weight;
 
         // since he tried to put the pack till it's in the truck
         int elapsed_time = ((timestamp.tv_sec - pack.timestamp.tv_sec) * 1000000) +
                 (timestamp.tv_usec - pack.timestamp.tv_usec);
 
+
         char info_buffer[1024];
+
         sprintf(
                 info_buffer,
                 "PID %7d, TIME %10dus, WEIGHT %3dkg, OCCUPIED %3dkg, LEFT %3dkg, TIMESTAMP %5ld",
@@ -126,7 +129,7 @@ int main(int argc, char **argv) {
         );
 
 
-        print_coloured_message(info_buffer, BLUE);
+        print_coloured_message(info_buffer, BRIGHT_GREEN);
     }
 
     return 0;

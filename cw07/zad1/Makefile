@@ -20,5 +20,12 @@ spawner: $(SRC_FILES) $(HEADERS) spawner.c
 	$(CC) $(FLAGS) $(SRC_FILES) spawner.c -o spawner
 
 
+run_trucker: trucker
+	./trucker 20 5 10
+
+run_spawner: spawner
+	./spawner 5 5
+
+
 clean:
 	rm -f trucker loader spawner
