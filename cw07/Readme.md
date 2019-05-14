@@ -1,3 +1,5 @@
+# PIOTR SZCZYGIEŁ TO KOZAK ABSOLUTNY
+
 ## Zadania - Zestaw 7
 ### IPC - pamieć wspólna, semafory
 
