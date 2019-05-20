@@ -59,6 +59,4 @@ add_executable(
         cw07/zad1/spawner.c
         cw07/zad1/trucker.c
         cw07/zad2/posix.c
-        cw08/zad1/error.c
-        cw08/zad1/error.h
-)
+        cw08/zad1/utils.c cw08/zad1/utils.h cw08/zad1/errors.c cw08/zad1/errors.h cw08/zad1/image.h cw08/zad1/image.c cw08/zad1/filter.h)
