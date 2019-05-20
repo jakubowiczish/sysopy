@@ -1,1 +1,39 @@
-## Solutions for Operating Systems assignment
+# MIGHTILY
+
+# VIOLENTLY
+
+# HEAVILY
+
+# ENORMOUSLY
+
+# TREMENDOUSLY
+
+# IMMENSELY
+
+# HUGELY
+
+# EXCEEDINGLY
+
+# BOUNDLESSLY
+
+# IMMEASURABLY
+
+# STAGGERINGLY
+
+# VASTLY
+
+# EXCESSIVELY
+ 
+# ASTRONOMICALLY 
+ 
+# GIGANTICALLY 
+
+# INSPIRED BY:
+
+- https://github.com/piotrek-szczygiel/sysopy 
+
+- https://github.com/jakubdybczak/sysopy
+
+## BUT FOR THEM, THIS REPOSITORY WOULD NOT EXIST
+
+### IF YOU WANT WELL WRITTEN CODE, BUT MOST IMPORTANTLY WORKING CODE - GO THERE, YOU WILL NOT BE DISAPPOINTED
