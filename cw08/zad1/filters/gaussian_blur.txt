@@ -1,0 +1,8 @@
+# Gaussian blur 5x5
+# https://en.wikipedia.org/wiki/Kernel_(image_processing)
+5
+1 4 6 4 1
+4 16 24 16 4
+6 24 36 24 6
+4 16 24 16 4
+1 4 6 4 1

@@ -1,0 +1,6 @@
+# edge detection filter
+# http://aishack.in/tutorials/image-convolution-examples/
+3
+-1 -1 -1
+-1 8 -1
+-1 -1 -1
