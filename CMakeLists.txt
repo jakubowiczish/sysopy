@@ -6,6 +6,7 @@ set(CMAKE_C_STANDARD 11)
 add_executable(
         sysopy cw03/zad1/main.c
         cw03/zad2/main.c
+
         cw04/zad1a/main.c
         cw04/zad1b/main.c
         cw04/zad3a/sender.c
@@ -16,12 +17,14 @@ add_executable(
         cw04/zad3b/utils.c
         cw04/zad3b/utils.h
         cw04/zad3b/sender.c
+
         cw05/lab/main.c
         cw05/zad1/main.c
         cw05/zad2/master.c
         cw05/zad2/utils.c
         cw05/zad2/utils.h
         cw05/zad2/slave.c
+
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KolosEom/zad1(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KozlakSroda9:35/zad1(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KozlakSroda9:35/zad2(ok)/main.c"
@@ -44,6 +47,7 @@ add_executable(
         cw06/zad2/client.c
         cw06/zad2/helper.h
         cw06/zad2/server.c
+
         cw07/lab/main.c
         cw07/zad1/error.c
         cw07/zad1/error.h
@@ -59,4 +63,22 @@ add_executable(
         cw07/zad1/spawner.c
         cw07/zad1/trucker.c
         cw07/zad2/posix.c
-        cw08/zad1/utils.c cw08/zad1/utils.h cw08/zad1/errors.c cw08/zad1/errors.h cw08/zad1/image.h cw08/zad1/image.c cw08/zad1/filter.h cw08/zad1/filter.c cw08/zad1/filters_generator.c cw08/zad1/gaussian_filter.c cw08/zad1/gaussian_filter.h cw08/zad1/main.c cw08/zad1/test.c)
+
+        cw08/zad1_additional_things_done/utils.c
+        cw08/zad1_additional_things_done/utils.h
+        cw08/zad1_additional_things_done/errors.c
+        cw08/zad1_additional_things_done/errors.h
+        cw08/zad1_additional_things_done/image.h
+        cw08/zad1_additional_things_done/image.c
+        cw08/zad1_additional_things_done/filter.h
+        cw08/zad1_additional_things_done/filter.c
+        cw08/zad1_additional_things_done/filters_generator.c
+        cw08/zad1_additional_things_done/gaussian_filter.c
+        cw08/zad1_additional_things_done/gaussian_filter.h
+        cw08/zad1_additional_things_done/main.c
+        cw08/zad1_additional_things_done/test.c
+
+        cw08/zad1_only_necessary_things_done/error.c
+        cw08/zad1_only_necessary_things_done/image.c
+        cw08/zad1_only_necessary_things_done/error.h
+)
