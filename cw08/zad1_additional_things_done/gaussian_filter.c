@@ -3,7 +3,7 @@
 #include "gaussian_filter.h"
 #include <math.h>
 
-int gauss_filter_generate(double sigma, int size, filter_t *filter) {
+int gauss_filter_generate(double sigma, int size, filter_t* filter) {
     if (size % 2 == 0)
         return -1;
 
@@ -18,7 +18,6 @@ int gauss_filter_generate(double sigma, int size, filter_t *filter) {
 
     for (int y = -offset; y <= offset; y++)
         for (int x = -offset; x <= offset; x++) {
-
             r = sqrt(x * x + y * y);
 
             filter->array[index] = (exp(-(r * r) / s)) / (M_PI * s);

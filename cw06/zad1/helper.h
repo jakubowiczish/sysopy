@@ -11,11 +11,9 @@
 
 #define SERVER_ID -10
 
-
 #define MAX_CLIENTS_NUMBER 20
 
 #define MAX_GROUP_SIZE 10
-
 
 #define STOP 10
 #define LIST 11
@@ -34,8 +32,9 @@
 
 #define BUFFER_SIZE 1024
 
-#define EVER ;;
-
+#define EVER \
+    ;        \
+    ;
 
 struct msg_text {
     int id;
@@ -43,36 +42,30 @@ struct msg_text {
     char buf[256];
 };
 
-
 struct msg {
     long msg_type;
     struct msg_text msg_text;
 };
 
-
 struct string_array {
     unsigned int size;
-    char **data;
+    char** data;
 };
 
-
-void print_sth_and_exit(char *error_message, int error_status) {
+void print_sth_and_exit(char* error_message, int error_status) {
     printf("\033[1;31m%s \033[0m \n", error_message);
     exit(error_status);
 }
 
-
-void print_error(char *error_message) {
+void print_error(char* error_message) {
     printf("\033[1;31m%s \033[0m \n", error_message);
 }
 
-
-void print_some_info(char *info) {
+void print_some_info(char* info) {
     printf("\033[1;32m%s \033[0m \n", info);
 }
 
-
-char *type_to_string(int type) {
+char* type_to_string(int type) {
     switch (type) {
         case STOP: {
             return "STOP";
@@ -114,17 +107,14 @@ char *type_to_string(int type) {
             return "DEL";
         }
 
-        default: {
-            return "";
-        }
+        default: { return ""; }
     }
 }
 
-
-struct string_array process_file(char *string, long len, char delimiter) {
+struct string_array process_file(char* string, long len, char delimiter) {
     struct string_array items_array;
 
-    char **items = NULL;
+    char** items = NULL;
 
     int items_counter = 0;
 
@@ -142,7 +132,7 @@ struct string_array process_file(char *string, long len, char delimiter) {
         }
     }
 
-    items = calloc(items_counter, sizeof(char *));
+    items = calloc(items_counter, sizeof(char*));
 
     int global_index = 0;
     int start_index = 0;
@@ -161,7 +151,8 @@ struct string_array process_file(char *string, long len, char delimiter) {
 
         items[i] = calloc(global_index - start_index + 1, sizeof(char));
 
-        memcpy(items[i], string + start_index, (global_index - start_index) * sizeof(char));
+        memcpy(items[i], string + start_index,
+               (global_index - start_index) * sizeof(char));
 
         ++global_index;
     }
@@ -172,5 +163,4 @@ struct string_array process_file(char *string, long len, char delimiter) {
     return items_array;
 }
 
-
-#endif //SYSOPY_HELPER_H
+#endif  // SYSOPY_HELPER_H

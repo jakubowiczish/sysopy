@@ -1,6 +1,6 @@
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <signal.h>
 #include <unistd.h>
 
 /*
@@ -10,13 +10,11 @@
  *    sigqueue, siginfo itp.
  */
 
-void sig_handler(int sig, siginfo_t *siginfo, void *context) {
+void sig_handler(int sig, siginfo_t* siginfo, void* context) {
     printf("Child: %d\n", siginfo->si_value.sival_int);
 }
 
-
-int main(int argc, char *argv[]) {
-
+int main(int argc, char* argv[]) {
     if (argc != 3) {
         printf("Not a suitable number of program parameters\n");
         return 1;
@@ -26,8 +24,10 @@ int main(int argc, char *argv[]) {
 
     struct sigaction action;
 
-    action.sa_sigaction = &sig_handler; // takes three arguments, thus sa_sigaction, not sa_handler
-    action.sa_flags = SA_SIGINFO; // The signal handler takes three arguments, not one - because of SA_SIGINFO
+    action.sa_sigaction = &sig_handler;  // takes three arguments, thus
+                                         // sa_sigaction, not sa_handler
+    action.sa_flags = SA_SIGINFO;  // The signal handler takes three arguments,
+                                   // not one - because of SA_SIGINFO
 
     sigemptyset(&action.sa_mask);
 
@@ -43,8 +43,9 @@ int main(int argc, char *argv[]) {
 
     if (child == 0) {
         // zablokuj wszystkie sygnaly za wyjatkiem SIGUSR1
-        // zdefiniuj obsluge SIGUSR1 w taki sposob zeby proces potomny wydrukowal
-        // na konsole przekazana przez rodzica wraz z sygnalem SIGUSR1 wartosc
+        // zdefiniuj obsluge SIGUSR1 w taki sposob zeby proces potomny
+        // wydrukowal na konsole przekazana przez rodzica wraz z sygnalem
+        // SIGUSR1 wartosc
 
         sigprocmask(SIG_BLOCK, &mask, NULL);
 

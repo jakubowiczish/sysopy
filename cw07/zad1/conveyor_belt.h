@@ -9,7 +9,6 @@
 
 #define CB_SIZE sizeof(conveyor_belt_t)
 
-
 typedef struct conveyor_belt_t {
     int size;
     int capacity;
@@ -25,12 +24,10 @@ typedef struct conveyor_belt_t {
     pack_t array[MAX_CAPACITY];
 } conveyor_belt_t;
 
-
 conveyor_belt_t new_queue(int capacity, int max_weight, int sem_key);
 
-int enqueue(conveyor_belt_t *cb, sem_id_t sem, pack_t item);
+int enqueue(conveyor_belt_t* cb, sem_id_t sem, pack_t item);
 
-pack_t *dequeue(conveyor_belt_t *cb, sem_id_t sem, pack_t *item);
+pack_t* dequeue(conveyor_belt_t* cb, sem_id_t sem, pack_t* item);
 
-
-#endif //SYSOPY_CONVEYOR_BELT_H
+#endif  // SYSOPY_CONVEYOR_BELT_H

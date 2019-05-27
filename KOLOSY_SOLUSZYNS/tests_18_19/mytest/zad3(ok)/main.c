@@ -1,11 +1,11 @@
+#include <dirent.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <dirent.h>
 #include <string.h>
+#include <unistd.h>
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     int pdesk[2];
     if (pipe(pdesk) == -1) {
         perror("PIPE");
@@ -23,9 +23,10 @@ int main(int argc, char *argv[]) {
             exit(1);
         default: {
             /* Zamknij deskryptor do zapisu,
-             * skopiuj deskyptor końca do odczytu tego potoku na deskryptor wejścia standardowego,
-             * wykonaj  tr "a-z" "A-Z", w przypadku błędu  obsłuż go i wyjdź, zwracając 3.
-            */
+             * skopiuj deskyptor końca do odczytu tego potoku na deskryptor
+             * wejścia standardowego, wykonaj  tr "a-z" "A-Z", w przypadku błędu
+             * obsłuż go i wyjdź, zwracając 3.
+             */
 
             /* ADDED BY ME - FROM HERE */
 
@@ -33,7 +34,7 @@ int main(int argc, char *argv[]) {
 
             dup2(pdesk[0], STDIN_FILENO);
 
-            if (execlp("tr", "tr", "\"a-z\"", "\"A-Z\"", (char *) NULL) == -1) {
+            if (execlp("tr", "tr", "\"a-z\"", "\"A-Z\"", (char*)NULL) == -1) {
                 perror("EXECLP tr");
                 strerror(errno);
                 return 3;

@@ -7,13 +7,13 @@
 int expected_signal_counter = 0;
 int actual_signal_counter = 0;
 
-static void kill_send(int sig, siginfo_t *siginfo, void *context);
+static void kill_send(int sig, siginfo_t* siginfo, void* context);
 
-static void queue_send(int sig, siginfo_t *siginfo, void *context);
+static void queue_send(int sig, siginfo_t* siginfo, void* context);
 
-static void rt_send(int sig, siginfo_t *siginfo, void *context);
+static void rt_send(int sig, siginfo_t* siginfo, void* context);
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     if (argc != 4) {
         printf("WRONG NUMBER OF ARGUMENTS! TRY AGAIN!\n");
         return -1;
@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 
     int pid = atoi(argv[1]);
     expected_signal_counter = atoi(argv[2]);
-    char *mode = argv[3];
+    char* mode = argv[3];
 
     if (strcmp(mode, "KILL") == 0) {
         initialize_signals(kill_send);
@@ -64,41 +64,40 @@ int main(int argc, char **argv) {
 
     } else {
         printf("UNKNOWN MODE\n");
-
     }
 
     while (1) {
         pause();
     }
-
-
 }
 
-
-static void kill_send(int sig, siginfo_t *siginfo, void *context) {
+static void kill_send(int sig, siginfo_t* siginfo, void* context) {
     if (sig == SIGUSR1) {
         ++actual_signal_counter;
     } else {
-        printf("Expected counter: %d, Actual counter: %d\n", expected_signal_counter, actual_signal_counter);
+        printf("Expected counter: %d, Actual counter: %d\n",
+               expected_signal_counter, actual_signal_counter);
         exit(0);
     }
 }
 
-static void queue_send(int sig, siginfo_t *siginfo, void *context) {
+static void queue_send(int sig, siginfo_t* siginfo, void* context) {
     if (sig == SIGUSR1) {
         ++actual_signal_counter;
         printf("%dth SIGUSR1 signal caught\n", siginfo->si_value.sival_int);
     } else {
-        printf("Expected counter: %d, Actual counter: %d\n", expected_signal_counter, actual_signal_counter);
+        printf("Expected counter: %d, Actual counter: %d\n",
+               expected_signal_counter, actual_signal_counter);
         exit(0);
     }
 }
 
-static void rt_send(int sig, siginfo_t *siginfo, void *context) {
+static void rt_send(int sig, siginfo_t* siginfo, void* context) {
     if (sig == SIGRTMIN) {
         ++actual_signal_counter;
     } else {
-        printf("Expected counter: %d, Actual counter: %d\n", expected_signal_counter, actual_signal_counter);
+        printf("Expected counter: %d, Actual counter: %d\n",
+               expected_signal_counter, actual_signal_counter);
         exit(0);
     }
 }

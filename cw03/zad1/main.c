@@ -3,25 +3,25 @@
 #define _GNU_SOURCE 1
 
 #include <bits/types/time_t.h>
-#include <lzma.h>
 #include <dirent.h>
-#include <sys/stat.h>
-#include <string.h>
-#include <stdio.h>
 #include <ftw.h>
-#include <time.h>
+#include <lzma.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <zconf.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <time.h>
 #include <wait.h>
+#include <zconf.h>
 
 void search_directory() {
-    DIR *directory = opendir(".");
+    DIR* directory = opendir(".");
     if (directory == NULL) {
         printf("PROBLEM WITH OPENING DIRECTORY!\n");
         return;
     }
 
-    struct dirent *reader;
+    struct dirent* reader;
 
     while ((reader = readdir(directory)) != NULL) {
         struct stat status;
@@ -29,7 +29,8 @@ void search_directory() {
         lstat(reader->d_name, &status);
 
         if (S_ISDIR(status.st_mode)) {
-            if (strcmp(reader->d_name, ".") == 0 || strcmp(reader->d_name, "..") == 0) {
+            if (strcmp(reader->d_name, ".") == 0 ||
+                strcmp(reader->d_name, "..") == 0) {
                 continue;
             }
 
@@ -50,7 +51,8 @@ void search_directory() {
             } else {
                 char cwd_buff[2048];
                 if (getcwd(cwd_buff, 2048) == NULL) {
-                    printf("PROBLEM WITH CHANGING PATH TO CURRENT DIRECTORY!\n");
+                    printf(
+                        "PROBLEM WITH CHANGING PATH TO CURRENT DIRECTORY!\n");
                 }
 
                 printf("%s\n", cwd_buff);
@@ -58,21 +60,21 @@ void search_directory() {
             }
 
             if (chdir("..") != 0) {
-                printf("PROBLEM WITH CHANGING PATH TO %s /../\n", reader->d_name);
+                printf("PROBLEM WITH CHANGING PATH TO %s /../\n",
+                       reader->d_name);
             }
         }
-
     }
     closedir(directory);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     if (argc != 2) {
         printf("WRONG NUMBER OF ARGUMENTS\n!");
         return -1;
     }
 
-    char *path = argv[1];
+    char* path = argv[1];
 
     printf("RECURSIVE: \n\n");
 
@@ -82,5 +84,4 @@ int main(int argc, char **argv) {
     }
 
     search_directory();
-
 }

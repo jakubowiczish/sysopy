@@ -10,5 +10,5 @@ run:
 	make create_outfile
 	make generate_test
 
-make clean:
+clean:
 	rm -f out_main

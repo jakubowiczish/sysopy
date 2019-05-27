@@ -1,16 +1,13 @@
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <signal.h>
 #include <unistd.h>
 
-
-void sig_handler(int sig, siginfo_t *siginfo, void *context) {
+void sig_handler(int sig, siginfo_t* siginfo, void* context) {
     printf("Value from sigval %d\n", siginfo->si_value.sival_int);
 }
 
-
-int main(int argc, char *argv[]) {
-
+int main(int argc, char* argv[]) {
     if (argc != 3) {
         printf("Not a suitable number of program parameters\n");
         return 1;
@@ -27,12 +24,12 @@ int main(int argc, char *argv[]) {
 
     sigfillset(&mask);
 
-
     int child = fork();
     if (child == 0) {
-        //zablokuj wszystkie sygnaly za wyjatkiem SIGUSR1
-        //zdefiniuj obsluge SIGUSR1 w taki sposob zeby proces potomny wydrukowal
-        //na konsole przekazana przez rodzica wraz z sygnalem SIGUSR1 wartosc
+        // zablokuj wszystkie sygnaly za wyjatkiem SIGUSR1
+        // zdefiniuj obsluge SIGUSR1 w taki sposob zeby proces potomny
+        // wydrukowal na konsole przekazana przez rodzica wraz z sygnalem
+        // SIGUSR1 wartosc
 
         sigdelset(&mask, SIGUSR1);
 
@@ -43,8 +40,8 @@ int main(int argc, char *argv[]) {
         pause();
 
     } else {
-        //wyslij do procesu potomnego sygnal przekazany jako argv[2]
-        //wraz z wartoscia przekazana jako argv[1]
+        // wyslij do procesu potomnego sygnal przekazany jako argv[2]
+        // wraz z wartoscia przekazana jako argv[1]
 
         sleep(1);
 

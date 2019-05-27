@@ -1,8 +1,8 @@
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <signal.h>
 
 static int is_running = 1;
 
@@ -20,16 +20,16 @@ void fork_script_print() {
     }
 }
 
-
 void ctrl_c_handle_SIGINT(int sg) {
     printf("\nCtrl C pressed - end of program\n");
     exit(sg);
 }
 
-
 void ctrl_z_handle_SIGTSTP(int sg) {
     if (is_running == 1) {
-        printf("\nCtrl Z pressed - continue with Ctrl Z or terminate with Ctrl C\n");
+        printf(
+            "\nCtrl Z pressed - continue with Ctrl Z or terminate with Ctrl "
+            "C\n");
         kill(date_pid, SIGKILL);
     } else {
         fork_script_print();
@@ -38,8 +38,7 @@ void ctrl_z_handle_SIGTSTP(int sg) {
     is_running = 1 - is_running;
 }
 
-
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     signal(SIGINT, ctrl_c_handle_SIGINT);
 
     struct sigaction sigaction1;

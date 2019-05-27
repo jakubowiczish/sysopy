@@ -39,3 +39,5 @@
 ### IF YOU WANT WELL WRITTEN CODE, BUT MOST IMPORTANTLY WORKING CODE - GO THERE, YOU WILL NOT BE DISAPPOINTED
 
 ### "MINE" WORKS AS WELL
+
+#### In order to format code in all directories, install clang-format and then run ./format.sh in main project directory

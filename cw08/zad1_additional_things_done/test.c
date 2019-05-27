@@ -1,9 +1,9 @@
-#include <stdio.h>
 #include <pthread.h>
+#include <stdio.h>
 #include <unistd.h>
-#include "image.h"
 #include "filter.h"
 #include "gaussian_filter.h"
+#include "image.h"
 
 int main() {
     img_t image;

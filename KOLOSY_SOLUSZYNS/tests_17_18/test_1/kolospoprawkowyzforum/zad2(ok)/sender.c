@@ -1,14 +1,13 @@
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #define PIPE "./squareFIFO"
 
-int main(int argc, char *argv[]) {
-
+int main(int argc, char* argv[]) {
     if (argc != 2) {
         printf("Not a suitable number of program parameters\n");
         return (1);
@@ -25,7 +24,7 @@ int main(int argc, char *argv[]) {
     int fd = open(PIPE, O_WRONLY);
 
     char buf[512];
-    char *parameter = argv[1];
+    char* parameter = argv[1];
 
     snprintf(buf, sizeof(buf), "%s", parameter);
 

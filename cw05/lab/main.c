@@ -1,21 +1,20 @@
-#include <stdio.h>
 #include <fcntl.h>
+#include <stdio.h>
 #include <unistd.h>
 
 const int SIZE = 16384;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     if (argc != 4) {
         printf("WRONG NUMBER OF ARGUMENTS!\n");
         return -1;
     }
 
+    char* first_command = argv[1];
+    char* second_command = argv[2];
+    char* out_filename = argv[3];
 
-    char *first_command = argv[1];
-    char *second_command = argv[2];
-    char *out_filename = argv[3];
-
-    FILE *pipe_first = popen(first_command, "r");
+    FILE* pipe_first = popen(first_command, "r");
     if (pipe_first == NULL) {
         printf("PROBLEM WITH POPEN IN MAIN!\n");
         return -1;
@@ -40,7 +39,7 @@ int main(int argc, char **argv) {
     dup2(fd, 1);
     dup2(fd, 2);
 
-    FILE *pipe_second = popen(second_command, "w");
+    FILE* pipe_second = popen(second_command, "w");
     if (pipe_second == NULL) {
         printf("PROBLEM WITH POPEN IN MAIN\n");
         return -1;
@@ -53,7 +52,6 @@ int main(int argc, char **argv) {
 
     pclose(pipe_second);
     close(fd);
-
 
     return 0;
 }

@@ -5,14 +5,15 @@
 /*
  * 2. Program identyfikuje typy plików podane jako argumenty,
  * rozpoznaje zwykle pliki, katalogi oraz linki symboliczne.
- * Należy uzupełnić program w oznaczonych wierszach rozpoznając odpowiednie rodzaje plików.
- * (Trzy razy wywołać makro do sprawdzanie typu pliku z <podany argument>.st_mode
+ * Należy uzupełnić program w oznaczonych wierszach rozpoznając odpowiednie
+ * rodzaje plików. (Trzy razy wywołać makro do sprawdzanie typu pliku z <podany
+ * argument>.st_mode
  */
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     int i;
     struct stat buf;
-    char *tekst;
+    char* tekst;
 
     for (i = 1; i < argc; i++) {
         printf("%s: ", argv[i]);
@@ -25,23 +26,23 @@ int main(int argc, char *argv[]) {
 
         /* TU UZUPELNIC warunek rozpoznajacy zwykly plik*/
 
-        if (S_ISREG(buf.st_mode)) { // ADDED BY ME
+        if (S_ISREG(buf.st_mode)) {  // ADDED BY ME
             tekst = "zwykly plik";
         }
 
-            /* TU UZUPELNIC warunek rozpoznajacy katalog*/
+        /* TU UZUPELNIC warunek rozpoznajacy katalog*/
 
-        else if (S_ISDIR(buf.st_mode)) { // ADDED BY ME
+        else if (S_ISDIR(buf.st_mode)) {  // ADDED BY ME
             tekst = "katalog";
         }
 
-            /* TU UZUPELNIC warunek rozpoznajacy link symboliczny*/
+        /* TU UZUPELNIC warunek rozpoznajacy link symboliczny*/
 
-        else if (S_ISLNK(buf.st_mode)) {// ADDED BY ME
+        else if (S_ISLNK(buf.st_mode)) {  // ADDED BY ME
             tekst = "link symboliczny";
         }
 
-            /* TILL HERE */
+        /* TILL HERE */
 
         else {
             tekst = "**** cos innego !!! ****";

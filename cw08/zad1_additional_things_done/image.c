@@ -1,14 +1,13 @@
 #include "image.h"
-#include "errors.h"
-#include "utils.h"
-#include <unistd.h>
 #include <fcntl.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include "errors.h"
+#include "utils.h"
 
-
-int img_get_array_size(img_t *image) {
+int img_get_array_size(img_t* image) {
     if (image->color_mode == COLOR_BW || image->color_mode == COLOR_GRAY)
         return image->width * image->height;
 
@@ -18,8 +17,11 @@ int img_get_array_size(img_t *image) {
     return -1;
 }
 
-
-int img_allocate(img_t *image, int width, int height, int max_value, color_mode_t color_mode) {
+int img_allocate(img_t* image,
+                 int width,
+                 int height,
+                 int max_value,
+                 color_mode_t color_mode) {
     image->color_mode = color_mode;
     image->width = width;
     image->height = height;
@@ -28,8 +30,7 @@ int img_allocate(img_t *image, int width, int height, int max_value, color_mode_
     return 0;
 }
 
-
-int img_deallocate(img_t *image) {
+int img_deallocate(img_t* image) {
     image->color_mode = 0;
     image->width = 0;
     image->height = 0;
@@ -39,9 +40,8 @@ int img_deallocate(img_t *image) {
     return 0;
 }
 
-
-int img_load(const char *path, img_t *out) {
-    FILE *fd;
+int img_load(const char* path, img_t* out) {
+    FILE* fd;
 
     if ((fd = fopen(path, "r")) == NULL) {
         return err("Cannot open image", -1);
@@ -66,11 +66,10 @@ int img_load(const char *path, img_t *out) {
                 out->color_mode = COLOR_RGB;
 
             else
-                return err("Cannot open file 1 (unknown image format)", -1);
+                return err("Cannot open file 1 (unknown image format.sh)", -1);
 
         } else if (main_line == 1) {
-
-            char *ptr = strtok(buffer, " \r\n");
+            char* ptr = strtok(buffer, " \r\n");
 
             int i = 0;
             int width = 0;
@@ -91,7 +90,7 @@ int img_load(const char *path, img_t *out) {
             }
 
             if (i != 2)
-                return err("Cannot open file 2 (unknown image format)", -1);
+                return err("Cannot open file 2 (unknown image format.sh)", -1);
 
             out->width = width;
             out->height = height;
@@ -100,19 +99,20 @@ int img_load(const char *path, img_t *out) {
             int max_value = 0;
 
             if (parse_int(buffer, &max_value) < 0)
-                return err("Cannot open file 3 (unknown image format)", -1);
+                return err("Cannot open file 3 (unknown image format.sh)", -1);
 
             out->max_value = max_value;
             out->array = malloc(img_get_array_size(out) * sizeof(int));
 
         } else {
-            char *ptr = strtok(buffer, " \r\n");
+            char* ptr = strtok(buffer, " \r\n");
 
             while (ptr != NULL) {
                 int tmp;
 
                 if (parse_int(ptr, &tmp) < 0) {
-                    return err("Cannot open file 4 (unknown image format)", -1);
+                    return err("Cannot open file 4 (unknown image format.sh)",
+                               -1);
                 }
 
                 out->array[index++] = tmp;
@@ -125,16 +125,15 @@ int img_load(const char *path, img_t *out) {
     }
 
     if (index != img_get_array_size(out))
-        return err("Cannot open file 5 (unknown image format)", -1);
+        return err("Cannot open file 5 (unknown image format.sh)", -1);
 
     fclose(fd);
 
     return 0;
 }
 
-
-int img_save(const char *path, img_t *image) {
-    FILE *fd;
+int img_save(const char* path, img_t* image) {
+    FILE* fd;
 
     if ((fd = fopen(path, "w")) != NULL) {
         switch (image->color_mode) {
@@ -171,13 +170,12 @@ int img_save(const char *path, img_t *image) {
     return 0;
 }
 
-
-int img_new(img_t *out, img_t *image) {
-    return img_allocate(out, image->width, image->height, image->max_value, image->color_mode);
+int img_new(img_t* out, img_t* image) {
+    return img_allocate(out, image->width, image->height, image->max_value,
+                        image->color_mode);
 }
 
-
-int img_getpixelindex(img_t *image, int x, int y, int *index) {
+int img_getpixelindex(img_t* image, int x, int y, int* index) {
     *index = x + (y * image->width);
 
     if (image->color_mode == COLOR_RGB)

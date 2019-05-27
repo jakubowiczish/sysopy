@@ -4,8 +4,8 @@
 #include <signal.h>
 #include <stdio.h>
 
-void initialize_signals(void(*fun)(int, siginfo_t *, void *));
+void initialize_signals(void (*fun)(int, siginfo_t*, void*));
 
-void initialize_rt_signals(void(*fun)(int, siginfo_t *, void *));
+void initialize_rt_signals(void (*fun)(int, siginfo_t*, void*));
 
-#endif //SYSOPY_UTILS_H
+#endif  // SYSOPY_UTILS_H

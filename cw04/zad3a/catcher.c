@@ -4,21 +4,21 @@
 #include <unistd.h>
 #include "utils.h"
 
-static void kill_catch(int sig, siginfo_t *siginfo, void *context);
+static void kill_catch(int sig, siginfo_t* siginfo, void* context);
 
-static void queue_catch(int sig, siginfo_t *siginfo, void *context);
+static void queue_catch(int sig, siginfo_t* siginfo, void* context);
 
-static void rt_catch(int sig, siginfo_t *siginfo, void *context);
+static void rt_catch(int sig, siginfo_t* siginfo, void* context);
 
 int signal_counter = 0;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     if (argc != 2) {
         printf("WRONG NUMBER OF ARGUMENTS! TRY AGAIN!\n");
         return -1;
     }
 
-    char *mode = argv[1];
+    char* mode = argv[1];
 
     if (strcmp(mode, "KILL") == 0) {
         initialize_signals(kill_catch);
@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
         printf("UNKNOWN MODE\n");
     }
 
-    printf("\nPID: %d\n", (int) getpid());
+    printf("\nPID: %d\n", (int)getpid());
 
     while (1) {
         pause();
@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-static void kill_catch(int sig, siginfo_t *siginfo, void *context) {
+static void kill_catch(int sig, siginfo_t* siginfo, void* context) {
     if (sig == SIGUSR1) {
         ++signal_counter;
     } else {
@@ -53,13 +53,13 @@ static void kill_catch(int sig, siginfo_t *siginfo, void *context) {
             printf("PROBLEM WITH KILL IN CATCHER\n");
         }
 
-//        printf("%d: SIGNALS\n", signal_counter);
+        //        printf("%d: SIGNALS\n", signal_counter);
 
         exit(0);
     }
 }
 
-static void queue_catch(int sig, siginfo_t *siginfo, void *context) {
+static void queue_catch(int sig, siginfo_t* siginfo, void* context) {
     if (sig == SIGUSR1) {
         ++signal_counter;
     } else {
@@ -76,7 +76,7 @@ static void queue_catch(int sig, siginfo_t *siginfo, void *context) {
     }
 }
 
-static void rt_catch(int sig, siginfo_t *siginfo, void *context) {
+static void rt_catch(int sig, siginfo_t* siginfo, void* context) {
     if (sig == SIGRTMIN) {
         ++signal_counter;
     } else {

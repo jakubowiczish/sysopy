@@ -6,8 +6,8 @@
 
 #define BUFFER_SIZE 256
 
-void print_error_message(char *error_message);
+void print_error_message(char* error_message);
 
-void print_error_message_and_exit(char *error_message);
+void print_error_message_and_exit(char* error_message);
 
-#endif //SYSOPY_UTILS_H
+#endif  // SYSOPY_UTILS_H

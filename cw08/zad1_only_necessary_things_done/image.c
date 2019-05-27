@@ -10,30 +10,27 @@ static int thread_num;
 
 static int thread_type;
 
-static char *filename_image;
+static char* filename_image;
 
-static char *filename_filter;
+static char* filename_filter;
 
-static char *filename_out_image;
-
+static char* filename_out_image;
 
 typedef struct image_t {
     int width;
     int height;
-    int *data;
+    int* data;
 } image_t;
-
 
 typedef struct filter_t {
     int size;
-    int *data;
+    int* data;
 } filter_t;
 
-
-filter_t filter_load(const char *filename) {
+filter_t filter_load(const char* filename) {
     filter_t filter;
 
-    FILE *f = fopen(filename, "r");
+    FILE* f = fopen(filename, "r");
     if (f == NULL) {
         perr("unable to open filter %s", filename);
     }
@@ -53,17 +50,16 @@ filter_t filter_load(const char *filename) {
     return filter;
 }
 
-
-image_t image_load(const char *filename) {
+image_t image_load(const char* filename) {
     image_t img;
 
-    FILE *f = fopen(filename, "r");
+    FILE* f = fopen(filename, "r");
     if (f == NULL) {
         perr("unable to open image %s", filename);
     }
 
     if (fgetc(f) != 'P' || fgetc(f) != '2') {
-        err("invalid image format");
+        err("invalid image format.sh");
     }
 
     if (fscanf(f, "%d %d", &img.width, &img.height) != 2) {
@@ -92,9 +88,8 @@ image_t image_load(const char *filename) {
     return img;
 }
 
-
-void image_save(const char *filename, image_t img) {
-    FILE *f = fopen(filename, "w");
+void image_save(const char* filename, image_t img) {
+    FILE* f = fopen(filename, "w");
     if (f == NULL) {
         perr("unable to open file to save %s", filename);
     }
@@ -112,8 +107,7 @@ void image_save(const char *filename, image_t img) {
     fclose(f);
 }
 
-
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     if (argc != 6) {
         err("usage: %s thread_num thread_type image filter out_image", argv[0]);
     }

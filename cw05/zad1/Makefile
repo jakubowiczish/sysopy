@@ -6,5 +6,5 @@ out_file: main.c
 run: main.c out_file
 	./out_file commands.txt
 
-make clean: out_file
+clean: out_file
 	rm -f out_file

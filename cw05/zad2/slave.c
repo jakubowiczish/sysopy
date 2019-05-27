@@ -1,20 +1,20 @@
-#include "utils.h"
-#include <unistd.h>
-#include <time.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <time.h>
+#include <unistd.h>
+#include "utils.h"
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     if (argc != 3) {
         print_error_message_and_exit("WRONG NUMBER OF ARGUMENTS! TRY AGAIN");
     }
 
-    srand((unsigned) time(NULL));
+    srand((unsigned)time(NULL));
 
-    char *end_ptr = NULL;
-    char *named_pipe_path = argv[1];
+    char* end_ptr = NULL;
+    char* named_pipe_path = argv[1];
     long number_of_savings = strtol(argv[2], &end_ptr, 10);
 
     int named_pipe_file = open(named_pipe_path, O_WRONLY);
@@ -27,14 +27,14 @@ int main(int argc, char **argv) {
     char whole_buffer[WHOLE_SIZE];
 
     for (int i = 0; i < number_of_savings; ++i) {
-
-        FILE *date_file = popen("date", "r");
+        FILE* date_file = popen("date", "r");
         if (fread(date_buffer, sizeof(char), BUFFER_SIZE, date_file) < 1) {
             print_error_message("SOME PROBLEMS WITH GETTING DATA WITH POPEN");
         }
         fclose(date_file);
 
-        snprintf(whole_buffer, WHOLE_SIZE, "CURRENT PID OF SLAVE: %d, DATE: %s\n", getpid(), date_buffer);
+        snprintf(whole_buffer, WHOLE_SIZE,
+                 "CURRENT PID OF SLAVE: %d, DATE: %s\n", getpid(), date_buffer);
         if (write(named_pipe_file, whole_buffer, strlen(whole_buffer)) < 1) {
             print_error_message("SOME PROBLEMS WITH WRITING TO PIPE FILE");
         }

@@ -14,8 +14,7 @@ conveyor_belt_t new_queue(int capacity, int max_weight, int sem_key) {
     return cb;
 }
 
-
-int enqueue(conveyor_belt_t *cb, sem_id_t sem, pack_t pack) {
+int enqueue(conveyor_belt_t* cb, sem_id_t sem, pack_t pack) {
     if (cb->weight + pack.weight > cb->max_weight) {
         return -2;
     }
@@ -39,8 +38,7 @@ int enqueue(conveyor_belt_t *cb, sem_id_t sem, pack_t pack) {
     return result;
 }
 
-
-pack_t *dequeue(conveyor_belt_t *cb, sem_id_t sem, pack_t *pack) {
+pack_t* dequeue(conveyor_belt_t* cb, sem_id_t sem, pack_t* pack) {
     lock_semaphore(sem);
 
     if (pack == NULL || cb->size == 0) {
