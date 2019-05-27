@@ -81,4 +81,7 @@ add_executable(
         cw08/zad1_only_necessary_things_done/error.c
         cw08/zad1_only_necessary_things_done/image.c
         cw08/zad1_only_necessary_things_done/error.h
-)
+
+        cw09/zad1/error.h
+        cw09/zad1/error.c
+        cw09/zad1/roller_coaster.c)
