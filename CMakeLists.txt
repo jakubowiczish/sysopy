@@ -25,18 +25,23 @@ add_executable(
         cw05/zad2/utils.h
         cw05/zad2/slave.c
 
-        "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KolosEom/zad1(ok)/main.c"
+
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KozlakSroda9:35/zad1(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KozlakSroda9:35/zad2(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KozlakSroda9:35/zad3(ok)/main.c"
+
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/SiwikWtorek14:40/zad1(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/SiwikWtorek14:40/zad2(ok) - to samo co KozlakSroda9:35zad3/main.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/SiwikWtorek14:40/zad3(ok)/main.c"
+
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KolosEom/zad1(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KolosEom/zad2(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KolosEom/zad3(ok)/main.c"
+
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/kolospoprawkowyzforum/zad2(ok)/sender.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/kolospoprawkowyzforum/zad2(ok)/receiver.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/kolospoprawkowyzforum/zad3(ok)/main.c"
+
         "KOLOSY_SOLUSZYNS/tests_18_19/mytest/zad1(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_18_19/mytest/zad2(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_18_19/mytest/zad3(ok)/main.c"
@@ -84,4 +89,24 @@ add_executable(
 
         cw09/zad1/error.h
         cw09/zad1/error.c
-        cw09/zad1/roller_coaster.c)
+        cw09/zad1/roller_coaster.c
+
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/EOM/zad1/main.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/EOM/zad2/main.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/EOM/zad3/main.c"
+
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/JK/zad1/zad1.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/JK/zad2/zad2.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/JK/zad3/main.c"
+
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_1/zad1/main.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_1/zad2/sender.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_1/zad2/receiver.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_1/zad3/main.c"
+
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2/zad1/main.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2/zad2/sender.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2/zad2/receiver.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2/zad3/sender.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2/zad3/receiver.c"
+)
