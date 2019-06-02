@@ -1,42 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
-
-#define KEY  "./queuekey"
+#define KEY "./queuekey"
 
 
 int main() {
-        sleep(1);
-        int val = 0;
+    sleep(1);
+    int val = 0;
 
+    /**********************************
+    Otworz kolejke systemu V "reprezentowana" przez KEY
+    **********************************/
 
-	/**********************************
-	Otworz kolejke systemu V "reprezentowana" przez KEY
-	**********************************/
+    /** ADDED BY ME FROM HERE **/
 
-	
+    key_t key = ftok(KEY, 1);
 
+    int queue = msgget(key, IPC_CREAT | 0644);
+    if (queue < 0) {
+        perror("msgget");
+        exit(1);
+    }
 
-	while(1)
- 	{	
-	    /**********************************
-	    Odczytaj zapisane w kolejce wartosci i przypisz je do zmiennej val
-	    obowiazuja funkcje systemu V
-	    ************************************/
+    /** TILL HERE **/
 
-        	 printf("%d square is: %d\n", val, val*val);
- 
-	}
+    while (1) {
+        /**********************************
+        Odczytaj zapisane w kolejce wartosci i przypisz je do zmiennej val
+        obowiazuja funkcje systemu V
+        ************************************/
 
-	/*******************************
-	posprzataj
-	********************************/
+        /** ADDED BY ME FROM HERE **/
 
+        if (msgrcv(queue, &val, sizeof(val), 0, 0) < 0) {
+            perror("Could not receive message");
+            exit(1);
+        }
 
-     return 0;
-   }
+        /** TILL HERE **/
+
+        printf("%d square is: %d\n", val, val * val);
+    }
+
+    /*******************************
+    posprzataj
+    ********************************/
+
+    msgctl(queue, IPC_RMID, NULL);
+
+    return 0;
+}

@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 
         pthread_join(hello_threads[i], &ret_val);
 
-        hello_results[i] = (int)ret_val;
+        hello_results[i] = (int*)ret_val;
     }
 
     for (i = 0; i < THREADS_NR; i++) {
