@@ -25,11 +25,13 @@ int main(int argc, char* argv[]) {
 
     for (i = 0; i < THREADS_NR; i++) {
         *count = i + 1;
+
         int result =
             pthread_create(&hello_threads[i], NULL, hello, (void*)count);
         if (result != 0) {
             perror("Could not create thread.");
         }
+
         usleep(1000);
     }
 
@@ -41,7 +43,9 @@ int main(int argc, char* argv[]) {
 
     for (i = 0; i < THREADS_NR; i++) {
         void* ret_val;
+
         pthread_join(hello_threads[i], &ret_val);
+
         hello_results[i] = (int)ret_val;
     }
 

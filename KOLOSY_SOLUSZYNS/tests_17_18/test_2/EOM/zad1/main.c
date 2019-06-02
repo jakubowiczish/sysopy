@@ -38,7 +38,7 @@ int main() {
         buf[i] = i * i;
         printf("Wartość: %d \n", buf[i]);
     }
-    
+
     printf("Memory written\n");
 
     // odłącz i usuń segment pamięci współdzielonej

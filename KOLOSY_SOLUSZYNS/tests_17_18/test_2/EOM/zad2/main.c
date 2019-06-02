@@ -34,18 +34,20 @@ int main(int argc, char** args) {
 
     int fd = open(FILE_NAME, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
-    int parentLoopCounter = atoi(args[1]);
-    int childLoopCounter = atoi(args[2]);
+    int parent_loop_counter = atoi(args[1]);
+    int child_loop_counter = atoi(args[2]);
 
     char buf[20];
-    pid_t childPid;
+    pid_t child_pid;
     int max_sleep_time = atoi(args[3]);
 
-    if (childPid = fork()) {
+    child_pid = fork();
+
+    if (child_pid) {
         int status = 0;
         srand((unsigned)time(0));
 
-        while (parentLoopCounter--) {
+        while (parent_loop_counter--) {
             int s = rand() % max_sleep_time + 1;
             sleep(s);
 
@@ -60,7 +62,7 @@ int main(int argc, char** args) {
             print_sem_value(sem_id);
 
             sprintf(buf, "Wpis rodzica. Petla %d. Spalem %d\n",
-                    parentLoopCounter, s);
+                    parent_loop_counter, s);
             write(fd, buf, strlen(buf));
             write(1, buf, strlen(buf));
 
@@ -74,12 +76,13 @@ int main(int argc, char** args) {
 
             print_sem_value(sem_id);
         }
-        waitpid(childPid, &status, 0);
+
+        waitpid(child_pid, &status, 0);
 
     } else {
         srand((unsigned)time(0));
 
-        while (childLoopCounter--) {
+        while (child_loop_counter--) {
             int s = rand() % max_sleep_time + 1;
             sleep(s);
 
@@ -94,7 +97,7 @@ int main(int argc, char** args) {
             print_sem_value(sem_id);
 
             sprintf(buf, "Wpis dziecka. Petla %d. Spalem %d\n",
-                    childLoopCounter, s);
+                    child_loop_counter, s);
             write(fd, buf, strlen(buf));
             write(1, buf, strlen(buf));
 
