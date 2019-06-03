@@ -4,7 +4,9 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 
-#define KEY "./queuekey"
+/** path must be an existing one **/
+
+#define KEY "/tmp"
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {

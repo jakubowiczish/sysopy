@@ -6,7 +6,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define KEY "./queuekey"
+/** path must be an existing one **/
+
+#define KEY "/tmp"
 
 int main() {
     sleep(1);
@@ -20,7 +22,7 @@ int main() {
 
     key_t key = ftok(KEY, 1);
 
-    int queue = msgget(key, IPC_CREAT | 0644);
+    int queue = msgget(key, IPC_CREAT | 0666);
     if (queue < 0) {
         perror("msgget");
         exit(1);
@@ -36,7 +38,7 @@ int main() {
 
         /** ADDED BY ME FROM HERE **/
 
-        if (msgrcv(queue, &val, sizeof(val), 0, 0) < 0) {
+        if (msgrcv(queue, &val, sizeof(val), 0, 0) <= 0) {
             perror("Could not receive message");
             exit(1);
         }

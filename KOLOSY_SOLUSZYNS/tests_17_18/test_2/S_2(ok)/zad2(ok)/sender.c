@@ -48,7 +48,6 @@ int main(int argc, char* argv[]) {
     posprzataj po sockecie
     ********************************/
 
-    shutdown(fd, SHUT_RDWR);
     close(fd);
 
     return 0;
