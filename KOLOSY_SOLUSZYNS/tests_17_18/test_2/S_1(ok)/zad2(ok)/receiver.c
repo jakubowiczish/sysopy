@@ -23,8 +23,16 @@ int main(int argc, char** argv) {
 
     int fd = shm_open(SHM_NAME, O_RDWR, 0666);
 
+    char* addr =
+        (char*)mmap(NULL, MAX_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 
+    val = atoi(addr);
 
+    munmap(addr, MAX_SIZE);
+
+    /** not told to clean up ?? */
+
+    /** TILL HERE **/
 
     printf("%d square is: %d \n", val, val * val);
     return 0;

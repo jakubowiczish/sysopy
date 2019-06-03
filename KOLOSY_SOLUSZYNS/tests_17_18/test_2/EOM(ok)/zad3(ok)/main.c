@@ -11,7 +11,11 @@ void* hello(void* arg) {
     // (numer_TID)
     // i zwracającą status o wartości równej agrumentowi przesłanemu do funkcji
 
+    /** ADDED BY ME FROM HERE **/
+
     printf("Hello\tTID %ld\targ: %d\n", pthread_self(), *(int*)arg);
+
+    /** TILL HERE **/
 
     // koniec
 
@@ -41,6 +45,8 @@ int main(int argc, char* argv[]) {
     // zapisz go w  hello_result i wypisz na ekran: Thread (indeks wątku+1) TID:
     // (nr_TID) returned value: (status zakonczenia watku)
 
+    /** ADDED BY ME FROM HERE **/
+
     for (i = 0; i < THREADS_NR; i++) {
         void* ret_val;
 
@@ -53,6 +59,8 @@ int main(int argc, char* argv[]) {
         printf("Thread\t%d TID: %ld\tretval: %d\n", i + 1, hello_threads[i],
                hello_results[i]);
     }
+
+    /** TILL HERE **/
 
     // koniec
     free(count);
