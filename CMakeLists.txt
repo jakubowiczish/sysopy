@@ -4,11 +4,37 @@ project(sysopy C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(
-        sysopy cw03/zad1/main.c
+        sysopy
+
+        cw01/zad1/lib.c
+        cw01/zad1/lib.h
+        cw01/zad2/lib.c
+        cw01/zad2/lib.h
+        cw01/zad2/lib_dynamic.h
+        cw01/zad2/main.c
+        cw01/zad3/zad3a/lib.c
+        cw01/zad3/zad3a/lib.h
+        cw01/zad3/zad3a/lib_dynamic.h
+        cw01/zad3/zad3a/main.c
+        cw01/zad3/zad3b/lib.c
+        cw01/zad3/zad3b/lib.h
+        cw01/zad3/zad3b/lib_dynamic.h
+        cw01/zad3/zad3b/main.c
+
+        cw02/zad1/main.c
+        cw02/zad2/main.c
+
+        cw03/zad1/main.c
         cw03/zad2/main.c
 
         cw04/zad1a/main.c
         cw04/zad1b/main.c
+        cw04/zad2/error.h
+        cw04/zad2/error.c
+        cw04/zad2/tester.c
+        cw04/zad2/monitor.c
+        cw04/zad2/backup.c
+        cw04/zad2/backup.h
         cw04/zad3a/sender.c
         cw04/zad3a/utils.h
         cw04/zad3a/utils.c
@@ -24,7 +50,6 @@ add_executable(
         cw05/zad2/utils.c
         cw05/zad2/utils.h
         cw05/zad2/slave.c
-
 
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KozlakSroda9:35/zad1(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/KozlakSroda9:35/zad2(ok)/main.c"
@@ -83,9 +108,9 @@ add_executable(
         cw08/zad1_additional_things_done/main.c
         cw08/zad1_additional_things_done/test.c
 
-        cw08/zad1_only_necessary_things_done/error.c
-        cw08/zad1_only_necessary_things_done/image.c
         cw08/zad1_only_necessary_things_done/error.h
+        cw08/zad1_only_necessary_things_done/error.c
+        cw08/zad1_only_necessary_things_done/filter.c
 
         cw09/zad1/error.h
         cw09/zad1/error.c

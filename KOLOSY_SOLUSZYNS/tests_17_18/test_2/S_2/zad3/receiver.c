@@ -8,7 +8,6 @@
 
 #define KEY "./queuekey"
 
-
 int main() {
     sleep(1);
     int val = 0;

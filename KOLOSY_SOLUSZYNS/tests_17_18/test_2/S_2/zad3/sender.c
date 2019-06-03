@@ -6,7 +6,6 @@
 
 #define KEY "./queuekey"
 
-
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         printf("Not a suitable number of program parameters\n");

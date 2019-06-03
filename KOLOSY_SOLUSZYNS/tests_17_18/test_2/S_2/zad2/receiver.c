@@ -23,7 +23,7 @@ int main() {
     struct sockaddr_un addr = {.sun_family = AF_UNIX, .sun_path = SOCK_PATH};
 
     fd = socket(AF_UNIX, SOCK_DGRAM, 0);
-    bind(fd, (const struct sockaddr*) &addr, sizeof(struct sockaddr_un));
+    bind(fd, (const struct sockaddr*)&addr, sizeof(struct sockaddr_un));
 
     /** TILL HERE **/
 
@@ -32,7 +32,6 @@ int main() {
         perror("Error receiving message");
     int val = atoi(buf);
     printf("%d square is: %d\n", val, val * val);
-
 
     /***************************
     Posprzataj po sockecie

@@ -1,0 +1,162 @@
+applying edge.fil to mona.pgm using 1 threads in block mode
+thread 140539726886656 finished in  0s 003967us
+program finished in  0s 004343us
+
+applying edge.fil to mona.pgm using 2 threads in block mode
+thread 139970123257600 finished in  0s 002121us
+thread 139970114864896 finished in  0s 002320us
+program finished in  0s 004372us
+
+applying edge.fil to mona.pgm using 4 threads in block mode
+thread 140043723818752 finished in  0s 000955us
+thread 140043715426048 finished in  0s 000931us
+thread 140043707033344 finished in  0s 001858us
+thread 140043698640640 finished in  0s 000903us
+program finished in  0s 002077us
+
+applying edge.fil to mona.pgm using 8 threads in block mode
+thread 140174306248448 finished in  0s 001415us
+thread 140174297855744 finished in  0s 001767us
+thread 140174289463040 finished in  0s 001356us
+thread 140174281070336 finished in  0s 002044us
+thread 140174272677632 finished in  0s 001094us
+thread 140174264284928 finished in  0s 001302us
+thread 140174255892224 finished in  0s 000678us
+thread 140174176548608 finished in  0s 000773us
+program finished in  0s 003742us
+
+applying edge.fil to mona.pgm using 1 threads in interleaved mode
+thread 140477363566336 finished in  0s 004213us
+program finished in  0s 004795us
+
+applying edge.fil to mona.pgm using 2 threads in interleaved mode
+thread 139666195703552 finished in  0s 003843us
+thread 139666187310848 finished in  0s 003263us
+program finished in  0s 004327us
+
+applying edge.fil to mona.pgm using 4 threads in interleaved mode
+thread 139787752851200 finished in  0s 002437us
+thread 139787744458496 finished in  0s 002414us
+thread 139787736065792 finished in  0s 004239us
+thread 139787727673088 finished in  0s 001700us
+program finished in  0s 005113us
+
+applying edge.fil to mona.pgm using 8 threads in interleaved mode
+thread 140566370658048 finished in  0s 005188us
+thread 140566362265344 finished in  0s 003466us
+thread 140566353872640 finished in  0s 005344us
+thread 140566345479936 finished in  0s 003616us
+thread 140566337087232 finished in  0s 001932us
+thread 140566328694528 finished in  0s 001628us
+thread 140566320301824 finished in  0s 001298us
+thread 140566311909120 finished in  0s 000691us
+program finished in  0s 007736us
+
+applying gauss.fil to mona.pgm using 1 threads in block mode
+thread 140395686475520 finished in  0s 061443us
+program finished in  0s 061902us
+
+applying gauss.fil to mona.pgm using 2 threads in block mode
+thread 139640784148224 finished in  0s 025506us
+thread 139640775755520 finished in  0s 025637us
+program finished in  0s 025842us
+
+applying gauss.fil to mona.pgm using 4 threads in block mode
+thread 139622880737024 finished in  0s 013209us
+thread 139622872344320 finished in  0s 026940us
+thread 139622863951616 finished in  0s 012846us
+thread 139622855558912 finished in  0s 021448us
+program finished in  0s 027155us
+
+applying gauss.fil to mona.pgm using 8 threads in block mode
+thread 139995244119808 finished in  0s 007253us
+thread 139995235727104 finished in  0s 007471us
+thread 139995227334400 finished in  0s 015486us
+thread 139995218941696 finished in  0s 021547us
+thread 139995210548992 finished in  0s 015148us
+thread 139995202156288 finished in  0s 006765us
+thread 139995193763584 finished in  0s 019687us
+thread 139995185370880 finished in  0s 006694us
+program finished in  0s 022456us
+
+applying gauss.fil to mona.pgm using 1 threads in interleaved mode
+thread 140432418240256 finished in  0s 057432us
+program finished in  0s 057797us
+
+applying gauss.fil to mona.pgm using 2 threads in interleaved mode
+thread 140653710657280 finished in  0s 025740us
+thread 140653702264576 finished in  0s 026624us
+program finished in  0s 026861us
+
+applying gauss.fil to mona.pgm using 4 threads in interleaved mode
+thread 139930754295552 finished in  0s 026533us
+thread 139930745902848 finished in  0s 013409us
+thread 139930737510144 finished in  0s 027974us
+thread 139930729117440 finished in  0s 016011us
+program finished in  0s 030222us
+
+applying gauss.fil to mona.pgm using 8 threads in interleaved mode
+thread 139864700610304 finished in  0s 007001us
+thread 139864692217600 finished in  0s 011693us
+thread 139864683824896 finished in  0s 014339us
+thread 139864675432192 finished in  0s 006608us
+thread 139864667039488 finished in  0s 014528us
+thread 139864658646784 finished in  0s 020780us
+thread 139864650254080 finished in  0s 006925us
+thread 139864641861376 finished in  0s 010766us
+program finished in  0s 021327us
+
+applying sharpen.fil to mona.pgm using 1 threads in block mode
+thread 140629915555584 finished in  0s 004004us
+program finished in  0s 004239us
+
+applying sharpen.fil to mona.pgm using 2 threads in block mode
+thread 140596019336960 finished in  0s 003795us
+thread 140596010944256 finished in  0s 003265us
+program finished in  0s 008855us
+
+applying sharpen.fil to mona.pgm using 4 threads in block mode
+thread 140584370284288 finished in  0s 001274us
+thread 140584361891584 finished in  0s 002218us
+thread 140584353498880 finished in  0s 001757us
+thread 140584345106176 finished in  0s 001101us
+program finished in  0s 002438us
+
+applying sharpen.fil to mona.pgm using 8 threads in block mode
+thread 140416703960832 finished in  0s 001986us
+thread 140416695568128 finished in  0s 002400us
+thread 140416687175424 finished in  0s 001756us
+thread 140416678782720 finished in  0s 003023us
+thread 140416670390016 finished in  0s 002287us
+thread 140416661997312 finished in  0s 001477us
+thread 140416653604608 finished in  0s 001648us
+thread 140416645211904 finished in  0s 000500us
+program finished in  0s 004158us
+
+applying sharpen.fil to mona.pgm using 1 threads in interleaved mode
+thread 140685739120384 finished in  0s 004586us
+program finished in  0s 004774us
+
+applying sharpen.fil to mona.pgm using 2 threads in interleaved mode
+thread 139910807123712 finished in  0s 002878us
+thread 139910798731008 finished in  0s 002657us
+program finished in  0s 003252us
+
+applying sharpen.fil to mona.pgm using 4 threads in interleaved mode
+thread 140078603724544 finished in  0s 003134us
+thread 140078595331840 finished in  0s 001781us
+thread 140078586939136 finished in  0s 004786us
+thread 140078578546432 finished in  0s 002108us
+program finished in  0s 006244us
+
+applying sharpen.fil to mona.pgm using 8 threads in interleaved mode
+thread 139792722003712 finished in  0s 003160us
+thread 139792713611008 finished in  0s 004507us
+thread 139792705218304 finished in  0s 004145us
+thread 139792696825600 finished in  0s 003038us
+thread 139792688432896 finished in  0s 001857us
+thread 139792680040192 finished in  0s 001591us
+thread 139792671647488 finished in  0s 003555us
+thread 139792663254784 finished in  0s 000978us
+program finished in  0s 006368us
+
