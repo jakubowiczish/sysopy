@@ -18,21 +18,20 @@ int main(int argc, char* argv[]) {
     Obowiazuja funkcje systemu V
     ******************************************************/
 
-    key_t key = ftok(KEY, 1);
+    /** ADDED BY ME FROM HERE **/
 
-    int queue = msgget(key, 0644);
+    key_t key = ftok(KEY, 1);
 
     int value = atoi(argv[1]);
 
-    struct msgbuf* buffer = calloc(1, sizeof(long) + sizeof(value));
+    int queue = msgget(key, IPC_CREAT | 0666);
 
-    buffer->mtype = 1;
-
-    memcpy(&buffer->mtext, &value, sizeof(value));
-
-    if (msgsnd(queue, &buffer, sizeof(value), 0) < 0) {
+    if (msgsnd(queue, &value, sizeof(int), 0) < 0) {
         perror("Problem with msgsnd");
+        exit(1);
     }
+
+    /** TILL HERE **/
 
     return 0;
 }

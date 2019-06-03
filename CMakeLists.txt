@@ -129,9 +129,9 @@ add_executable(
         "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_1(ok)/zad2(ok)/receiver.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_1(ok)/zad3(ok)/main.c"
 
-        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2/zad1/main.c"
-        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2/zad2/sender.c"
-        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2/zad2/receiver.c"
-        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2/zad3/sender.c"
-        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2/zad3/receiver.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2(ok)/zad1(ok)/main.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2(ok)/zad2(ok)/sender.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2(ok)/zad2(ok)/receiver.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2(ok)/zad3(ok)/sender.c"
+        "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2(ok)/zad3(ok)/receiver.c"
 )

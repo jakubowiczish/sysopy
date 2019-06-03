@@ -24,9 +24,14 @@ int main(int argc, char* argv[]) {
 
     /** ADDED BY ME FROM HERE **/
 
-    struct sockaddr_un addr = {.sun_family = AF_UNIX, .sun_path = SOCK_PATH};
-
     fd = socket(AF_UNIX, SOCK_DGRAM, 0);
+
+    struct sockaddr_un addr;
+
+    addr.sun_family = AF_UNIX;
+    addr.sun_path[0] = '\0';
+
+    strncpy(addr.sun_path, SOCK_PATH, UNIX_PATH_MAX);
 
     connect(fd, (const struct sockaddr*)&addr, sizeof(struct sockaddr_un));
 

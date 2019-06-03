@@ -28,7 +28,11 @@ int main(int argc, char** args) {
     Utworz semafor posixowy. Ustaw jego wartosc na 1
     *************************************/
 
+    /** ADDED BY ME FROM HERE **/
+
     sem_t* sem_id = sem_open(SEM_NAME, O_CREAT, 0644, 1);
+
+    /** TILL HERE **/
 
     print_sem_value(sem_id);
 
@@ -56,6 +60,7 @@ int main(int argc, char** args) {
             /******************************************
             Sekcja krytyczna. Zabezpiecz dostep semaforem
             ******************************************/
+
             /** ADDED BY ME FROM HERE **/
 
             sem_wait(sem_id);
@@ -74,6 +79,7 @@ int main(int argc, char** args) {
             /****************************************************
             Koniec sekcji krytycznej
             ****************************************************/
+
             /** ADDED BY ME FROM HERE **/
 
             sem_post(sem_id);
@@ -94,6 +100,7 @@ int main(int argc, char** args) {
             /******************************************
             Sekcja krytyczna. Zabezpiecz dostep semaforem
             ******************************************/
+
             /** ADDED BY ME FROM HERE **/
 
             sem_wait(sem_id);
