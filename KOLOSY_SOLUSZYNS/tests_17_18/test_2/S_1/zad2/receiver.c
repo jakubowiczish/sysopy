@@ -19,6 +19,13 @@ int main(int argc, char** argv) {
     posprzataj
     *********************************************/
 
+    /** ADDED BY ME FROM HERE **/
+
+    int fd = shm_open(SHM_NAME, O_RDWR, 0666);
+
+
+
+
     printf("%d square is: %d \n", val, val * val);
     return 0;
 }

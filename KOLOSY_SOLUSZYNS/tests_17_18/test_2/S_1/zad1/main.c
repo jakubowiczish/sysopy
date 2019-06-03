@@ -14,7 +14,11 @@ void* hello(void* arg) {
                 przerwij dzialanie watku jesli bylo takie zadanie
         *****************************************************/
 
-        /** ??? probably nothing should be placed in here **/
+        /****************************************************/
+
+        /** ??? PROBABLY NOTHING SHOULD BE PLACED IN HERE  **/
+
+        /****************************************************/
 
         printf("Hello again world from thread number %d\n", *(int*)arg);
         sleep(2);
@@ -34,11 +38,19 @@ int main(int argc, char** args) {
     /**************************************************
         Utworz n watkow realizujacych funkcje hello
     **************************************************/
-    pthread_t* pthreads = malloc(sizeof(pthread_t) * n);
+
+    /** ADDED BY ME FROM HERE **/
+
+    pthread_t* threads = malloc(sizeof(pthread_t) * n);
+
+    int* ids = malloc(sizeof(int) * n);
 
     for (int i = 0; i < n; ++i) {
-        pthread_create(pthreads, NULL, hello, (void*)atoi(args[2]));
+        ids[i] = i;
+        pthread_create(&threads[i], NULL, hello, &ids[i]);
     }
+
+    /** TILL HERE **/
 
     int i = 0;
     while (i++ < atoi(args[2])) {
@@ -51,6 +63,18 @@ int main(int argc, char** args) {
     /*******************************************
         "Skasuj" wszystke uruchomione watki i poczekaj na ich zakonczenie
     *******************************************/
+
+    /** ADDED BY ME FROM HERE **/
+
+    for (int i = 0; i < n; ++i) {
+        pthread_cancel(threads[i]);
+    }
+
+    for (int i = 0; i < n; ++i) {
+        pthread_join(threads[i], (void**)NULL);
+    }
+
+    /** TILL HERE **/
 
     printf("DONE");
 

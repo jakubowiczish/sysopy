@@ -1,5 +1,3 @@
-
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,18 +45,33 @@ int reserveSem(int semId, int semNum) {
     /* Ustaw odpowiednie pola struktury sops i wykonaj
        operacje na semaforze semid*/
 
-    return 0;
+    /** ADDED BY ME FROM HERE **/
+
+    sops.sem_num = semNum;
+    sops.sem_flg = 0;
+    sops.sem_op = -1;
+
+    return semop(semId, &sops, 1);
+
+    /** TILL HERE **/
 }
 
 int /* Operacja V */
 releaseSem(int semId, int semNum) {
     struct sembuf sops;
+
     /* Ustaw odpowiednie pola struktury sops i wykonaj
       operacje na semaforze semid*/
-    sops->sem_num = semNum;
-    sops->sem_op = 1;
-    sops->sem_flg = 0;
-    return semop(semId, sops);
+
+    /** ADDED BY ME FROM HERE **/
+
+    sops.sem_num = semNum;
+    sops.sem_flg = 0;
+    sops.sem_op = 1;
+
+    return semop(semId, &sops, 1);
+
+    /** TILL HERE **/
 }
 
 int main(int argc, char* argv[]) {
