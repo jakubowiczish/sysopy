@@ -67,9 +67,9 @@ add_executable(
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/kolospoprawkowyzforum/zad2(ok)/receiver.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_1/kolospoprawkowyzforum/zad3(ok)/main.c"
 
-        "KOLOSY_SOLUSZYNS/tests_18_19/mytest/zad1(ok)/main.c"
-        "KOLOSY_SOLUSZYNS/tests_18_19/mytest/zad2(ok)/main.c"
-        "KOLOSY_SOLUSZYNS/tests_18_19/mytest/zad3(ok)/main.c"
+        "KOLOSY_SOLUSZYNS/tests_18_19/mytest_1/zad1(ok)/main.c"
+        "KOLOSY_SOLUSZYNS/tests_18_19/mytest_1/zad2(ok)/main.c"
+        "KOLOSY_SOLUSZYNS/tests_18_19/mytest_1/zad3(ok)/main.c"
 
         cw06/zad1/client.c
         cw06/zad1/helper.h
@@ -134,4 +134,9 @@ add_executable(
         "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2(ok)/zad2(ok)/receiver.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2(ok)/zad3(ok)/sender.c"
         "KOLOSY_SOLUSZYNS/tests_17_18/test_2/S_2(ok)/zad3(ok)/receiver.c"
+
+        "KOLOSY_SOLUSZYNS/tests_18_19/mytest_2/zad1(ok)/main.c"
+        "KOLOSY_SOLUSZYNS/tests_18_19/mytest_2/zad2(ok)/main.c"
+        "KOLOSY_SOLUSZYNS/tests_18_19/mytest_2/zad3(ok)/main.c"
+
 )
