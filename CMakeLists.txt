@@ -139,14 +139,27 @@ add_executable(
         "KOLOSY_SOLUSZYNS/tests_18_19/mytest_2/zad2(ok)/main.c"
         "KOLOSY_SOLUSZYNS/tests_18_19/mytest_2/zad3(ok)/main.c"
 
-        cw10/zad1/utils.h
-        cw10/zad1/utils.c
-        cw10/zad1/client.c
-        cw10/zad1/server.c
-        cw10/zad1/errors.h
-        cw10/zad1/errors.c
-        cw10/zad1/queue.h
-        cw10/zad1/queue.c
-        cw10/zad1/colors.c
-        cw10/zad1/colors.h
+        cw10/complete_sollution/zad1/utils.h
+        cw10/complete_sollution/zad1/utils.c
+        cw10/complete_sollution/zad1/client.c
+        cw10/complete_sollution/zad1/server.c
+        cw10/complete_sollution/zad1/errors.h
+        cw10/complete_sollution/zad1/errors.c
+        cw10/complete_sollution/zad1/queue.h
+        cw10/complete_sollution/zad1/queue.c
+        cw10/complete_sollution/zad1/colors.c
+        cw10/complete_sollution/zad1/colors.h
+
+        cw10/another_solution/zad1/server.c
+        cw10/another_solution/zad1/client.c
+        cw10/another_solution/zad1/error.c
+        cw10/another_solution/zad1/error.h
+        cw10/another_solution/zad1/proto.c
+        cw10/another_solution/zad1/proto.h
+        cw10/another_solution/zad1/queue.h
+        cw10/another_solution/zad2/server.c
+        cw10/another_solution/zad2/client.c
+        cw10/another_solution/zad2/proto.c
+        cw10/another_solution/zad2/proto.h
+
 )
