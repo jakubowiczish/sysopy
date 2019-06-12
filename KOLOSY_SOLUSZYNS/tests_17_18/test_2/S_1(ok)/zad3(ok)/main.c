@@ -41,7 +41,7 @@ int main(int argc, char** args) {
     int parent_loop_counter = atoi(args[1]);
     int child_loop_counter = atoi(args[2]);
 
-    char buf[20];
+    char buf[40];
     pid_t child_pid;
     int max_sleep_time = atoi(args[3]);
 
