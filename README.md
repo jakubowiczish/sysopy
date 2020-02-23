@@ -1,3 +1,12 @@
+<img src="https://img.shields.io/github/languages/code-size/jakubowiczish/sysopy?style=for-the-badge"> <img src="https://img.shields.io/github/repo-size/jakubowiczish/sysopy?color=purple&style=for-the-badge"> 
+<img src="https://img.shields.io/github/languages/count/jakubowiczish/sysopy?color=green&style=for-the-badge"> 
+<img src="https://img.shields.io/github/languages/top/jakubowiczish/sysopy?color=orange&style=for-the-badge">
+<img src="https://img.shields.io/github/commit-activity/m/jakubowiczish/sysopy?color=lime&style=for-the-badge">
+<img src="https://img.shields.io/github/last-commit/jakubowiczish/sysopy?color=darkgreen&style=for-the-badge">
+
+<img src="https://tokei.rs/b1/github/jakubowiczish/sysopy?category=code" width="200"> <img src="https://tokei.rs/b1/github/jakubowiczish/sysopy?category=lines" width="175">
+<img src="https://tokei.rs/b1/github/jakubowiczish/sysopy?category=files" width="90">
+
 # MIGHTILY
 
 # VIOLENTLY
