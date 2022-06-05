@@ -1,4 +1,0 @@
-## Zadanie 3. Zasoby procesów (35%)
-Zmodyfikuj program z Zadania 2 tak, aby każdy kopiujący proces miał nałożone pewne twarde ograniczenie na dostępny czas procesora oraz rozmiar pamięci wirtualnej. Wartości tych ograniczeń (odpowiednio w sekundach i megabajtach) powinny być przekazywane jako czwarty i piąty argument wywołania monitora. Ograniczenia powinny być nakładane przez proces potomny, w tym celu należy użyć funkcji setrlimit. Zakładamy, że wartości nakładanych ograniczeń są dużo niższe (t.j. bardziej restrykcyjne) niż ograniczenia, które system operacyjny narzuca na użytkownika uruchamiającego monitor.
-
-Zaimplementuj w monitorze raportowanie zużycia zasobów systemowych dla każdego procesu potomnego, w tym czas użytkownika i czas systemowy. Realizując tę część zadania zwróć uwagę na funkcję getrusage i flagę RUSAGE_CHILDREN.
