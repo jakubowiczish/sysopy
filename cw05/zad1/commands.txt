@@ -1,3 +1,0 @@
-ls -la | wc -l
-ps -aux | grep root | wc -l
-cat /etc/passwd | head -5
